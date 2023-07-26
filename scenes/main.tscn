@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cy0rgyrch0rlc"]
+
+[ext_resource type="PackedScene" uid="uid://vx56msnqsma2" path="res://scenes/player.tscn" id="1_ksflm"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="2_dxlko"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_ksflm")]
+position = Vector2(537, 94)
+script = ExtResource("2_dxlko")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2(103, 117)
+polygon = PackedVector2Array(33, 212, 214, 250, 624, 279, 738, 168, 852, 241, 1008, 202, 799, 291, 556, 318, 106, 305, -9, 288)
