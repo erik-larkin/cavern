@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 
 const WALK_SPEED = 300.0
-const JUMP_SPEED = -400.0
+const JUMP_SPEED = 450.0
 const LEFT = -1
 const RIGHT = 1
 
@@ -23,7 +23,7 @@ func _physics_process(delta):
 
 	# Handle Jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_SPEED
+		velocity.y = -JUMP_SPEED
 	
 	# Get the input direction and handle the movement/deceleration.
 	var input_direction = Input.get_axis("move_left", "move_right")

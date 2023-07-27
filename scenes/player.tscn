@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://vx56msnqsma2"]
+[gd_scene load_steps=13 format=3 uid="uid://vx56msnqsma2"]
 
 [ext_resource type="Texture2D" uid="uid://cx3w0r4ugusda" path="res://assets/images/player-sheet.png" id="1_fnmax"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_hn182"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r8jkl"]
 radius = 22.0
-height = 50.0
+height = 58.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2elkd"]
 atlas = ExtResource("1_fnmax")
@@ -94,6 +95,7 @@ animations = [{
 position = Vector2(335, 182)
 collision_layer = 2
 collision_mask = 13
+script = ExtResource("1_hn182")
 metadata/_edit_group_ = true
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
@@ -103,4 +105,4 @@ shape = SubResource("CapsuleShape2D_r8jkl")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_b2kg5")
 animation = &"idle"
-frame_progress = 0.660276
+frame_progress = 0.584513
