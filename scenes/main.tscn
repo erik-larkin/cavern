@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cy0rgyrch0rlc"]
+[gd_scene load_steps=4 format=3 uid="uid://cy0rgyrch0rlc"]
 
 [ext_resource type="PackedScene" uid="uid://vx56msnqsma2" path="res://scenes/player.tscn" id="1_ksflm"]
 [ext_resource type="PackedScene" uid="uid://c23gwg707lkdu" path="res://scenes/level_1.tscn" id="1_v40fm"]
+[ext_resource type="PackedScene" uid="uid://cyisntcycreks" path="res://scenes/bubble.tscn" id="3_xhn6v"]
 
 [node name="Main" type="Node2D"]
 
@@ -10,3 +11,6 @@ scale = Vector2(1.3, 1.3)
 
 [node name="Player" parent="." instance=ExtResource("1_ksflm")]
 position = Vector2(99, 126)
+
+[node name="Bubble" parent="." instance=ExtResource("3_xhn6v")]
+position = Vector2(174, 490)
