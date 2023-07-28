@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
 
-const WALK_SPEED = 300.0
-const JUMP_SPEED = 450.0
+@export var WALK_SPEED = 300.0
+@export var JUMP_SPEED = 500.0
 const LEFT = -1
 const RIGHT = 1
 
