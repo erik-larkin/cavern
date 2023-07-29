@@ -1,8 +1,12 @@
 extends CharacterBody2D
 
+signal bubble_blown
 
 @export var WALK_SPEED = 300.0
 @export var JUMP_SPEED = 500.0
+
+var blowing_bubble = false
+
 const LEFT = -1
 const RIGHT = 1
 
@@ -12,7 +16,10 @@ var direction_facing = LEFT
 
 enum State {BLOW, DIE, IDLE, JUMP, RUN}
 
-func _process(delta):
+func _process(_delta):
+	if Input.is_action_just_pressed("blow") and not blowing_bubble:
+		blow_bubble()
+
 	var state = set_state()
 	update_animation(state)
 
@@ -36,8 +43,16 @@ func _physics_process(delta):
 	move_and_slide()
 
 
+func blow_bubble():
+	blowing_bubble = true
+	$BubbleBlowTimer.start()
+	bubble_blown.emit(position)
+
+
 func set_state() -> State:
-	if not is_on_floor():
+	if blowing_bubble:
+		return State.BLOW
+	elif not is_on_floor():
 		return State.JUMP
 	elif velocity.x != 0:
 		return State.RUN
@@ -62,3 +77,7 @@ func update_animation(state : State):
 			$AnimatedSprite2D.play("run")
 		State.IDLE, _:
 			$AnimatedSprite2D.play("idle")
+
+
+func _on_bubble_blow_timer_timeout():
+	blowing_bubble = false
