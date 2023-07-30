@@ -7,12 +7,9 @@ signal bubble_blown
 
 var blowing_bubble = false
 
-const LEFT = -1
-const RIGHT = 1
-
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-var direction_facing = LEFT
+var direction_facing = Vector2.LEFT
 
 enum State {BLOW, DIE, IDLE, JUMP, RUN}
 
@@ -36,7 +33,7 @@ func _physics_process(delta):
 	var input_direction = Input.get_axis("move_left", "move_right")
 	if input_direction:
 		velocity.x = input_direction * WALK_SPEED
-		direction_facing = input_direction
+		direction_facing = Vector2(input_direction, 0)
 	else:
 		velocity.x = move_toward(velocity.x, 0, WALK_SPEED)
 	
@@ -46,7 +43,7 @@ func _physics_process(delta):
 func blow_bubble():
 	blowing_bubble = true
 	$BubbleBlowTimer.start()
-	bubble_blown.emit(position)
+	bubble_blown.emit(position, direction_facing)
 
 
 func set_state() -> State:
@@ -61,7 +58,7 @@ func set_state() -> State:
 
 
 func update_animation(state : State):
-	if direction_facing == RIGHT:
+	if direction_facing == Vector2.RIGHT:
 		$AnimatedSprite2D.flip_h = true
 	else:
 		$AnimatedSprite2D.flip_h = false
