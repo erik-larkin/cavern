@@ -127,7 +127,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_4h1i5")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
 "speed": 5.0
 }, {
@@ -176,9 +176,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_m2hye")
 }],
-"loop": true,
+"loop": false,
 "name": &"pop",
-"speed": 5.0
+"speed": 30.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_m8g2f"]
@@ -189,22 +189,38 @@ position = Vector2(493, 311)
 collision_layer = 16
 collision_mask = 5
 gravity_scale = 0.0
+max_contacts_reported = 10
+contact_monitor = true
 lock_rotation = true
 linear_velocity = Vector2(0, -20)
 script = ExtResource("1_t6l70")
 metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 1)
 scale = Vector2(0.8, 0.8)
 sprite_frames = SubResource("SpriteFrames_bsy8x")
+animation = &"pop"
+frame = 4
+frame_progress = 1.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_m8g2f")
+
+[node name="VisibleOnScreenNotifier" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="PopTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true
 
 [node name="CaptureStateTimer" type="Timer" parent="."]
 wait_time = 0.4
 one_shot = true
 autostart = true
 
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[connection signal="timeout" from="PopTimer" to="." method="_on_pop_timer_timeout"]
 [connection signal="timeout" from="CaptureStateTimer" to="." method="_on_capture_state_timer_timeout"]
