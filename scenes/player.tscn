@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://vx56msnqsma2"]
+[gd_scene load_steps=14 format=3 uid="uid://vx56msnqsma2"]
 
 [ext_resource type="Texture2D" uid="uid://cx3w0r4ugusda" path="res://assets/images/player-sheet.png" id="1_fnmax"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_hn182"]
@@ -91,15 +91,19 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2newg"]
+radius = 16.0
+height = 60.0
+
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(516, 300)
 collision_layer = 2
 collision_mask = 45
-platform_on_leave = 1
+platform_on_leave = 2
 script = ExtResource("1_hn182")
 metadata/_edit_group_ = true
 
-[node name="Hitbox" type="CollisionShape2D" parent="."]
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)
 shape = SubResource("CapsuleShape2D_r8jkl")
 
@@ -112,4 +116,16 @@ frame_progress = 0.584513
 wait_time = 0.1
 one_shot = true
 
+[node name="BubblePopHitbox" type="Area2D" parent="."]
+position = Vector2(0, 5)
+collision_layer = 0
+collision_mask = 16
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BubblePopHitbox"]
+position = Vector2(6, 0)
+shape = SubResource("CapsuleShape2D_2newg")
+debug_color = Color(0.945098, 0.192157, 0.368627, 0.419608)
+
 [connection signal="timeout" from="BubbleBlowTimer" to="." method="_on_bubble_blow_timer_timeout"]
+[connection signal="body_entered" from="BubblePopHitbox" to="." method="_on_bubble_pop_hitbox_body_entered"]

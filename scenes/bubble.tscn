@@ -182,14 +182,14 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_m8g2f"]
-radius = 22.0227
+radius = 19.0263
 
 [node name="Bubble" type="RigidBody2D"]
 position = Vector2(493, 311)
 collision_layer = 16
 collision_mask = 5
 gravity_scale = 0.0
-max_contacts_reported = 10
+max_contacts_reported = 1
 contact_monitor = true
 lock_rotation = true
 linear_velocity = Vector2(0, -20)
@@ -200,9 +200,6 @@ metadata/_edit_group_ = true
 position = Vector2(0, 1)
 scale = Vector2(0.8, 0.8)
 sprite_frames = SubResource("SpriteFrames_bsy8x")
-animation = &"pop"
-frame = 4
-frame_progress = 1.0
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_m8g2f")

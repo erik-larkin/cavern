@@ -1,7 +1,6 @@
 extends RigidBody2D
 
-enum Layers { OUTER_WALLS = 1, PLAYER = 2, ENEMIES = 3, CAPTURE_BUBBLES = 5, 
-	FLOAT_BUBBLES = 7}
+enum Layers { OUTER_WALLS = 1, ENEMIES = 3, BUBBLES = 5 }
 enum State {FLOAT, CAPTURE, POPPING, ENEMY}
 
 const CAPTURE_BUBBLE_SCALE = 0.4
@@ -20,29 +19,27 @@ func set_state_capture():
 	state = State.CAPTURE
 	$AnimatedSprite.play("default")
 	$AnimatedSprite.scale = Vector2(CAPTURE_BUBBLE_SCALE, CAPTURE_BUBBLE_SCALE)
-	set_collision_mask_value(Layers.PLAYER, false)
-	set_collision_mask_value(Layers.FLOAT_BUBBLES, false)
+	set_collision_layer_value(Layers.BUBBLES, false)
 	set_collision_mask_value(Layers.ENEMIES, true)
-	set_collision_layer_value(Layers.CAPTURE_BUBBLES, true)
-	set_collision_layer_value(Layers.FLOAT_BUBBLES, false)
+	set_collision_mask_value(Layers.BUBBLES, false)
 
 
 func set_state_float():
-	$AnimatedSprite.scale = Vector2(FLOAT_BUBBLE_SCALE, FLOAT_BUBBLE_SCALE)
 	linear_velocity = Vector2.ZERO
 	state = State.FLOAT
-	set_collision_mask_value(Layers.PLAYER, true)
-	set_collision_mask_value(Layers.FLOAT_BUBBLES, true)
+	$AnimatedSprite.play("default")
+	$AnimatedSprite.scale = Vector2(FLOAT_BUBBLE_SCALE, FLOAT_BUBBLE_SCALE)
+	set_collision_layer_value(Layers.BUBBLES, true)
 	set_collision_mask_value(Layers.ENEMIES, false)
-	set_collision_layer_value(Layers.CAPTURE_BUBBLES, false)
-	set_collision_layer_value(Layers.FLOAT_BUBBLES, true)
+	set_collision_mask_value(Layers.BUBBLES, true)
 
 
 func pop():
-	state = State.POPPING
-	linear_velocity = Vector2.ZERO
-	$CollisionShape.disabled = true
-	$AnimatedSprite.play("pop")
+	if state == State.FLOAT:
+		state = State.POPPING
+		linear_velocity = Vector2.ZERO
+		$CollisionShape.disabled = true
+		$AnimatedSprite.play("pop")
 
 
 func _on_capture_state_timer_timeout():
