@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://vx56msnqsma2"]
+[gd_scene load_steps=16 format=3 uid="uid://vx56msnqsma2"]
 
 [ext_resource type="Texture2D" uid="uid://cx3w0r4ugusda" path="res://assets/images/player-sheet.png" id="1_fnmax"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_hn182"]
@@ -93,7 +93,15 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2newg"]
 radius = 16.0
-height = 60.0
+height = 52.0
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_od5k3"]
+a = Vector2(-8, 0)
+b = Vector2(6, 0)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_u5syf"]
+a = Vector2(0, -25)
+b = Vector2(0, 24)
 
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(516, 300)
@@ -107,10 +115,9 @@ metadata/_edit_group_ = true
 position = Vector2(0, 5)
 shape = SubResource("CapsuleShape2D_r8jkl")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_b2kg5")
 animation = &"idle"
-frame_progress = 0.584513
 
 [node name="BubbleBlowTimer" type="Timer" parent="."]
 wait_time = 0.1
@@ -122,10 +129,31 @@ collision_layer = 0
 collision_mask = 16
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BubblePopHitbox"]
-position = Vector2(6, 0)
+[node name="CollisionShape" type="CollisionShape2D" parent="BubblePopHitbox"]
+position = Vector2(10, -4)
 shape = SubResource("CapsuleShape2D_2newg")
 debug_color = Color(0.945098, 0.192157, 0.368627, 0.419608)
 
+[node name="BubbleBounceHitbox" type="Area2D" parent="."]
+position = Vector2(0, 5)
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape" type="CollisionShape2D" parent="BubbleBounceHitbox"]
+position = Vector2(0, 29)
+shape = SubResource("SegmentShape2D_od5k3")
+debug_color = Color(0.337255, 0.588235, 0, 0.419608)
+
+[node name="BubblePushHitbox" type="Area2D" parent="."]
+position = Vector2(0, 5)
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape2D" parent="BubblePushHitbox"]
+position = Vector2(-17, 0)
+shape = SubResource("SegmentShape2D_u5syf")
+debug_color = Color(0.858824, 0.635294, 0, 0.419608)
+
 [connection signal="timeout" from="BubbleBlowTimer" to="." method="_on_bubble_blow_timer_timeout"]
 [connection signal="body_entered" from="BubblePopHitbox" to="." method="_on_bubble_pop_hitbox_body_entered"]
+[connection signal="body_entered" from="BubbleBounceHitbox" to="." method="_on_bubble_bounce_hitbox_body_entered"]

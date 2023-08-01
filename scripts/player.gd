@@ -27,7 +27,7 @@ func _physics_process(delta):
 
 	# Handle Jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = -JUMP_SPEED
+		jump()
 	
 	# Get the input direction and handle the movement/deceleration.
 	var input_direction = Input.get_axis("move_left", "move_right")
@@ -59,23 +59,29 @@ func set_state() -> State:
 
 func update_animation(state : State):
 	if direction_facing == Vector2.RIGHT:
-		$AnimatedSprite2D.flip_h = true
+		$AnimatedSprite.flip_h = true
 		$BubblePopHitbox.scale.x = -1
+		$BubblePushHitbox.scale.x = -1
 	else:
-		$AnimatedSprite2D.flip_h = false
+		$AnimatedSprite.flip_h = false
 		$BubblePopHitbox.scale.x = 1
+		$BubblePushHitbox.scale.x = 1
 	
 	match state: 
 		State.DIE:
-			$AnimatedSprite2D.play("die")
+			$AnimatedSprite.play("die")
 		State.BLOW:
-			$AnimatedSprite2D.play("blow")
+			$AnimatedSprite.play("blow")
 		State.JUMP:
-			$AnimatedSprite2D.play("jump")
+			$AnimatedSprite.play("jump")
 		State.RUN:
-			$AnimatedSprite2D.play("run")
+			$AnimatedSprite.play("run")
 		State.IDLE, _:
-			$AnimatedSprite2D.play("idle")
+			$AnimatedSprite.play("idle")
+
+
+func jump():
+	velocity.y = -JUMP_SPEED
 
 
 func _on_bubble_blow_timer_timeout():
@@ -84,3 +90,11 @@ func _on_bubble_blow_timer_timeout():
 
 func _on_bubble_pop_hitbox_body_entered(body):
 	body.pop()
+
+
+func _on_bubble_bounce_hitbox_body_entered(body):
+	print(velocity.y)
+	if Input.is_action_pressed("jump") and velocity.y > 0:
+		jump()
+	else:
+		body.pop()
