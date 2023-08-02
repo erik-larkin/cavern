@@ -1,9 +1,11 @@
 extends CharacterBody2D
 
-signal bubble_blown
+signal bubble_blown(spawn_position, direction)
+signal bubbled_pushed(velocity)
 
 @export var WALK_SPEED = 300.0
 @export var JUMP_SPEED = 500.0
+@export var PUSH_FORCE = 300.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -37,7 +39,16 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, WALK_SPEED)
 	
-	move_and_slide()
+	if move_and_slide() and state == State.RUN:
+		push_bubble()
+
+
+func push_bubble():
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		if collider is RigidBody2D:
+			collider.apply_force(collision.get_normal() * -PUSH_FORCE)
 
 
 func blow_bubble():
@@ -51,7 +62,7 @@ func set_state() -> State:
 		return State.BLOW
 	elif not is_on_floor():
 		return State.JUMP
-	elif velocity.x != 0:
+	elif Input.get_axis("move_left", "move_right") != 0:
 		return State.RUN
 	else:
 		return State.IDLE
@@ -95,3 +106,7 @@ func _on_bubble_bounce_hitbox_body_entered(body):
 		jump()
 	else:
 		body.pop()
+
+
+func _on_bubble_push_hitbox_body_entered(body):
+	bubbled_pushed.emit(velocity.x)

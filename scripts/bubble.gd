@@ -39,7 +39,6 @@ func pop():
 		set_collision_layer_value(Layers.BUBBLES, false)
 		state = State.POPPING
 		linear_velocity = Vector2.ZERO
-		$CollisionShape.disabled = true
 		$AnimatedSprite.play("pop")
 
 
