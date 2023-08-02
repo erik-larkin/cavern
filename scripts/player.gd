@@ -61,11 +61,9 @@ func update_animation(state : State):
 	if direction_facing == Vector2.RIGHT:
 		$AnimatedSprite.flip_h = true
 		$BubblePopHitbox.scale.x = -1
-		$BubblePushHitbox.scale.x = -1
 	else:
 		$AnimatedSprite.flip_h = false
 		$BubblePopHitbox.scale.x = 1
-		$BubblePushHitbox.scale.x = 1
 	
 	match state: 
 		State.DIE:
@@ -93,7 +91,6 @@ func _on_bubble_pop_hitbox_body_entered(body):
 
 
 func _on_bubble_bounce_hitbox_body_entered(body):
-	print(velocity.y)
 	if Input.is_action_pressed("jump") and velocity.y > 0:
 		jump()
 	else:

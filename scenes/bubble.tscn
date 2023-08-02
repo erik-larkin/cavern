@@ -192,7 +192,6 @@ gravity_scale = 0.0
 max_contacts_reported = 1
 contact_monitor = true
 lock_rotation = true
-linear_velocity = Vector2(0, -20)
 script = ExtResource("1_t6l70")
 metadata/_edit_group_ = true
 

@@ -36,6 +36,7 @@ func set_state_float():
 
 func pop():
 	if state == State.FLOAT:
+		set_collision_layer_value(Layers.BUBBLES, false)
 		state = State.POPPING
 		linear_velocity = Vector2.ZERO
 		$CollisionShape.disabled = true
