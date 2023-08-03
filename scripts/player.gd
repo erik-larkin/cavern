@@ -12,6 +12,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var direction_facing = Vector2.LEFT
 var state = State.IDLE
 var blowing_bubble = false
+var on_ground = true
 
 enum State {BLOW, DIE, IDLE, JUMP, RUN}
 
@@ -22,10 +23,16 @@ func _process(_delta):
 	state = set_state()
 	update_animation(state)
 
+
 func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y += gravity * delta
+		on_ground = false
+	else:
+		if not on_ground:
+			$SFX/Footsteps.play()
+		on_ground = true
 
 	# Handle Jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
@@ -40,6 +47,8 @@ func _physics_process(delta):
 		velocity.x = move_toward(velocity.x, 0, WALK_SPEED)
 	
 	if move_and_slide() and state == State.RUN:
+		if not $SFX/Footsteps.playing:
+			$SFX/Footsteps.play()
 		push_bubble()
 
 
@@ -53,6 +62,7 @@ func push_bubble():
 
 func blow_bubble():
 	blowing_bubble = true
+	$SFX/Blow.play()
 	$BubbleBlowTimer.start()
 	bubble_blown.emit(position, direction_facing)
 
@@ -90,6 +100,7 @@ func update_animation(state : State):
 
 
 func jump():
+	$SFX/Jump.play()
 	velocity.y = -JUMP_SPEED
 
 
