@@ -185,6 +185,7 @@ one_shot = true
 
 [node name="Blow" type="AudioStreamPlayer2D" parent="SFX"]
 stream = SubResource("AudioStreamRandomizer_ceyki")
+volume_db = -20.0
 
 [node name="Footsteps" type="AudioStreamPlayer2D" parent="SFX"]
 stream = SubResource("AudioStreamRandomizer_xti02")

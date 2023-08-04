@@ -1,8 +1,12 @@
-[gd_scene load_steps=28 format=3 uid="uid://cyisntcycreks"]
+[gd_scene load_steps=33 format=3 uid="uid://cyisntcycreks"]
 
 [ext_resource type="Texture2D" uid="uid://dgvcbqkntp31y" path="res://assets/images/bubble-sheet.png" id="1_kcc43"]
 [ext_resource type="Script" path="res://scripts/bubble.gd" id="1_t6l70"]
 [ext_resource type="Texture2D" uid="uid://dn6pi0rub0b0k" path="res://assets/images/bubble-pop-sheet.png" id="2_nahxr"]
+[ext_resource type="AudioStream" uid="uid://dgqblacve5n" path="res://assets/sounds/pop0.ogg" id="4_xfsqt"]
+[ext_resource type="AudioStream" uid="uid://ca58r2ycmt664" path="res://assets/sounds/pop1.ogg" id="5_k4c2e"]
+[ext_resource type="AudioStream" uid="uid://btqul54eilomi" path="res://assets/sounds/pop2.ogg" id="6_2t8td"]
+[ext_resource type="AudioStream" uid="uid://c0vskfn487p8l" path="res://assets/sounds/pop3.ogg" id="7_bfbxq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xu5f0"]
 atlas = ExtResource("1_kcc43")
@@ -184,12 +188,22 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_m8g2f"]
 radius = 19.0263
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_dxou2"]
+streams_count = 4
+stream_0/stream = ExtResource("4_xfsqt")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("5_k4c2e")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("6_2t8td")
+stream_2/weight = 1.0
+stream_3/stream = ExtResource("7_bfbxq")
+stream_3/weight = 1.0
+
 [node name="Bubble" type="RigidBody2D"]
 position = Vector2(493, 311)
-collision_layer = 16
-collision_mask = 5
+collision_layer = 0
 gravity_scale = 0.0
-max_contacts_reported = 1
+max_contacts_reported = 8
 contact_monitor = true
 lock_rotation = true
 linear_damp_mode = 1
@@ -215,6 +229,10 @@ autostart = true
 wait_time = 0.4
 one_shot = true
 autostart = true
+
+[node name="PopSound" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_dxou2")
+volume_db = -10.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_animated_sprite_2d_animation_finished"]

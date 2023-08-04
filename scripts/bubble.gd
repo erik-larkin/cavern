@@ -9,10 +9,6 @@ const FLOAT_BUBBLE_SCALE = 0.8
 @export var SPAWN_SPEED = 700
 var state : State
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
 
 func set_state_capture():
 	linear_velocity *= SPAWN_SPEED
@@ -20,7 +16,6 @@ func set_state_capture():
 	$AnimatedSprite.play("default")
 	$AnimatedSprite.scale = Vector2(CAPTURE_BUBBLE_SCALE, CAPTURE_BUBBLE_SCALE)
 	set_collision_layer_value(Layers.BUBBLES, false)
-	set_collision_mask_value(Layers.ENEMIES, true)
 	set_collision_mask_value(Layers.BUBBLES, false)
 
 
@@ -30,7 +25,6 @@ func set_state_float():
 	$AnimatedSprite.play("default")
 	$AnimatedSprite.scale = Vector2(FLOAT_BUBBLE_SCALE, FLOAT_BUBBLE_SCALE)
 	set_collision_layer_value(Layers.BUBBLES, true)
-	set_collision_mask_value(Layers.ENEMIES, false)
 	set_collision_mask_value(Layers.BUBBLES, true)
 
 
@@ -39,6 +33,7 @@ func pop():
 		set_collision_layer_value(Layers.BUBBLES, false)
 		state = State.POPPING
 		linear_velocity = Vector2.ZERO
+		$PopSound.play()
 		$AnimatedSprite.play("pop")
 
 
@@ -51,7 +46,8 @@ func _on_visible_on_screen_notifier_2d_screen_exited():
 
 
 func _on_pop_timer_timeout():
-	pop()
+	#pop()
+	pass
 
 
 func _on_animated_sprite_2d_animation_finished():
