@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 signal bubble_blown(spawn_position, direction)
-signal bubbled_pushed(velocity)
+signal bubble_popped(bubble)
 
 @export var WALK_SPEED = 300.0
 @export var JUMP_SPEED = 500.0
@@ -109,15 +109,11 @@ func _on_bubble_blow_timer_timeout():
 
 
 func _on_bubble_pop_hitbox_body_entered(body):
-	body.pop()
+	bubble_popped.emit(body)
 
 
 func _on_bubble_bounce_hitbox_body_entered(body):
 	if Input.is_action_pressed("jump") and velocity.y > 0:
 		jump()
 	else:
-		body.pop()
-
-
-func _on_bubble_push_hitbox_body_entered(body):
-	bubbled_pushed.emit(velocity.x)
+		bubble_popped.emit(body)

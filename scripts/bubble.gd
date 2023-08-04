@@ -37,6 +37,16 @@ func pop():
 		$AnimatedSprite.play("pop")
 
 
+func recursive_pop(previous_bubble : RigidBody2D):
+	var bubbles_to_pop : Array = get_colliding_bodies()
+	
+#	bubbles_to_pop = bubbles_to_pop.filter(func(x): x != previous_bubble)
+#	pop()
+#
+#	if not bubbles_to_pop.is_empty():
+#		bubbles_to_pop.all(func(x): x.recursive_pop(x))
+
+
 func _on_capture_state_timer_timeout():
 	set_state_float()
 
@@ -46,7 +56,6 @@ func _on_visible_on_screen_notifier_2d_screen_exited():
 
 
 func _on_pop_timer_timeout():
-	#pop()
 	pass
 
 
