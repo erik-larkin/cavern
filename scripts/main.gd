@@ -35,21 +35,9 @@ func recursive_bubble_pop(bubble : RigidBody2D, popped : Array[RigidBody2D]):
 	bubble.pop()
 	popped.append(bubble)
 	
-	var timer = create_timer(CHAIN_REACTION_POP_TIME)
-	timer.timeout.connect(func():
+	get_tree().create_timer(CHAIN_REACTION_POP_TIME).timeout.connect(func():
 		for adjacent_bubble in bubbles_to_pop:
 			if adjacent_bubble != null and adjacent_bubble.has_method("pop"):
 				recursive_bubble_pop(adjacent_bubble, popped)
 	)
-
-
-# Creates and starts a timer that runs for a given time. The timer will be freed
-# automatically upon its timeout.
-func create_timer(wait_time : float) -> Timer:
-	var timer = Timer.new()
-	timer.autostart = true
-	timer.wait_time = wait_time
-	add_child(timer)
-	timer.timeout.connect(timer.queue_free)
-	return timer
 
