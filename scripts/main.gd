@@ -21,7 +21,6 @@ func _on_player_bubble_blown(spawn_position : Vector2, direction : Vector2):
 
 
 func _on_player_bubble_popped(bubble):
-	print("pop")
 	var popped : Array[RigidBody2D] = []
 	recursive_bubble_pop(bubble, popped)
 
@@ -32,6 +31,9 @@ func recursive_bubble_pop(bubble : RigidBody2D, popped : Array[RigidBody2D]):
 		return
 	
 	var bubbles_to_pop = bubble.get_colliding_bodies()
+	bubble.pop()
+	popped.append(bubble)
 	
 	for adjacent_bubble in bubbles_to_pop:
-		recursive_bubble_pop(adjacent_bubble, popped)
+		if adjacent_bubble.has_method("pop"):
+			recursive_bubble_pop(adjacent_bubble, popped)
