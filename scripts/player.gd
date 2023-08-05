@@ -7,6 +7,8 @@ signal bubble_popped(bubble)
 @export var JUMP_SPEED = 500.0
 @export var PUSH_FORCE = 300.0
 
+const RUN_STEP_FRAMES = [1,3]
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var direction_facing = Vector2.LEFT
@@ -46,9 +48,7 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, WALK_SPEED)
 	
-	if move_and_slide() and state == State.RUN:
-		if not $SFX/Footsteps.playing:
-			$SFX/Footsteps.play()
+	if move_and_slide():
 		push_bubble()
 
 
@@ -79,12 +79,14 @@ func set_state() -> State:
 
 
 func update_animation(state : State):
-	if direction_facing == Vector2.RIGHT:
-		$AnimatedSprite.flip_h = true
-		$BubblePopHitbox.scale.x = -1
-	else:
-		$AnimatedSprite.flip_h = false
-		$BubblePopHitbox.scale.x = 1
+	# Only update direction if on the ground
+	if is_on_floor():
+		if direction_facing == Vector2.RIGHT:
+			$AnimatedSprite.flip_h = true
+			$BubblePopHitbox.scale.x = -1
+		else:
+			$AnimatedSprite.flip_h = false
+			$BubblePopHitbox.scale.x = 1
 	
 	match state: 
 		State.DIE:
@@ -117,3 +119,9 @@ func _on_bubble_bounce_hitbox_body_entered(body):
 		jump()
 	else:
 		bubble_popped.emit(body)
+
+
+func _on_animated_sprite_frame_changed():
+	if $AnimatedSprite.animation == "run":
+		if $AnimatedSprite.frame in RUN_STEP_FRAMES:
+			$SFX/Footsteps.play()
