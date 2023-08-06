@@ -1,0 +1,71 @@
+[gd_scene load_steps=12 format=3 uid="uid://cnxiixbxevigx"]
+
+[ext_resource type="Texture2D" uid="uid://ch0pnhb031i78" path="res://assets/images/robot000.png" id="1_5p3b3"]
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_mao2j"]
+[ext_resource type="Texture2D" uid="uid://tbwaof760nca" path="res://assets/images/robot001.png" id="2_6sxuw"]
+[ext_resource type="Texture2D" uid="uid://dd288n7ruqbmg" path="res://assets/images/robot002.png" id="3_n8hsc"]
+[ext_resource type="Texture2D" uid="uid://dymxgl2vh1aqi" path="res://assets/images/robot003.png" id="4_wkean"]
+[ext_resource type="Texture2D" uid="uid://c4og5ynq0i1n3" path="res://assets/images/robot004.png" id="5_ohkxm"]
+[ext_resource type="Texture2D" uid="uid://bdo2j3ujb0utu" path="res://assets/images/robot005.png" id="6_8this"]
+[ext_resource type="Texture2D" uid="uid://b28jpd6bk1v46" path="res://assets/images/robot006.png" id="7_1auvu"]
+[ext_resource type="Texture2D" uid="uid://c30sdisxlpfgk" path="res://assets/images/robot007.png" id="8_aq1nt"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gx1y5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_5p3b3")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_6sxuw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_n8hsc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_wkean")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ohkxm")
+}],
+"loop": true,
+"name": &"move",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_8this")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_1auvu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_aq1nt")
+}],
+"loop": true,
+"name": &"shoot",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_osn7f"]
+radius = 20.0
+height = 60.0
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 33
+script = ExtResource("1_mao2j")
+metadata/_edit_group_ = true
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_gx1y5")
+animation = &"move"
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+position = Vector2(0, 7)
+shape = SubResource("CapsuleShape2D_osn7f")
