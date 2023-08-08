@@ -57,7 +57,7 @@ func push_bubble():
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
 		if collider is RigidBody2D:
-			collider.apply_force(collision.get_normal() * -PUSH_FORCE)
+			collider.apply_force(direction_facing * PUSH_FORCE)
 
 
 func blow_bubble():
