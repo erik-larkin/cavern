@@ -81,10 +81,8 @@ func choose_air_frame_based_on_speed():
 		$Sprite.frame = 3
 	elif absolute_velocity >= 150:
 		$Sprite.frame = 2
-	elif absolute_velocity >= 50:
-		$Sprite.frame = 1
 	else:
-		$Sprite.frame = 0
+		$Sprite.frame = 1
 
 
 func wind_up_jump() -> void:
