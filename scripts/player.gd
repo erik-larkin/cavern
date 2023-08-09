@@ -23,7 +23,7 @@ func _process(_delta):
 		blow_bubble()
 
 	state = set_state()
-	update_animation(state)
+	set_animation(state)
 
 
 func _physics_process(delta):
@@ -44,7 +44,8 @@ func _physics_process(delta):
 	var input_direction = Input.get_axis("move_left", "move_right")
 	if input_direction:
 		velocity.x = input_direction * WALK_SPEED
-		direction_facing = Vector2(input_direction, 0)
+		if is_on_floor():
+			direction_facing = Vector2(input_direction, 0)
 	else:
 		velocity.x = move_toward(velocity.x, 0, WALK_SPEED)
 	
@@ -54,8 +55,7 @@ func _physics_process(delta):
 
 func push_bubble():
 	for i in get_slide_collision_count():
-		var collision = get_slide_collision(i)
-		var collider = collision.get_collider()
+		var collider = get_slide_collision(i).get_collider()
 		if collider is RigidBody2D:
 			collider.apply_force(direction_facing * PUSH_FORCE)
 
@@ -78,15 +78,13 @@ func set_state() -> State:
 		return State.IDLE
 
 
-func update_animation(state : State):
-	# Only update direction if on the ground
-	if is_on_floor():
-		if direction_facing == Vector2.RIGHT:
-			$AnimatedSprite.flip_h = true
-			$BubblePopHitbox.scale.x = -1
-		else:
-			$AnimatedSprite.flip_h = false
-			$BubblePopHitbox.scale.x = 1
+func set_animation(state : State):
+	if direction_facing == Vector2.RIGHT:
+		$AnimatedSprite.flip_h = true
+		$BubblePopHitbox.scale.x = -1
+	else:
+		$AnimatedSprite.flip_h = false
+		$BubblePopHitbox.scale.x = 1
 	
 	match state: 
 		State.DIE:

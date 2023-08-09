@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-enum Layers { OUTER_WALLS = 1, ENEMIES = 3, BUBBLES = 5 }
+enum Layers { OUTER_WALLS = 1, BUBBLES = 5 }
 enum State {FLOAT, CAPTURE, POPPING, ENEMY}
 
 const CAPTURE_BUBBLE_SCALE = 0.4

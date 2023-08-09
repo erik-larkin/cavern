@@ -207,6 +207,7 @@ max_contacts_reported = 8
 contact_monitor = true
 lock_rotation = true
 linear_damp_mode = 1
+linear_damp = 2.0
 script = ExtResource("1_prs2h")
 metadata/_edit_group_ = true
 
