@@ -11,27 +11,29 @@ signal bubble_popped(bubble)
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var direction_facing = Vector2.LEFT
 
-@onready var animation_tree = $AnimationTree
+@onready var animation_tree = $AnimationPlayer/AnimationTree
 
 
 
 func _process(_delta):
 	if Input.is_action_just_pressed("blow"):
 		blow_bubble()
+	
+	update_animation_parameters()
 
 
 func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-	if Input.is_action_just_pressed("jump"):
+	if Input.is_action_just_pressed("jump") and is_on_floor():
 		jump()
 	
 	var input_direction = Input.get_axis("move_left", "move_right")
 	if input_direction:
 		velocity.x = input_direction * WALK_SPEED
 		if is_on_floor():
-			direction_facing = Vector2(input_direction, 0)
+			set_direction(input_direction)
 	else:
 		velocity.x = move_toward(velocity.x, 0, WALK_SPEED)
 	
@@ -39,6 +41,12 @@ func _physics_process(delta):
 		push_bubbles()
 
 
+func set_direction(input_direction : int) -> void:
+	direction_facing = Vector2(input_direction, 0)
+	$Sprite.flip_h = true if direction_facing == Vector2.RIGHT else false
+	$Hitboxes.scale.x = input_direction * -1
+	
+	
 func push_bubbles():
 	for i in get_slide_collision_count():
 		var collider = get_slide_collision(i).get_collider()
@@ -51,8 +59,7 @@ func blow_bubble():
 
 
 func jump():
-	if is_on_floor():
-		velocity.y = -JUMP_SPEED
+	velocity.y = -JUMP_SPEED
 
 
 func update_animation_parameters() -> void:
@@ -70,6 +77,8 @@ func update_animation_parameters() -> void:
 	
 	animation_tree.set("parameters/conditions/is_jumping",
 		Input.is_action_just_pressed("jump"))
+	
+	print(animation_tree.get("parameters/conditions/is_jumping"))
 	
 	animation_tree.set("parameters/in air/blend_position",
 		abs(velocity.y))

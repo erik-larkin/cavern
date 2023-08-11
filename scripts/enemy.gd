@@ -41,8 +41,8 @@ func change_direction():
 
 
 func jump() -> void:
+	animation_tree.set("parameters/conditions/is_jumping", false)
 	if is_on_floor():
-		animation_tree.set("parameters/conditions/is_jumping", false)
 		velocity.y = -JUMP_VELOCITY
 
 
