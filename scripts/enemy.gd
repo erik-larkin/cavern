@@ -6,8 +6,7 @@ const JUMP_VELOCITY = 500.0
 
 var _gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var _direction_facing = Vector2.LEFT
-@onready var animation_tree : AnimationTree = $AnimationTree
-@onready var sprite : Sprite2D = $Sprite2D
+@onready var animation_tree = $AnimationTree
 
 
 func _ready():
@@ -38,7 +37,7 @@ func ready_jump() -> void:
 
 func change_direction():
 	_direction_facing *= -1
-	sprite.flip_h = not sprite.flip_h
+	$Sprite2D.flip_h = not $Sprite2D.flip_h
 
 
 func jump() -> void:
