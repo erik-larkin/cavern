@@ -12,7 +12,7 @@ signal bubble_popped(bubble)
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var direction_facing = Vector2.LEFT
-var blowing_bubble = false
+var can_blow_bubble = true
 
 
 
@@ -22,7 +22,7 @@ func _ready():
 
 
 func _process(_delta):
-	if Input.is_action_just_pressed("blow") and not blowing_bubble:
+	if Input.is_action_just_pressed("blow") and can_blow_bubble:
 		blow_bubble()
 
 
@@ -60,11 +60,9 @@ func push_bubbles():
 
 func blow_bubble():
 	$SFX/Blow.play()
-	blowing_bubble = true
+	$BubbleBlowCooldownTimer.start(BUBBLE_BLOW_COOLDOWN)
+	can_blow_bubble = false
 	bubble_blown.emit(position, direction_facing)
-	get_tree().create_timer(BUBBLE_BLOW_COOLDOWN).timeout.connect(
-		func(): blowing_bubble = false
-	)
 
 
 func can_jump() -> bool:
@@ -74,10 +72,6 @@ func can_jump() -> bool:
 func jump():
 	$SFX/Jump.play()
 	velocity.y = -JUMP_SPEED
-
-
-func is_idle() -> bool:
-	return is_on_floor() and velocity.x == 0
 
 
 func _on_bubble_pop_hitbox_body_entered(body):
@@ -90,3 +84,6 @@ func _on_bubble_bounce_hitbox_body_entered(body):
 	else:
 		bubble_popped.emit(body)
 
+
+func _on_bubble_blow_cooldown_timer_timeout():
+	can_blow_bubble = true
