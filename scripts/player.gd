@@ -3,30 +3,34 @@ extends CharacterBody2D
 signal bubble_blown(spawn_position, direction)
 signal bubble_popped(bubble)
 
-@export var WALK_SPEED = 300.0
-@export var JUMP_SPEED = 500.0
-@export var PUSH_FORCE = 300.0
-
-# Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-var direction_facing = Vector2.LEFT
+@export var WALK_SPEED : float
+@export var JUMP_SPEED : float
+@export var BUBBLE_PUSH_FORCE : float
+@export var BUBBLE_BLOW_COOLDOWN : float
 
 @onready var animation_tree = $AnimationPlayer/AnimationTree
 
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var direction_facing = Vector2.LEFT
+var blowing_bubble = false
+
+
+
+func _ready():
+	animation_tree.active = true
+	$AnimationPlayer.get_animation("blow").length = BUBBLE_BLOW_COOLDOWN
 
 
 func _process(_delta):
-	if Input.is_action_just_pressed("blow"):
+	if Input.is_action_just_pressed("blow") and not blowing_bubble:
 		blow_bubble()
-	
-	update_animation_parameters()
 
 
 func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and can_jump():
 		jump()
 	
 	var input_direction = Input.get_axis("move_left", "move_right")
@@ -43,7 +47,7 @@ func _physics_process(delta):
 
 func set_direction(input_direction : int) -> void:
 	direction_facing = Vector2(input_direction, 0)
-	$Sprite.flip_h = true if direction_facing == Vector2.RIGHT else false
+	$Sprite.flip_h = direction_facing == Vector2.RIGHT
 	$Hitboxes.scale.x = input_direction * -1
 	
 	
@@ -51,37 +55,29 @@ func push_bubbles():
 	for i in get_slide_collision_count():
 		var collider = get_slide_collision(i).get_collider()
 		if collider is RigidBody2D:
-			collider.apply_force(direction_facing * PUSH_FORCE)
+			collider.apply_force(direction_facing * BUBBLE_PUSH_FORCE)
 
 
 func blow_bubble():
+	$SFX/Blow.play()
+	blowing_bubble = true
 	bubble_blown.emit(position, direction_facing)
+	get_tree().create_timer(BUBBLE_BLOW_COOLDOWN).timeout.connect(
+		func(): blowing_bubble = false
+	)
+
+
+func can_jump() -> bool:
+	return is_on_floor()
 
 
 func jump():
+	$SFX/Jump.play()
 	velocity.y = -JUMP_SPEED
 
 
-func update_animation_parameters() -> void:
-	animation_tree.set("parameters/conditions/is_idle", 
-		is_on_floor() and velocity == Vector2.ZERO)
-	
-	animation_tree.set("parameters/conditions/is_in_air",
-		not is_on_floor())
-	
-	animation_tree.set("parameters/conditions/is_running",
-		is_on_floor() and velocity.x != 0)
-	
-	animation_tree.set("parameters/conditions/is_blowing", 
-		Input.is_action_just_pressed("blow"))
-	
-	animation_tree.set("parameters/conditions/is_jumping",
-		Input.is_action_just_pressed("jump"))
-	
-	print(animation_tree.get("parameters/conditions/is_jumping"))
-	
-	animation_tree.set("parameters/in air/blend_position",
-		abs(velocity.y))
+func is_idle() -> bool:
+	return is_on_floor() and velocity.x == 0
 
 
 func _on_bubble_pop_hitbox_body_entered(body):

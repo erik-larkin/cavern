@@ -215,6 +215,7 @@ metadata/_edit_group_ = true
 position = Vector2(0, 1)
 scale = Vector2(0.8, 0.8)
 sprite_frames = SubResource("SpriteFrames_bsy8x")
+animation = &"angry_enemy_capture"
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_m8g2f")
