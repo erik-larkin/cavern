@@ -373,6 +373,7 @@ debug_color = Color(0.337255, 0.588235, 0, 0.419608)
 [node name="Footsteps" type="AudioStreamPlayer2D" parent="SFX"]
 position = Vector2(-516, -300)
 stream = SubResource("AudioStreamRandomizer_ljxxv")
+volume_db = 5.0
 bus = &"SFX"
 
 [node name="Jump" type="AudioStreamPlayer2D" parent="SFX"]

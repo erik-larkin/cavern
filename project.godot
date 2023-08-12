@@ -24,6 +24,10 @@ window/size/viewport_width=1040
 window/size/viewport_height=624
 window/stretch/mode="canvas_items"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/AS2P/plugin.cfg")
+
 [input]
 
 jump={
