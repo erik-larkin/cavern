@@ -5,11 +5,9 @@ enum Layers { OUTER_WALLS = 1, BUBBLES = 5 }
 @export var _SPAWN_SPEED = 700.0
 @export var _CAPTURE_TIME = 0.4
 @export var _POP_TIME = 8.0
+@export var _animation_tree_path : NodePath
 
-@onready var _animation_tree = $AnimationPlayer/AnimationTree
-
-var _is_floating = false
-var _is_popping = false
+@onready var _animation_tree = get_node(_animation_tree_path)
 
 
 func init(start_position : Vector2, move_direction : Vector2):
@@ -27,24 +25,29 @@ func _ready():
 
 
 func _process(_delta):
-	if _is_floating:
+	if _animation_tree.get("parameters/conditions/is_floating"):
 		var time_scale = _POP_TIME / $PopTimer.time_left
 		_animation_tree.set("parameters/float/TimeScale/scale", time_scale)
 
 
 func start_floating():
-	if not _is_floating:
-		_is_floating = true
-		linear_velocity = Vector2.ZERO
-		set_collision_layer_value(Layers.BUBBLES, true)
-		set_collision_mask_value(Layers.BUBBLES, true)
+	_animation_tree.set("parameters/conditions/is_floating", true)
+	linear_velocity = Vector2.ZERO
+	set_collision_layer_value(Layers.BUBBLES, true)
+	set_collision_mask_value(Layers.BUBBLES, true)
 
 
 func pop():
-	if _is_floating and not _is_popping:
-		_is_popping = true
-		set_collision_layer_value(Layers.BUBBLES, false)
-		linear_velocity = Vector2.ZERO
+	_animation_tree.set("parameters/conditions/is_popping", true)
+	set_collision_layer_value(Layers.BUBBLES, false)
+	linear_velocity = Vector2.ZERO
+	
+	var pop_animation : Animation = $AnimationPlayer.get_animation("pop")
+	if pop_animation:
+		get_tree().create_timer(pop_animation.length).timeout.connect(
+			queue_free)
+	else:
+		queue_free()
 
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
@@ -58,8 +61,3 @@ func _on_pop_timer_timeout():
 func _on_body_entered(body):
 	if body.collision_layer == Layers.OUTER_WALLS:
 		start_floating()
-
-
-func _on_animation_tree_animation_finished(anim_name):
-	if anim_name == "pop":
-		queue_free()

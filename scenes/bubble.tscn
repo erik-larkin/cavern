@@ -252,12 +252,13 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6yjtc"]
 advance_mode = 2
-advance_expression = "_is_floating
+advance_condition = &"is_floating"
+advance_expression = "
 "
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_j18cj"]
 advance_mode = 2
-advance_expression = "_is_popping"
+advance_condition = &"is_popping"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_2ncmn"]
 states/End/position = Vector2(837, 180)
@@ -281,6 +282,7 @@ lock_rotation = true
 linear_damp_mode = 1
 linear_damp = 2.0
 script = ExtResource("1_prs2h")
+_animation_tree_path = NodePath("AnimationPlayer/AnimationTree")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
@@ -311,6 +313,8 @@ libraries = {
 tree_root = SubResource("AnimationNodeStateMachine_2ncmn")
 anim_player = NodePath("..")
 advance_expression_base_node = NodePath("../..")
+parameters/conditions/is_floating = false
+parameters/conditions/is_popping = false
 parameters/float/TimeScale/scale = 1.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

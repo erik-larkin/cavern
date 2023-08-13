@@ -1,12 +1,7 @@
-[gd_scene load_steps=37 format=3 uid="uid://cnxiixbxevigx"]
+[gd_scene load_steps=31 format=3 uid="uid://cnxiixbxevigx"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_mao2j"]
 [ext_resource type="Texture2D" uid="uid://0a6gof8wnov4" path="res://assets/images/robot-sheet.png" id="2_a5c4v"]
-[ext_resource type="AudioStream" uid="uid://bie2naxdc1qav" path="res://assets/sounds/jump0.ogg" id="3_mx4bf"]
-[ext_resource type="AudioStream" uid="uid://chch4hgogh3v8" path="res://assets/sounds/land0.ogg" id="4_ef0oo"]
-[ext_resource type="AudioStream" uid="uid://5ewqb2v63mbn" path="res://assets/sounds/land1.ogg" id="5_g2bfp"]
-[ext_resource type="AudioStream" uid="uid://dxt8r2dg8f5p5" path="res://assets/sounds/land2.ogg" id="6_hlwmc"]
-[ext_resource type="AudioStream" uid="uid://c5qod34t12piu" path="res://assets/sounds/land3.ogg" id="7_br66c"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_osn7f"]
 radius = 20.0
@@ -17,7 +12,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -33,7 +28,7 @@ length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -45,7 +40,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/path = NodePath("Sprite:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -61,7 +56,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -77,7 +72,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -89,7 +84,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/path = NodePath("Sprite:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -105,7 +100,7 @@ length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -114,46 +109,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [4, 1]
 }
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.2),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"jump"
-}]
-}
-tracks/2/type = "audio"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("SFX")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"clips": [{
-"end_offset": 0.0,
-"start_offset": 0.0,
-"stream": ExtResource("3_mx4bf")
-}],
-"times": PackedFloat32Array(0.2)
-}
-tracks/2/use_blend = false
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_o2yym"]
-streams_count = 4
-stream_0/stream = ExtResource("4_ef0oo")
-stream_0/weight = 1.0
-stream_1/stream = ExtResource("5_g2bfp")
-stream_1/weight = 1.0
-stream_2/stream = ExtResource("6_hlwmc")
-stream_2/weight = 1.0
-stream_3/stream = ExtResource("7_br66c")
-stream_3/weight = 1.0
 
 [sub_resource type="Animation" id="Animation_lqgie"]
 resource_name = "land"
@@ -161,7 +116,7 @@ length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -173,7 +128,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/path = NodePath("Sprite:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -182,21 +137,6 @@ tracks/1/keys = {
 "update": 1,
 "values": [Vector2(0, 0)]
 }
-tracks/2/type = "audio"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("SFX")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"clips": [{
-"end_offset": 0.0,
-"start_offset": 0.0,
-"stream": SubResource("AudioStreamRandomizer_o2yym")
-}],
-"times": PackedFloat32Array(0)
-}
-tracks/2/use_blend = true
 
 [sub_resource type="Animation" id="Animation_nk6dp"]
 resource_name = "move"
@@ -205,7 +145,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -221,7 +161,7 @@ length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -276,7 +216,7 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ciwce"]
 advance_mode = 2
-advance_condition = &"is_moving"
+advance_expression = "get_real_velocity().x != 0 and is_on_floor()"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jyu5m"]
 advance_mode = 2
@@ -284,7 +224,7 @@ advance_condition = &"is_jumping"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7f83o"]
 advance_mode = 2
-advance_condition = &"is_idle"
+advance_expression = "get_real_velocity().x == 0 and is_on_floor()"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wwnqu"]
 advance_mode = 2
@@ -292,50 +232,49 @@ advance_condition = &"is_jumping"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s8bly"]
 advance_mode = 2
-advance_condition = &"is_in_air"
+advance_expression = "not is_on_floor()"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_v7psu"]
 switch_mode = 2
 advance_mode = 2
-advance_condition = &"is_idle"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kcy2l"]
-switch_mode = 2
-advance_mode = 2
-advance_condition = &"is_moving"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3bskf"]
 advance_mode = 2
-advance_condition = &"is_landing"
+advance_expression = "is_on_floor()"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wgr1d"]
 advance_mode = 2
-advance_condition = &"is_in_air"
+advance_expression = "not is_on_floor()"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pyg7j"]
+advance_mode = 2
+advance_expression = "not is_on_floor()"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7lyi3"]
 states/End/position = Vector2(944, 282.949)
 "states/In Air/node" = SubResource("AnimationNodeBlendSpace1D_0elgn")
-"states/In Air/position" = Vector2(639, 421.949)
+"states/In Air/position" = Vector2(662, 462.949)
 states/Start/position = Vector2(67, 287.949)
 states/idle/node = SubResource("AnimationNodeAnimation_0l3n3")
 states/idle/position = Vector2(224, 287.949)
 states/jump/node = SubResource("AnimationNodeAnimation_irpck")
-states/jump/position = Vector2(391, 421.949)
+states/jump/position = Vector2(370, 492.949)
 states/land/node = SubResource("AnimationNodeAnimation_2b8wx")
 states/land/position = Vector2(732, 253.949)
 states/move/node = SubResource("AnimationNodeAnimation_7v7x4")
 states/move/position = Vector2(431, 150.949)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_lrc0t"), "idle", "move", SubResource("AnimationNodeStateMachineTransition_ciwce"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_jyu5m"), "move", "idle", SubResource("AnimationNodeStateMachineTransition_7f83o"), "move", "jump", SubResource("AnimationNodeStateMachineTransition_wwnqu"), "jump", "In Air", SubResource("AnimationNodeStateMachineTransition_s8bly"), "land", "idle", SubResource("AnimationNodeStateMachineTransition_v7psu"), "land", "move", SubResource("AnimationNodeStateMachineTransition_kcy2l"), "In Air", "land", SubResource("AnimationNodeStateMachineTransition_3bskf"), "move", "In Air", SubResource("AnimationNodeStateMachineTransition_wgr1d")]
-graph_offset = Vector2(0, 82.7505)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_lrc0t"), "idle", "move", SubResource("AnimationNodeStateMachineTransition_ciwce"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_jyu5m"), "move", "idle", SubResource("AnimationNodeStateMachineTransition_7f83o"), "move", "jump", SubResource("AnimationNodeStateMachineTransition_wwnqu"), "jump", "In Air", SubResource("AnimationNodeStateMachineTransition_s8bly"), "land", "idle", SubResource("AnimationNodeStateMachineTransition_v7psu"), "In Air", "land", SubResource("AnimationNodeStateMachineTransition_3bskf"), "move", "In Air", SubResource("AnimationNodeStateMachineTransition_wgr1d"), "idle", "In Air", SubResource("AnimationNodeStateMachineTransition_pyg7j")]
+graph_offset = Vector2(0, 100.52)
 
 [node name="Enemy" type="CharacterBody2D"]
 position = Vector2(0, -7)
 collision_layer = 4
 collision_mask = 33
 script = ExtResource("1_mao2j")
+_animation_tree_path = NodePath("AnimationPlayer/AnimationTree")
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("2_a5c4v")
 hframes = 4
 vframes = 2
@@ -351,15 +290,9 @@ libraries = {
 "": SubResource("AnimationLibrary_brqfy")
 }
 
-[node name="AnimationTree" type="AnimationTree" parent="."]
+[node name="AnimationTree" type="AnimationTree" parent="AnimationPlayer"]
 tree_root = SubResource("AnimationNodeStateMachine_7lyi3")
-anim_player = NodePath("../AnimationPlayer")
-active = true
-parameters/conditions/is_idle = false
-parameters/conditions/is_in_air = false
+anim_player = NodePath("..")
+advance_expression_base_node = NodePath("../..")
 parameters/conditions/is_jumping = false
-parameters/conditions/is_landing = false
-parameters/conditions/is_moving = false
 "parameters/In Air/blend_position" = -0.00192308
-
-[node name="SFX" type="AudioStreamPlayer2D" parent="."]

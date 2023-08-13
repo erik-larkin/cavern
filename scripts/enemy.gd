@@ -1,20 +1,23 @@
 extends CharacterBody2D
 
 
-const SPEED = 150.0
-const JUMP_VELOCITY = 500.0
+@export var _SPEED = 150.0
+@export var _JUMP_VELOCITY = 500.0
+@export var _animation_tree_path : NodePath
+
+@onready var _animation_tree : AnimationTree = get_node(_animation_tree_path)
 
 var _gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var _direction_facing = Vector2.LEFT
-@onready var animation_tree = $AnimationTree
 
 
 func _ready():
-	pass
+	_animation_tree.active = true
 
 
 func _process(delta):
-	update_animation_parameters()
+	_animation_tree.set("parameters/In Air/blend_position", abs(velocity.y))
+	
 	if randi_range(1, 100) == 1:
 		ready_jump()
 
@@ -23,7 +26,7 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += _gravity * delta
 
-	velocity.x = _direction_facing.x * SPEED
+	velocity.x = _direction_facing.x * _SPEED
 
 	if move_and_slide():
 		var collider = get_last_slide_collision().get_collider()
@@ -32,34 +35,21 @@ func _physics_process(delta):
 
 
 func ready_jump() -> void:
-	animation_tree.set("parameters/conditions/is_jumping", true)
+	_animation_tree.set("parameters/conditions/is_jumping", true)
+	
+	var jump_animation : Animation = $AnimationPlayer.get_animation("jump")
+	if jump_animation:
+		get_tree().create_timer(jump_animation.length).timeout.connect(jump)
+	else:
+		jump()
 
 
-func change_direction():
+func change_direction() -> void:
 	_direction_facing *= -1
-	$Sprite2D.flip_h = not $Sprite2D.flip_h
+	$Sprite.flip_h = not $Sprite.flip_h
 
 
 func jump() -> void:
-	animation_tree.set("parameters/conditions/is_jumping", false)
+	_animation_tree.set("parameters/conditions/is_jumping", false)
 	if is_on_floor():
-		velocity.y = -JUMP_VELOCITY
-
-
-func update_animation_parameters() -> void:
-	animation_tree.set("parameters/conditions/is_idle", 
-		is_on_floor() and velocity == Vector2.ZERO)
-	
-	animation_tree.set("parameters/conditions/is_in_air",
-		not is_on_floor())
-	
-	animation_tree.set("parameters/conditions/is_landing",
-		is_on_floor_only())
-	
-	animation_tree.set("parameters/conditions/is_moving",
-		velocity.x != 0)
-	
-	animation_tree.set("parameters/In Air/blend_position",
-		abs(velocity.y))
-
-
+		velocity.y = -_JUMP_VELOCITY
