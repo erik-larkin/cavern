@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
 
-@export var _SPEED = 150.0
-@export var _JUMP_VELOCITY = 500.0
+@export var _SPEED : float
+@export var _JUMP_VELOCITY : float
 @export var _animation_tree_path : NodePath
 
 @onready var _animation_tree : AnimationTree = get_node(_animation_tree_path)
@@ -17,8 +17,8 @@ func _ready():
 
 func _process(delta):
 	_animation_tree.set("parameters/In Air/blend_position", abs(velocity.y))
-	
-	if randi_range(1, 100) == 1:
+
+	if randi_range(1, 100) == 1 and is_on_floor():
 		ready_jump()
 
 
@@ -52,4 +52,5 @@ func change_direction() -> void:
 func jump() -> void:
 	_animation_tree.set("parameters/conditions/is_jumping", false)
 	if is_on_floor():
+		$SFX/Jump.play()
 		velocity.y = -_JUMP_VELOCITY

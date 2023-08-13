@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://cyisntcycreks"]
+[gd_scene load_steps=34 format=3 uid="uid://cyisntcycreks"]
 
 [ext_resource type="Script" path="res://scripts/bubble.gd" id="1_prs2h"]
 [ext_resource type="Texture2D" uid="uid://dgvcbqkntp31y" path="res://assets/images/bubble-sheet.png" id="2_pf51f"]
@@ -176,7 +176,6 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id="Animation_r31cw"]
 resource_name = "spawn"
-length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -208,10 +207,10 @@ tracks/2/path = NodePath("AnimatedSprite:scale")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.4),
-"transitions": PackedFloat32Array(2.07053, 2.07053),
+"times": PackedFloat32Array(0, 0.1, 1),
+"transitions": PackedFloat32Array(3.86374, 2.63902, 3.86374),
 "update": 0,
-"values": [Vector2(0.2, 0.2), Vector2(0.8, 0.8)]
+"values": [Vector2(0, 0), Vector2(0.3, 0.3), Vector2(0.8, 0.8)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bdffr"]
@@ -239,37 +238,45 @@ node_connections = [&"output", 0, &"TimeScale", &"TimeScale", 0, &"float"]
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nri67"]
 animation = &"pop"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_t8m24"]
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_dq1mo"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_h7edb"]
 animation = &"spawn"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_avd06"]
-reset = false
-advance_mode = 2
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_s3uqg"]
+graph_offset = Vector2(-88.5204, -26.8875)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_dq1mo")
+nodes/TimeScale/position = Vector2(260, 80)
+nodes/output/position = Vector2(440, 100)
+nodes/spawn/node = SubResource("AnimationNodeAnimation_h7edb")
+nodes/spawn/position = Vector2(80, 60)
+node_connections = [&"output", 0, &"TimeScale", &"TimeScale", 0, &"spawn"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m6u8w"]
 switch_mode = 2
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6yjtc"]
-advance_mode = 2
-advance_condition = &"is_floating"
-advance_expression = "
-"
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_j18cj"]
 advance_mode = 2
 advance_condition = &"is_popping"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_iyktn"]
+advance_mode = 2
+advance_condition = &"is_floating"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hm48i"]
+advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_2ncmn"]
 states/End/position = Vector2(837, 180)
 states/Start/position = Vector2(119, 180)
 states/float/node = SubResource("AnimationNodeBlendTree_0oow6")
-states/float/position = Vector2(468, 180)
+states/float/position = Vector2(467, 180)
 states/pop/node = SubResource("AnimationNodeAnimation_nri67")
 states/pop/position = Vector2(673, 180)
-states/spawn/node = SubResource("AnimationNodeAnimation_t8m24")
-states/spawn/position = Vector2(286, 180)
-transitions = ["Start", "spawn", SubResource("AnimationNodeStateMachineTransition_avd06"), "pop", "End", SubResource("AnimationNodeStateMachineTransition_m6u8w"), "spawn", "float", SubResource("AnimationNodeStateMachineTransition_6yjtc"), "float", "pop", SubResource("AnimationNodeStateMachineTransition_j18cj")]
+states/spawn/node = SubResource("AnimationNodeBlendTree_s3uqg")
+states/spawn/position = Vector2(287, 180)
+transitions = ["pop", "End", SubResource("AnimationNodeStateMachineTransition_m6u8w"), "float", "pop", SubResource("AnimationNodeStateMachineTransition_j18cj"), "spawn", "float", SubResource("AnimationNodeStateMachineTransition_iyktn"), "Start", "spawn", SubResource("AnimationNodeStateMachineTransition_hm48i")]
 graph_offset = Vector2(0, 101.076)
 
 [node name="Bubble" type="RigidBody2D"]
@@ -282,12 +289,15 @@ lock_rotation = true
 linear_damp_mode = 1
 linear_damp = 2.0
 script = ExtResource("1_prs2h")
+_SPAWN_SPEED = 1000.0
+_CAPTURE_TIME = 0.4
+_POP_TIME = 8.0
 _animation_tree_path = NodePath("AnimationPlayer/AnimationTree")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 1)
-scale = Vector2(0.834518, 0.865482)
+scale = Vector2(0.8, 0.8)
 sprite_frames = SubResource("SpriteFrames_bsy8x")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
@@ -296,15 +306,14 @@ shape = SubResource("CircleShape2D_m8g2f")
 [node name="VisibleOnScreenNotifier" type="VisibleOnScreenNotifier2D" parent="."]
 
 [node name="PopTimer" type="Timer" parent="."]
-wait_time = 8.0
 one_shot = true
-autostart = true
 
 [node name="PopSound" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource("AudioStreamRandomizer_dxou2")
 volume_db = -10.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "spawn"
 libraries = {
 "": SubResource("AnimationLibrary_bdffr")
 }
@@ -316,10 +325,8 @@ advance_expression_base_node = NodePath("../..")
 parameters/conditions/is_floating = false
 parameters/conditions/is_popping = false
 parameters/float/TimeScale/scale = 1.0
+parameters/spawn/TimeScale/scale = 1.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
 [connection signal="timeout" from="PopTimer" to="." method="_on_pop_timer_timeout"]
-[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
-[connection signal="animation_finished" from="AnimationPlayer/AnimationTree" to="." method="_on_animation_tree_animation_finished"]
