@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://vx56msnqsma2"]
+[gd_scene load_steps=58 format=3 uid="uid://vx56msnqsma2"]
 
 [ext_resource type="Texture2D" uid="uid://dwfgu8421xm0c" path="res://assets/images/player-sheet.png" id="1_fnmax"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_hn182"]
@@ -22,6 +22,9 @@ size = Vector2(34, 64.3175)
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_od5k3"]
 a = Vector2(-8, 0)
 b = Vector2(8, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1lb2k"]
+size = Vector2(44, 58)
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ljxxv"]
 streams_count = 4
@@ -81,20 +84,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [1]
 }
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.1),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"_stop_bubble_blow_animation"
-}]
-}
 
 [sub_resource type="Animation" id="Animation_5r06x"]
 resource_name = "die"
@@ -114,7 +103,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_ma61t"]
 resource_name = "hurt"
-length = 0.001
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -324,6 +313,26 @@ switch_mode = 2
 advance_mode = 2
 advance_expression = "not is_on_floor()"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e47pa"]
+advance_mode = 2
+advance_condition = &"is_hurt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s02ra"]
+advance_mode = 2
+advance_condition = &"is_hurt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u4s5h"]
+advance_mode = 2
+advance_condition = &"is_hurt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qsbyd"]
+advance_mode = 2
+advance_condition = &"is_hurt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_aimkv"]
+switch_mode = 2
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7hu2f"]
 states/End/position = Vector2(1162, 29)
 states/Start/position = Vector2(76, 163)
@@ -341,8 +350,8 @@ states/jump/node = SubResource("AnimationNodeAnimation_1vbnk")
 states/jump/position = Vector2(213, 422)
 states/run/node = SubResource("AnimationNodeAnimation_mqv4g")
 states/run/position = Vector2(459, 163)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_6558j"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_8b5ii"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_s0bmh"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_fdglj"), "run", "jump", SubResource("AnimationNodeStateMachineTransition_loquj"), "run", "blow", SubResource("AnimationNodeStateMachineTransition_goysa"), "blow", "idle", SubResource("AnimationNodeStateMachineTransition_tyq2t"), "idle", "blow", SubResource("AnimationNodeStateMachineTransition_siue1"), "jump", "in air", SubResource("AnimationNodeStateMachineTransition_hf7u8"), "in air", "idle", SubResource("AnimationNodeStateMachineTransition_7a1f0"), "in air", "blow", SubResource("AnimationNodeStateMachineTransition_y73ne"), "run", "in air", SubResource("AnimationNodeStateMachineTransition_fe087"), "idle", "in air", SubResource("AnimationNodeStateMachineTransition_idywq"), "hurt", "die", SubResource("AnimationNodeStateMachineTransition_mirp8"), "die", "End", SubResource("AnimationNodeStateMachineTransition_w68jn"), "blow", "in air", SubResource("AnimationNodeStateMachineTransition_m0j20")]
-graph_offset = Vector2(86.5253, -149.258)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_6558j"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_8b5ii"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_s0bmh"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_fdglj"), "run", "jump", SubResource("AnimationNodeStateMachineTransition_loquj"), "run", "blow", SubResource("AnimationNodeStateMachineTransition_goysa"), "blow", "idle", SubResource("AnimationNodeStateMachineTransition_tyq2t"), "idle", "blow", SubResource("AnimationNodeStateMachineTransition_siue1"), "jump", "in air", SubResource("AnimationNodeStateMachineTransition_hf7u8"), "in air", "idle", SubResource("AnimationNodeStateMachineTransition_7a1f0"), "in air", "blow", SubResource("AnimationNodeStateMachineTransition_y73ne"), "run", "in air", SubResource("AnimationNodeStateMachineTransition_fe087"), "idle", "in air", SubResource("AnimationNodeStateMachineTransition_idywq"), "hurt", "die", SubResource("AnimationNodeStateMachineTransition_mirp8"), "die", "End", SubResource("AnimationNodeStateMachineTransition_w68jn"), "blow", "in air", SubResource("AnimationNodeStateMachineTransition_m0j20"), "blow", "hurt", SubResource("AnimationNodeStateMachineTransition_e47pa"), "run", "hurt", SubResource("AnimationNodeStateMachineTransition_s02ra"), "idle", "hurt", SubResource("AnimationNodeStateMachineTransition_u4s5h"), "in air", "hurt", SubResource("AnimationNodeStateMachineTransition_qsbyd"), "hurt", "idle", SubResource("AnimationNodeStateMachineTransition_aimkv")]
+graph_offset = Vector2(86.5253, -208.444)
 
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(516, 300)
@@ -351,9 +360,12 @@ collision_mask = 57
 platform_on_leave = 2
 script = ExtResource("1_hn182")
 _WALK_SPEED = 300.0
+_ground_deceleration = 50.0
+_air_deceleration = 10.0
 _JUMP_SPEED = 500.0
 _BUBBLE_PUSH_FORCE = 300.0
 _BUBBLE_BLOW_COOLDOWN = 0.3
+_hitstun_time = 0.3
 _animation_tree_path = NodePath("AnimationTree")
 metadata/_edit_group_ = true
 
@@ -390,6 +402,15 @@ position = Vector2(0, 35)
 shape = SubResource("SegmentShape2D_od5k3")
 debug_color = Color(0.337255, 0.588235, 0, 0.419608)
 
+[node name="Hurtbox" type="Area2D" parent="Hitboxes"]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Hitboxes/Hurtbox"]
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_1lb2k")
+debug_color = Color(0.784314, 0.435294, 0, 0.419608)
+
 [node name="SFX" type="Node2D" parent="."]
 
 [node name="Footsteps" type="AudioStreamPlayer2D" parent="SFX"]
@@ -418,6 +439,7 @@ tree_root = SubResource("AnimationNodeStateMachine_7hu2f")
 anim_player = NodePath("../AnimationPlayer")
 advance_expression_base_node = NodePath("..")
 parameters/conditions/blowing_bubble = false
+parameters/conditions/is_hurt = false
 "parameters/in air/blend_position" = -0.00316793
 
 [node name="BubbleBlowCooldownTimer" type="Timer" parent="."]
@@ -425,4 +447,6 @@ one_shot = true
 
 [connection signal="area_entered" from="Hitboxes/BubblePopHitbox" to="." method="_on_bubble_pop_hitbox_area_entered"]
 [connection signal="area_entered" from="Hitboxes/BubbleBounceHitbox" to="." method="_on_bubble_bounce_hitbox_area_entered"]
+[connection signal="body_entered" from="Hitboxes/Hurtbox" to="." method="_on_hurtbox_body_entered"]
+[connection signal="animation_finished" from="AnimationTree" to="." method="_on_animation_tree_animation_finished"]
 [connection signal="timeout" from="BubbleBlowCooldownTimer" to="." method="_on_bubble_blow_cooldown_timer_timeout"]
