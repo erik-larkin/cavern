@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://cyisntcycreks"]
+[gd_scene load_steps=36 format=3 uid="uid://cyisntcycreks"]
 
 [ext_resource type="Script" path="res://scripts/bubble.gd" id="1_prs2h"]
 [ext_resource type="Texture2D" uid="uid://dgvcbqkntp31y" path="res://assets/images/bubble-sheet.png" id="2_pf51f"]
@@ -63,8 +63,13 @@ animations = [{
 "speed": 30.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_xh1v5"]
+radius = 27.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wpgq8"]
+radius = 19.0
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_m8g2f"]
-radius = 19.0263
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_dxou2"]
 streams_count = 4
@@ -207,10 +212,10 @@ tracks/2/path = NodePath("AnimatedSprite:scale")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.1, 1),
-"transitions": PackedFloat32Array(3.86374, 2.63902, 3.86374),
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(3.86374, 3.86374),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(0.3, 0.3), Vector2(0.8, 0.8)]
+"values": [Vector2(0.3, 0.3), Vector2(0.8, 0.8)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bdffr"]
@@ -296,19 +301,42 @@ _animation_tree_path = NodePath("AnimationPlayer/AnimationTree")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, 1)
 scale = Vector2(0.8, 0.8)
 sprite_frames = SubResource("SpriteFrames_bsy8x")
 
+[node name="Hitboxes" type="Node2D" parent="."]
+position = Vector2(0, -1)
+
+[node name="RecursivePopHitbox" type="Area2D" parent="Hitboxes"]
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Hitboxes/RecursivePopHitbox"]
+shape = SubResource("CircleShape2D_xh1v5")
+debug_color = Color(0.0627451, 0.65098, 0, 0.419608)
+
+[node name="PlayerPopHitbox" type="Area2D" parent="Hitboxes"]
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Hitboxes/PlayerPopHitbox"]
+shape = SubResource("CircleShape2D_wpgq8")
+debug_color = Color(0.803922, 0.419608, 0, 0.419608)
+
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
 shape = SubResource("CircleShape2D_m8g2f")
 
 [node name="VisibleOnScreenNotifier" type="VisibleOnScreenNotifier2D" parent="."]
+visible = false
+position = Vector2(-9.53674e-06, -1)
+scale = Vector2(2.7, 2.7)
 
 [node name="PopTimer" type="Timer" parent="."]
 one_shot = true
 
 [node name="PopSound" type="AudioStreamPlayer2D" parent="."]
+visible = false
 stream = SubResource("AudioStreamRandomizer_dxou2")
 volume_db = -10.0
 
@@ -328,5 +356,6 @@ parameters/float/TimeScale/scale = 1.0
 parameters/spawn/TimeScale/scale = 1.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="area_entered" from="Hitboxes/PlayerPopHitbox" to="." method="_on_pop_hitbox_area_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
 [connection signal="timeout" from="PopTimer" to="." method="_on_pop_timer_timeout"]

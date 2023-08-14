@@ -1,6 +1,11 @@
 extends RigidBody2D
+class_name Bubble
+
+signal popped_by_player (bubble : RigidBody2D)
 
 enum Layers { OUTER_WALLS = 1, BUBBLES = 5 }
+
+const _SPAWN_OFFSET = 20
 
 @export var _SPAWN_SPEED : float
 @export var _CAPTURE_TIME : float
@@ -9,9 +14,11 @@ enum Layers { OUTER_WALLS = 1, BUBBLES = 5 }
 
 @onready var _animation_tree = get_node(_animation_tree_path)
 
+var _is_floating : bool = false
+
 
 func init(start_position : Vector2, move_direction : Vector2):
-	position = start_position
+	position = start_position + (move_direction * _SPAWN_OFFSET)
 	linear_velocity = _SPAWN_SPEED * move_direction.normalized()
 
 
@@ -37,6 +44,7 @@ func set_spawn_animation_length() -> void:
 
 
 func start_floating():
+	_is_floating = true
 	_animation_tree.set("parameters/conditions/is_floating", true)
 	linear_velocity = Vector2.ZERO
 	
@@ -58,6 +66,10 @@ func pop():
 		queue_free()
 
 
+func get_adjacent_bubbles() -> Array[Node2D]:
+	return $Hitboxes/RecursivePopHitbox.get_overlapping_bodies()
+
+
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	queue_free()
 
@@ -67,5 +79,10 @@ func _on_pop_timer_timeout():
 
 
 func _on_body_entered(body):
-	if body.collision_layer == Layers.OUTER_WALLS:
+	if body.collision_layer == Layers.OUTER_WALLS and not _is_floating:
 		start_floating()
+
+
+func _on_pop_hitbox_area_entered(area):
+	if _is_floating:
+		popped_by_player.emit(self)

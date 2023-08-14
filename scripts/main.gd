@@ -16,10 +16,11 @@ func _process(delta):
 func _on_player_bubble_blown(spawn_position : Vector2, direction : Vector2):
 	var bubble_instance = BUBBLE_SCENE.instantiate()
 	bubble_instance.init(spawn_position, direction)
+	bubble_instance.popped_by_player.connect(_on_bubble_popped_by_player)
 	$Bubbles.add_child(bubble_instance)
 
 
-func _on_player_bubble_popped(bubble):
+func _on_bubble_popped_by_player(bubble):
 	var popped : Array[RigidBody2D] = []
 	recursive_bubble_pop(bubble, popped)
 
@@ -29,7 +30,7 @@ func recursive_bubble_pop(bubble : RigidBody2D, popped : Array[RigidBody2D]):
 	if bubble in popped:
 		return
 	
-	var bubbles_to_pop = bubble.get_colliding_bodies()
+	var bubbles_to_pop = bubble.get_adjacent_bubbles()
 	bubble.pop()
 	popped.append(bubble)
 	
@@ -38,4 +39,3 @@ func recursive_bubble_pop(bubble : RigidBody2D, popped : Array[RigidBody2D]):
 			if adjacent_bubble != null and adjacent_bubble.has_method("pop"):
 				recursive_bubble_pop(adjacent_bubble, popped)
 	)
-

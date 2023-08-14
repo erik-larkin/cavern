@@ -44,20 +44,24 @@ func _physics_process(delta):
 		push_bubbles()
 
 
+func take_damage() -> void:
+	pass
+
+
 func set_direction(input_direction : int) -> void:
 	_direction_facing = Vector2(input_direction, 0)
 	$Sprite.flip_h = _direction_facing == Vector2.RIGHT
 	$Hitboxes.scale.x = input_direction * -1
 	
 	
-func push_bubbles():
+func push_bubbles() -> void:
 	for i in get_slide_collision_count():
 		var collider = get_slide_collision(i).get_collider()
 		if collider is RigidBody2D:
 			collider.apply_force(_direction_facing * _BUBBLE_PUSH_FORCE)
 
 
-func blow_bubble():
+func blow_bubble() -> void:
 	$SFX/Blow.play()
 	$BubbleBlowCooldownTimer.start(_BUBBLE_BLOW_COOLDOWN)
 	_animation_tree.set("parameters/conditions/blowing_bubble", true)
@@ -69,25 +73,19 @@ func can_jump() -> bool:
 	return is_on_floor()
 
 
-func jump():
+func jump() -> void:
 	$SFX/Jump.play()
 	velocity.y = -_JUMP_SPEED
 
 
-func _on_bubble_pop_hitbox_body_entered(body):
-	bubble_popped.emit(body)
-
-
-func _on_bubble_bounce_hitbox_body_entered(body):
-	if Input.is_action_pressed("jump") and velocity.y > 0:
-		jump()
-	else:
-		bubble_popped.emit(body)
-
-
-func _on_bubble_blow_cooldown_timer_timeout():
+func _on_bubble_blow_cooldown_timer_timeout() -> void:
 	_can_blow_bubble = true
 
 
 func _stop_bubble_blow_animation() -> void:
 	_animation_tree.set("parameters/conditions/blowing_bubble", false)
+
+
+func _on_bubble_bounce_hitbox_area_entered(area):
+	if Input.is_action_pressed("jump") and velocity.y > 0:
+		jump()
