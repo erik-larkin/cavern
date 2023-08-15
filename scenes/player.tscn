@@ -15,6 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://cmwyrdjcxfu6l" path="res://assets/sounds/ouch1.ogg" id="13_ul0sq"]
 [ext_resource type="AudioStream" uid="uid://cavvpmkhv3eee" path="res://assets/sounds/ouch2.ogg" id="14_cucid"]
 [ext_resource type="AudioStream" uid="uid://drpcwayiknpbs" path="res://assets/sounds/ouch3.ogg" id="15_k0kiq"]
+[ext_resource type="AudioStream" uid="uid://bcisry1ftlcdr" path="res://assets/sounds/die0.ogg" id="16_mwfjd"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r8jkl"]
 radius = 22.0
@@ -71,18 +72,6 @@ stream_3/weight = 1.0
 
 [sub_resource type="Animation" id="Animation_7rseb"]
 length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [5]
-}
 
 [sub_resource type="Animation" id="Animation_i6ax7"]
 resource_name = "blow"
@@ -102,7 +91,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_5r06x"]
 resource_name = "die"
-length = 0.001
+length = 1.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -115,6 +104,21 @@ tracks/0/keys = {
 "update": 1,
 "values": [4]
 }
+tracks/1/type = "audio"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SpriteAnimationPlayer/AnimationTree/SFX")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("16_mwfjd")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/1/use_blend = true
 
 [sub_resource type="Animation" id="Animation_ma61t"]
 resource_name = "hurt"
@@ -254,45 +258,6 @@ _data = {
 "run": SubResource("Animation_hx6tj")
 }
 
-[sub_resource type="Animation" id="Animation_grbwa"]
-resource_name = "invincibility_blink"
-length = 0.2
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("../Sprite:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0.706869), Color(1, 1, 1, 0.243137), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_u1xau"]
-resource_name = "RESET"
-length = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("../Sprite:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.1),
-"transitions": PackedFloat32Array(2.54912),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_wuoer"]
-_data = {
-"RESET": SubResource("Animation_u1xau"),
-"invincibility_blink": SubResource("Animation_grbwa")
-}
-
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_iplox"]
 animation = &"blow"
 
@@ -372,9 +337,7 @@ advance_expression = "velocity.y > 0"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mirp8"]
 advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_w68jn"]
-advance_mode = 2
+advance_expression = "_current_health <= 0"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m0j20"]
 switch_mode = 2
@@ -400,6 +363,7 @@ advance_condition = &"is_hurt"
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_aimkv"]
 switch_mode = 2
 advance_mode = 2
+advance_expression = "_current_health > 0"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7hu2f"]
 states/End/position = Vector2(1162, 29)
@@ -418,21 +382,73 @@ states/jump/node = SubResource("AnimationNodeAnimation_1vbnk")
 states/jump/position = Vector2(213, 422)
 states/run/node = SubResource("AnimationNodeAnimation_mqv4g")
 states/run/position = Vector2(459, 163)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_6558j"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_8b5ii"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_s0bmh"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_fdglj"), "run", "jump", SubResource("AnimationNodeStateMachineTransition_loquj"), "run", "blow", SubResource("AnimationNodeStateMachineTransition_goysa"), "blow", "idle", SubResource("AnimationNodeStateMachineTransition_tyq2t"), "idle", "blow", SubResource("AnimationNodeStateMachineTransition_siue1"), "jump", "in air", SubResource("AnimationNodeStateMachineTransition_hf7u8"), "in air", "idle", SubResource("AnimationNodeStateMachineTransition_7a1f0"), "in air", "blow", SubResource("AnimationNodeStateMachineTransition_y73ne"), "run", "in air", SubResource("AnimationNodeStateMachineTransition_fe087"), "idle", "in air", SubResource("AnimationNodeStateMachineTransition_idywq"), "hurt", "die", SubResource("AnimationNodeStateMachineTransition_mirp8"), "die", "End", SubResource("AnimationNodeStateMachineTransition_w68jn"), "blow", "in air", SubResource("AnimationNodeStateMachineTransition_m0j20"), "blow", "hurt", SubResource("AnimationNodeStateMachineTransition_e47pa"), "run", "hurt", SubResource("AnimationNodeStateMachineTransition_s02ra"), "idle", "hurt", SubResource("AnimationNodeStateMachineTransition_u4s5h"), "in air", "hurt", SubResource("AnimationNodeStateMachineTransition_qsbyd"), "hurt", "idle", SubResource("AnimationNodeStateMachineTransition_aimkv")]
-graph_offset = Vector2(-45.8073, -17.7342)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_6558j"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_8b5ii"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_s0bmh"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_fdglj"), "run", "jump", SubResource("AnimationNodeStateMachineTransition_loquj"), "run", "blow", SubResource("AnimationNodeStateMachineTransition_goysa"), "blow", "idle", SubResource("AnimationNodeStateMachineTransition_tyq2t"), "idle", "blow", SubResource("AnimationNodeStateMachineTransition_siue1"), "jump", "in air", SubResource("AnimationNodeStateMachineTransition_hf7u8"), "in air", "idle", SubResource("AnimationNodeStateMachineTransition_7a1f0"), "in air", "blow", SubResource("AnimationNodeStateMachineTransition_y73ne"), "run", "in air", SubResource("AnimationNodeStateMachineTransition_fe087"), "idle", "in air", SubResource("AnimationNodeStateMachineTransition_idywq"), "hurt", "die", SubResource("AnimationNodeStateMachineTransition_mirp8"), "blow", "in air", SubResource("AnimationNodeStateMachineTransition_m0j20"), "blow", "hurt", SubResource("AnimationNodeStateMachineTransition_e47pa"), "run", "hurt", SubResource("AnimationNodeStateMachineTransition_s02ra"), "idle", "hurt", SubResource("AnimationNodeStateMachineTransition_u4s5h"), "in air", "hurt", SubResource("AnimationNodeStateMachineTransition_qsbyd"), "hurt", "idle", SubResource("AnimationNodeStateMachineTransition_aimkv")]
+graph_offset = Vector2(193.037, -159.122)
+
+[sub_resource type="Animation" id="Animation_grbwa"]
+resource_name = "invincibility_blink"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.706869), Color(1, 1, 1, 0.243137), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../Sprite:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.282353), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_u1xau"]
+resource_name = "RESET"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wuoer"]
+_data = {
+"RESET": SubResource("Animation_u1xau"),
+"invincibility_blink": SubResource("Animation_grbwa")
+}
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 57
 platform_on_leave = 2
 script = ExtResource("1_hn182")
-_animation_tree_path = NodePath("AnimationTree")
+_animation_tree_path = NodePath("SpriteAnimationPlayer/AnimationTree")
+_hitstun_time = 0.5
 metadata/_edit_group_ = true
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_fnmax")
 hframes = 9
-frame = 5
+frame = 4
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)
@@ -493,25 +509,29 @@ stream = SubResource("AudioStreamRandomizer_o232l")
 
 [node name="SpriteAnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"
+playback_process_mode = 0
 libraries = {
 "": SubResource("AnimationLibrary_pssbb")
 }
+next/hurt = &"RESET"
+
+[node name="AnimationTree" type="AnimationTree" parent="SpriteAnimationPlayer"]
+tree_root = SubResource("AnimationNodeStateMachine_7hu2f")
+anim_player = NodePath("..")
+advance_expression_base_node = NodePath("../..")
+active = true
+parameters/conditions/blowing_bubble = false
+parameters/conditions/is_hurt = false
+"parameters/in air/blend_position" = -0.00316793
+
+[node name="SFX" type="AudioStreamPlayer2D" parent="SpriteAnimationPlayer/AnimationTree"]
 
 [node name="EffectsAnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("../AnimationTree")
+root_node = NodePath("../SpriteAnimationPlayer/AnimationTree")
 libraries = {
 "": SubResource("AnimationLibrary_wuoer")
 }
 next/invincibility_blink = &"RESET"
-blend_times = [&"invincibility_blink", &"RESET", 0.1]
-
-[node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource("AnimationNodeStateMachine_7hu2f")
-anim_player = NodePath("../SpriteAnimationPlayer")
-advance_expression_base_node = NodePath("..")
-parameters/conditions/blowing_bubble = false
-parameters/conditions/is_hurt = false
-"parameters/in air/blend_position" = -0.00316793
 
 [node name="BubbleBlowCooldownTimer" type="Timer" parent="."]
 one_shot = true
@@ -519,5 +539,5 @@ one_shot = true
 [connection signal="area_entered" from="Hitboxes/BubblePopHitbox" to="." method="_on_bubble_pop_hitbox_area_entered"]
 [connection signal="area_entered" from="Hitboxes/BubbleBounceHitbox" to="." method="_on_bubble_bounce_hitbox_area_entered"]
 [connection signal="body_entered" from="Hitboxes/Hurtbox" to="." method="_on_hurtbox_body_entered"]
-[connection signal="animation_finished" from="AnimationTree" to="." method="_on_animation_tree_animation_finished"]
+[connection signal="animation_finished" from="SpriteAnimationPlayer/AnimationTree" to="." method="_on_animation_tree_animation_finished"]
 [connection signal="timeout" from="BubbleBlowCooldownTimer" to="." method="_on_bubble_blow_cooldown_timer_timeout"]

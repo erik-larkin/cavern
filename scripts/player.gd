@@ -3,22 +3,28 @@ extends CharacterBody2D
 signal bubble_blown(spawn_position, direction)
 signal bubble_popped(bubble)
 
-@export var _ground_top_speed : float = 300
-@export var _ground_acceleration : float = 100
-@export var _ground_deceleration : float = 50
+@export var _animation_tree_path : NodePath
+@export var _maximum_health : int = 3
 
+@export_group("Ground Properties")
+@export var _ground_top_speed : float = 300
+@export_exp_easing var _ground_acceleration : float = 100
+@export_exp_easing("attenuation") var _ground_deceleration : float = 50
+
+@export_group("Air Properties")
 @export var _air_top_speed : float = 350
-@export var _air_acceleration : float = 30
-@export var _air_deceleration : float = 10
+@export_exp_easing var _air_acceleration : float = 30
+@export_exp_easing("attenuation") var _air_deceleration : float = 10
 @export var _jump_speed : float = 500
 
+@export_group("Bubble Properties")
 @export var _bubble_push_force : float = 300
 @export var _bubble_blow_cooldown : float =  0.5
 
+@export_group("Hitstun Properties")
 @export var _hitstun_time : float = 0.3
 @export var _hit_invincibility_time : float = 1
 
-@export var _animation_tree_path : NodePath
 
 @onready var _animation_tree = get_node(_animation_tree_path)
 
@@ -27,6 +33,7 @@ var _direction_facing = Vector2.LEFT
 var _can_blow_bubble = true
 var _in_hitstun = false
 var _invincible = false
+var _current_health = _maximum_health
 
 
 func _ready():
@@ -35,7 +42,7 @@ func _ready():
 
 
 func _process(_delta):
-	if Input.is_action_just_pressed("blow") and _can_blow_bubble:
+	if Input.is_action_just_pressed("blow") and _can_blow_bubble and not _in_hitstun:
 		blow_bubble()
 
 
@@ -63,17 +70,31 @@ func _physics_process(delta):
 		push_bubbles()
 
 
-func take_damage() -> void:
+func take_damage(amount : int) -> void:
 	if not _invincible:
 		_animation_tree.set("parameters/conditions/is_hurt", true)
-		_in_hitstun = true
-		velocity.x = (_direction_facing * -1 * 500).x
+		_current_health -= amount
 		
-		apply_invincibility_time(_hit_invincibility_time)
-		
-		get_tree().create_timer(_hitstun_time).timeout.connect(
-			func(): _in_hitstun = false
-		)
+		if _current_health <= 0:
+			die()
+		else:
+			apply_hitstun()
+
+
+func die() -> void:
+	set_collision_mask_value(6, false)
+	velocity = Vector2.ZERO
+	jump()
+
+
+func apply_hitstun() -> void:
+	_in_hitstun = true
+	velocity.x = (_direction_facing * -1 * 500).x
+	apply_invincibility_time(_hit_invincibility_time)
+
+	get_tree().create_timer(_hitstun_time).timeout.connect(
+		func(): _in_hitstun = false
+	)
 
 
 func apply_invincibility_time(seconds : float):
@@ -108,7 +129,7 @@ func blow_bubble() -> void:
 
 
 func can_jump() -> bool:
-	return is_on_floor()
+	return is_on_floor() and not _in_hitstun
 
 
 func jump() -> void:
@@ -137,4 +158,4 @@ func _on_animation_tree_animation_finished(anim_name) -> void:
 
 
 func _on_hurtbox_body_entered(body):
-	take_damage()
+	take_damage(1)
