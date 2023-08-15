@@ -3,13 +3,20 @@ extends CharacterBody2D
 signal bubble_blown(spawn_position, direction)
 signal bubble_popped(bubble)
 
-@export var _WALK_SPEED : float
-@export var _ground_deceleration : float
-@export var _air_deceleration : float
-@export var _JUMP_SPEED : float
-@export var _BUBBLE_PUSH_FORCE : float
-@export var _BUBBLE_BLOW_COOLDOWN : float
+@export var _ground_top_speed : float = 300
+@export var _ground_acceleration : float = 50
+@export var _ground_deceleration : float = 50
+
+@export var _air_top_speed : float = 400
+@export var _air_acceleration : float = 10
+@export var _air_deceleration : float = 10
+@export var _jump_speed : float = 500
+
+@export var _bubble_push_force : float
+@export var _bubble_blow_cooldown : float
+
 @export var _hitstun_time : float
+
 @export var _animation_tree_path : NodePath
 
 @onready var _animation_tree = get_node(_animation_tree_path)
@@ -41,7 +48,10 @@ func _physics_process(delta):
 	var input_direction = Input.get_axis("move_left", "move_right")
 
 	if input_direction and not _in_hitstun:
-		velocity.x = input_direction * _WALK_SPEED
+		var acceleration = _ground_acceleration if is_on_floor() else _air_acceleration
+		var top_speed = input_direction * (_ground_top_speed if is_on_floor() else _air_top_speed)
+		velocity.x = move_toward(velocity.x, top_speed, acceleration)
+		
 		if is_on_floor():
 			set_direction(input_direction)
 	else:
@@ -72,12 +82,12 @@ func push_bubbles() -> void:
 	for i in get_slide_collision_count():
 		var collider = get_slide_collision(i).get_collider()
 		if collider is RigidBody2D:
-			collider.apply_force(_direction_facing * _BUBBLE_PUSH_FORCE)
+			collider.apply_force(_direction_facing * _bubble_push_force)
 
 
 func blow_bubble() -> void:
 	$SFX/Blow.play()
-	$BubbleBlowCooldownTimer.start(_BUBBLE_BLOW_COOLDOWN)
+	$BubbleBlowCooldownTimer.start(_bubble_blow_cooldown)
 	_animation_tree.set("parameters/conditions/blowing_bubble", true)
 	_can_blow_bubble = false
 	bubble_blown.emit(position, _direction_facing)
@@ -89,7 +99,7 @@ func can_jump() -> bool:
 
 func jump() -> void:
 	$SFX/Jump.play()
-	velocity.y = -_JUMP_SPEED
+	velocity.y = -_jump_speed
 
 
 func _on_bubble_blow_cooldown_timer_timeout() -> void:
