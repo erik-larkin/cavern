@@ -4,18 +4,19 @@ signal bubble_blown(spawn_position, direction)
 signal bubble_popped(bubble)
 
 @export var _ground_top_speed : float = 300
-@export var _ground_acceleration : float = 50
+@export var _ground_acceleration : float = 100
 @export var _ground_deceleration : float = 50
 
-@export var _air_top_speed : float = 400
-@export var _air_acceleration : float = 10
+@export var _air_top_speed : float = 350
+@export var _air_acceleration : float = 30
 @export var _air_deceleration : float = 10
 @export var _jump_speed : float = 500
 
-@export var _bubble_push_force : float
-@export var _bubble_blow_cooldown : float
+@export var _bubble_push_force : float = 300
+@export var _bubble_blow_cooldown : float =  0.5
 
-@export var _hitstun_time : float
+@export var _hitstun_time : float = 0.3
+@export var _hit_invincibility_time : float = 1
 
 @export var _animation_tree_path : NodePath
 
@@ -25,17 +26,17 @@ var _gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var _direction_facing = Vector2.LEFT
 var _can_blow_bubble = true
 var _in_hitstun = false
+var _invincible = false
 
 
 func _ready():
 	_animation_tree.active = true
-	$AnimationPlayer.get_animation("hurt").length = _hitstun_time
+	$SpriteAnimationPlayer.get_animation("hurt").length = _hitstun_time
 
 
 func _process(_delta):
 	if Input.is_action_just_pressed("blow") and _can_blow_bubble:
 		blow_bubble()
-	
 
 
 func _physics_process(delta):
@@ -63,12 +64,25 @@ func _physics_process(delta):
 
 
 func take_damage() -> void:
-	_animation_tree.set("parameters/conditions/is_hurt", true)
-	_in_hitstun = true
-	velocity.x = (_direction_facing * -1 * 500).x
-	
-	get_tree().create_timer(_hitstun_time).timeout.connect(
-		func(): _in_hitstun = false
+	if not _invincible:
+		_animation_tree.set("parameters/conditions/is_hurt", true)
+		_in_hitstun = true
+		velocity.x = (_direction_facing * -1 * 500).x
+		
+		apply_invincibility_time(_hit_invincibility_time)
+		
+		get_tree().create_timer(_hitstun_time).timeout.connect(
+			func(): _in_hitstun = false
+		)
+
+
+func apply_invincibility_time(seconds : float):
+	_invincible = true
+	$EffectsAnimationPlayer.play("invincibility_blink")
+	get_tree().create_timer(seconds).timeout.connect(
+		func(): 
+			_invincible = false
+			$EffectsAnimationPlayer.play("RESET")
 	)
 
 

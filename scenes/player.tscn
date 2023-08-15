@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=3 uid="uid://vx56msnqsma2"]
+[gd_scene load_steps=66 format=3 uid="uid://vx56msnqsma2"]
 
 [ext_resource type="Texture2D" uid="uid://dwfgu8421xm0c" path="res://assets/images/player-sheet.png" id="1_fnmax"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_hn182"]
@@ -254,6 +254,45 @@ _data = {
 "run": SubResource("Animation_hx6tj")
 }
 
+[sub_resource type="Animation" id="Animation_grbwa"]
+resource_name = "invincibility_blink"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.706869), Color(1, 1, 1, 0.243137), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_u1xau"]
+resource_name = "RESET"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(2.54912),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wuoer"]
+_data = {
+"RESET": SubResource("Animation_u1xau"),
+"invincibility_blink": SubResource("Animation_grbwa")
+}
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_iplox"]
 animation = &"blow"
 
@@ -380,17 +419,13 @@ states/jump/position = Vector2(213, 422)
 states/run/node = SubResource("AnimationNodeAnimation_mqv4g")
 states/run/position = Vector2(459, 163)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_6558j"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_8b5ii"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_s0bmh"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_fdglj"), "run", "jump", SubResource("AnimationNodeStateMachineTransition_loquj"), "run", "blow", SubResource("AnimationNodeStateMachineTransition_goysa"), "blow", "idle", SubResource("AnimationNodeStateMachineTransition_tyq2t"), "idle", "blow", SubResource("AnimationNodeStateMachineTransition_siue1"), "jump", "in air", SubResource("AnimationNodeStateMachineTransition_hf7u8"), "in air", "idle", SubResource("AnimationNodeStateMachineTransition_7a1f0"), "in air", "blow", SubResource("AnimationNodeStateMachineTransition_y73ne"), "run", "in air", SubResource("AnimationNodeStateMachineTransition_fe087"), "idle", "in air", SubResource("AnimationNodeStateMachineTransition_idywq"), "hurt", "die", SubResource("AnimationNodeStateMachineTransition_mirp8"), "die", "End", SubResource("AnimationNodeStateMachineTransition_w68jn"), "blow", "in air", SubResource("AnimationNodeStateMachineTransition_m0j20"), "blow", "hurt", SubResource("AnimationNodeStateMachineTransition_e47pa"), "run", "hurt", SubResource("AnimationNodeStateMachineTransition_s02ra"), "idle", "hurt", SubResource("AnimationNodeStateMachineTransition_u4s5h"), "in air", "hurt", SubResource("AnimationNodeStateMachineTransition_qsbyd"), "hurt", "idle", SubResource("AnimationNodeStateMachineTransition_aimkv")]
-graph_offset = Vector2(86.5253, -208.444)
+graph_offset = Vector2(-45.8073, -17.7342)
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 57
 platform_on_leave = 2
 script = ExtResource("1_hn182")
-_ground_acceleration = 100.0
-_air_top_speed = 350.0
-_air_acceleration = 30.0
-_hitstun_time = 0.3
 _animation_tree_path = NodePath("AnimationTree")
 metadata/_edit_group_ = true
 
@@ -456,15 +491,23 @@ bus = &"SFX"
 [node name="Hurt" type="AudioStreamPlayer2D" parent="SFX"]
 stream = SubResource("AudioStreamRandomizer_o232l")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="SpriteAnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"
 libraries = {
 "": SubResource("AnimationLibrary_pssbb")
 }
 
+[node name="EffectsAnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../AnimationTree")
+libraries = {
+"": SubResource("AnimationLibrary_wuoer")
+}
+next/invincibility_blink = &"RESET"
+blend_times = [&"invincibility_blink", &"RESET", 0.1]
+
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_7hu2f")
-anim_player = NodePath("../AnimationPlayer")
+anim_player = NodePath("../SpriteAnimationPlayer")
 advance_expression_base_node = NodePath("..")
 parameters/conditions/blowing_bubble = false
 parameters/conditions/is_hurt = false
