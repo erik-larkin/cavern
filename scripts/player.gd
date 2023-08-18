@@ -27,14 +27,17 @@ signal bubble_popped(bubble)
 
 
 @onready var _animation_tree = get_node(_animation_tree_path)
+@onready var _current_health = _maximum_health
 
 var _gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var _direction_facing = Vector2.LEFT
 var _can_blow_bubble = true
 var _in_hitstun = false
 var _invincible = false
-var _current_health = _maximum_health
 
+const _HITSTOP_DURATION : float = 0.45
+const _HITSTOP_TIMESCALE : float = 0.05
+const _HIT_SHAKE_INTENSITY : float = 100
 
 func _ready():
 	_animation_tree.active = true
@@ -82,6 +85,8 @@ func take_damage(amount : int) -> void:
 
 
 func die() -> void:
+	_invincible = true
+	_in_hitstun = true
 	set_collision_mask_value(6, false)
 	velocity = Vector2.ZERO
 	jump()
@@ -89,6 +94,12 @@ func die() -> void:
 
 func apply_hitstun() -> void:
 	_in_hitstun = true
+	
+	$EffectsAnimationPlayer.speed_scale = 1 / _HITSTOP_TIMESCALE
+	$EffectsAnimationPlayer.play("shake")
+	await Slowdown.apply_hitstop(_HITSTOP_DURATION, _HITSTOP_TIMESCALE)
+	$EffectsAnimationPlayer.speed_scale = 1
+	
 	velocity.x = (_direction_facing * -1 * 500).x
 	apply_invincibility_time(_hit_invincibility_time)
 

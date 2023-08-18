@@ -18,6 +18,10 @@ boot_splash/show_image=false
 boot_splash/image="res://assets/images/title.png"
 config/icon="res://icon.svg"
 
+[autoload]
+
+Slowdown="*res://scripts/slowdown.gd"
+
 [display]
 
 window/size/viewport_width=1040
