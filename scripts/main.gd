@@ -10,8 +10,17 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	move_bubbles_with_airflow()
 
+
+func move_bubbles_with_airflow() -> void:
+	var bubbles = $Bubbles.get_children()
+	
+	var level : Level = $Level
+	
+	for bubble in bubbles:
+		if bubble._is_floating:
+			bubble.follow_airflow(level.get_airflow_at_coords(bubble.position))
 
 func _on_player_bubble_blown(spawn_position : Vector2, direction : Vector2):
 	var bubble_instance = BUBBLE_SCENE.instantiate()
