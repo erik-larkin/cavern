@@ -467,7 +467,6 @@ metadata/_edit_group_ = true
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_fnmax")
 hframes = 9
-frame = 4
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)

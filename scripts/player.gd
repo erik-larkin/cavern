@@ -35,7 +35,7 @@ var _can_blow_bubble = true
 var _in_hitstun = false
 var _invincible = false
 
-const _HITSTOP_DURATION : float = 0.45
+const _HITSTOP_DURATION : float = 0.4
 const _HITSTOP_TIMESCALE : float = 0.05
 const _HIT_SHAKE_INTENSITY : float = 100
 
@@ -94,11 +94,7 @@ func die() -> void:
 
 func apply_hitstun() -> void:
 	_in_hitstun = true
-	
-	$EffectsAnimationPlayer.speed_scale = 1 / _HITSTOP_TIMESCALE
-	$EffectsAnimationPlayer.play("shake")
 	await Slowdown.apply_hitstop(_HITSTOP_DURATION, _HITSTOP_TIMESCALE)
-	$EffectsAnimationPlayer.speed_scale = 1
 	
 	velocity.x = (_direction_facing * -1 * 500).x
 	apply_invincibility_time(_hit_invincibility_time)
