@@ -3,13 +3,14 @@ class_name Bubble
 
 signal popped_by_player (bubble : RigidBody2D)
 
-enum Layers { OUTER_WALLS = 1, BUBBLES = 5 }
+enum Layers { OUTER_WALLS = 1, ENEMIES = 3, BUBBLES = 5 }
 
 const _SPAWN_OFFSET = 20
 
 @export var _SPAWN_SPEED : float
 @export var _CAPTURE_TIME : float
 @export var _POP_TIME : float
+@export var _FLOAT_SPEED : float = 100
 @export var _animation_tree_path : NodePath
 
 @onready var _animation_tree = get_node(_animation_tree_path)
@@ -51,6 +52,7 @@ func start_floating():
 	$PopTimer.start()
 	set_collision_layer_value(Layers.BUBBLES, true)
 	set_collision_mask_value(Layers.BUBBLES, true)
+	set_collision_mask_value(Layers.ENEMIES, false)
 
 
 func pop():
@@ -70,6 +72,10 @@ func get_adjacent_bubbles() -> Array[Node2D]:
 	return $Hitboxes/RecursivePopHitbox.get_overlapping_bodies()
 
 
+func follow_airflow(airflow : Vector2) -> void:
+	linear_velocity = airflow
+
+
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	queue_free()
 
@@ -79,7 +85,7 @@ func _on_pop_timer_timeout():
 
 
 func _on_body_entered(body):
-	if body.collision_layer == Layers.OUTER_WALLS and not _is_floating:
+	if not _is_floating:
 		start_floating()
 
 

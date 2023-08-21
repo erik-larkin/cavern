@@ -287,16 +287,16 @@ graph_offset = Vector2(0, 101.076)
 [node name="Bubble" type="RigidBody2D"]
 position = Vector2(493, 311)
 collision_layer = 0
+collision_mask = 133
 gravity_scale = 0.0
 max_contacts_reported = 8
 contact_monitor = true
 lock_rotation = true
 linear_damp_mode = 1
-linear_damp = 2.0
 script = ExtResource("1_prs2h")
-_SPAWN_SPEED = 1000.0
-_CAPTURE_TIME = 0.4
-_POP_TIME = 8.0
+_SPAWN_SPEED = 800.0
+_CAPTURE_TIME = 0.3
+_POP_TIME = 16.0
 _animation_tree_path = NodePath("AnimationPlayer/AnimationTree")
 metadata/_edit_group_ = true
 
