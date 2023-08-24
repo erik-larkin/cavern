@@ -34,6 +34,7 @@ var _direction_facing = Vector2.LEFT
 var _can_blow_bubble = true
 var _in_hitstun = false
 var _invincible = false
+var _input_direction = 0
 
 const _HITSTOP_DURATION : float = 0.4
 const _HITSTOP_TIMESCALE : float = 0.05
@@ -56,15 +57,15 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("jump") and can_jump():
 		jump()
 	
-	var input_direction = Input.get_axis("move_left", "move_right")
+	_input_direction = Input.get_axis("move_left", "move_right")
 
-	if input_direction and not _in_hitstun:
+	if _input_direction and not _in_hitstun:
 		var acceleration = _ground_acceleration if is_on_floor() else _air_acceleration
-		var top_speed = input_direction * (_ground_top_speed if is_on_floor() else _air_top_speed)
+		var top_speed = _input_direction * (_ground_top_speed if is_on_floor() else _air_top_speed)
 		velocity.x = move_toward(velocity.x, top_speed, acceleration)
 		
 		if is_on_floor():
-			set_direction(input_direction)
+			set_direction(_input_direction)
 	else:
 		var deceleration = _ground_deceleration if is_on_floor() else _air_deceleration
 		velocity.x = move_toward(velocity.x, 0, deceleration)

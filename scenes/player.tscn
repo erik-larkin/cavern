@@ -288,11 +288,11 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8b5ii"]
 advance_mode = 2
-advance_expression = "get_real_velocity().x != 0"
+advance_expression = "get_real_velocity().x != 0 and _input_direction"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s0bmh"]
 advance_mode = 2
-advance_expression = "get_real_velocity().x == 0"
+advance_expression = "get_real_velocity().x == 0 or not _input_direction"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fdglj"]
 advance_mode = 2
@@ -383,7 +383,7 @@ states/jump/position = Vector2(213, 422)
 states/run/node = SubResource("AnimationNodeAnimation_mqv4g")
 states/run/position = Vector2(459, 163)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_6558j"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_8b5ii"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_s0bmh"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_fdglj"), "run", "jump", SubResource("AnimationNodeStateMachineTransition_loquj"), "run", "blow", SubResource("AnimationNodeStateMachineTransition_goysa"), "blow", "idle", SubResource("AnimationNodeStateMachineTransition_tyq2t"), "idle", "blow", SubResource("AnimationNodeStateMachineTransition_siue1"), "jump", "in air", SubResource("AnimationNodeStateMachineTransition_hf7u8"), "in air", "idle", SubResource("AnimationNodeStateMachineTransition_7a1f0"), "in air", "blow", SubResource("AnimationNodeStateMachineTransition_y73ne"), "run", "in air", SubResource("AnimationNodeStateMachineTransition_fe087"), "idle", "in air", SubResource("AnimationNodeStateMachineTransition_idywq"), "hurt", "die", SubResource("AnimationNodeStateMachineTransition_mirp8"), "blow", "in air", SubResource("AnimationNodeStateMachineTransition_m0j20"), "blow", "hurt", SubResource("AnimationNodeStateMachineTransition_e47pa"), "run", "hurt", SubResource("AnimationNodeStateMachineTransition_s02ra"), "idle", "hurt", SubResource("AnimationNodeStateMachineTransition_u4s5h"), "in air", "hurt", SubResource("AnimationNodeStateMachineTransition_qsbyd"), "hurt", "idle", SubResource("AnimationNodeStateMachineTransition_aimkv")]
-graph_offset = Vector2(193.037, -159.122)
+graph_offset = Vector2(-133.037, -78.3351)
 
 [sub_resource type="Animation" id="Animation_u1xau"]
 resource_name = "RESET"
