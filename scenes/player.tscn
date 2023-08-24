@@ -461,6 +461,7 @@ platform_on_leave = 2
 script = ExtResource("1_hn182")
 _animation_tree_path = NodePath("SpriteAnimationPlayer/AnimationTree")
 _maximum_health = 10
+_bubble_push_force = 1000.0
 _hitstun_time = 0.5
 metadata/_edit_group_ = true
 

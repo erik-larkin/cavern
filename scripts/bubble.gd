@@ -2,6 +2,7 @@ extends RigidBody2D
 class_name Bubble
 
 signal popped_by_player (bubble : RigidBody2D)
+signal started_floating (bubble : RigidBody2D)
 
 enum Layers { OUTER_WALLS = 1, ENEMIES = 3, BUBBLES = 5 }
 
@@ -16,6 +17,7 @@ const _SPAWN_OFFSET = 20
 @onready var _animation_tree = get_node(_animation_tree_path)
 
 var _is_floating : bool = false
+var _current_airflow : Vector2 = Vector2.ZERO
 
 
 func init(start_position : Vector2, move_direction : Vector2):
@@ -38,6 +40,11 @@ func _process(_delta):
 		_animation_tree.set("parameters/float/TimeScale/scale", time_scale)
 
 
+func _integrate_forces(delta):
+	if _is_floating:
+		apply_central_force(_current_airflow * _FLOAT_SPEED)
+
+
 func set_spawn_animation_length() -> void:
 	var length = $AnimationPlayer.get_animation("spawn").length
 	var time_scale = length / _CAPTURE_TIME
@@ -45,9 +52,10 @@ func set_spawn_animation_length() -> void:
 
 
 func start_floating():
+	started_floating.emit(self)
 	_is_floating = true
 	_animation_tree.set("parameters/conditions/is_floating", true)
-	linear_velocity = Vector2.ZERO
+	linear_velocity = _current_airflow * _FLOAT_SPEED
 	
 	$PopTimer.start()
 	set_collision_layer_value(Layers.BUBBLES, true)
@@ -72,8 +80,8 @@ func get_adjacent_bubbles() -> Array[Node2D]:
 	return $Hitboxes/RecursivePopHitbox.get_overlapping_bodies()
 
 
-func follow_airflow(airflow : Vector2) -> void:
-	linear_velocity = airflow
+func set_airflow_direction(airflow : Vector2) -> void:
+	_current_airflow = airflow.normalized()
 
 
 func _on_visible_on_screen_notifier_2d_screen_exited():

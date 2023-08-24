@@ -293,10 +293,12 @@ max_contacts_reported = 8
 contact_monitor = true
 lock_rotation = true
 linear_damp_mode = 1
+linear_damp = 2.0
 script = ExtResource("1_prs2h")
 _SPAWN_SPEED = 800.0
 _CAPTURE_TIME = 0.3
-_POP_TIME = 16.0
+_POP_TIME = 30.0
+_FLOAT_SPEED = 120.0
 _animation_tree_path = NodePath("AnimationPlayer/AnimationTree")
 metadata/_edit_group_ = true
 

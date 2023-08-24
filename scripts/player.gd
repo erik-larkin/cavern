@@ -70,7 +70,7 @@ func _physics_process(delta):
 		var deceleration = _ground_deceleration if is_on_floor() else _air_deceleration
 		velocity.x = move_toward(velocity.x, 0, deceleration)
 	
-	if move_and_slide():
+	if move_and_slide() and _input_direction:
 		push_bubbles()
 
 
@@ -125,7 +125,7 @@ func push_bubbles() -> void:
 	for i in get_slide_collision_count():
 		var collider = get_slide_collision(i).get_collider()
 		if collider is RigidBody2D:
-			collider.apply_force(_direction_facing * _bubble_push_force)
+			collider.apply_central_force(_direction_facing * _bubble_push_force)
 
 
 func blow_bubble() -> void:
