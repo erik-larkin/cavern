@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+class_name Enemy
 
 @export var _SPEED : float
 @export var _JUMP_VELOCITY : float
@@ -8,7 +9,8 @@ extends CharacterBody2D
 @onready var _animation_tree : AnimationTree = get_node(_animation_tree_path)
 
 var _gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-var _direction_facing = Vector2.LEFT
+var _direction_facing := Vector2.LEFT
+var _is_in_bubble := false
 
 
 func _ready():
@@ -18,11 +20,23 @@ func _ready():
 func _process(delta):
 	_animation_tree.set("parameters/In Air/blend_position", abs(velocity.y))
 
-	if randi_range(1, 100) == 1 and is_on_floor():
-		ready_jump()
-
 
 func _physics_process(delta):
+	if not _is_in_bubble:
+		process_ai(delta)
+
+
+func get_captured_by_bubble() -> void:
+	_is_in_bubble = true
+	velocity = Vector2.ZERO
+	$CollisionShape2D.set_disabled(true)
+
+
+func escape_bubble() -> void:
+	_is_in_bubble = false
+	$CollisionShape2D.set_disabled(false)
+
+func process_ai(delta) -> void:
 	if not is_on_floor():
 		velocity.y += _gravity * delta
 
@@ -32,6 +46,9 @@ func _physics_process(delta):
 		var collider = get_last_slide_collision().get_collider()
 		if collider is StaticBody2D:
 			change_direction()
+	
+	if randi_range(1, 100) == 1 and is_on_floor():
+		ready_jump()
 
 
 func ready_jump() -> void:

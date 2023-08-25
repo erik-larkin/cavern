@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cy0rgyrch0rlc"]
+[gd_scene load_steps=6 format=3 uid="uid://cy0rgyrch0rlc"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_75l85"]
 [ext_resource type="PackedScene" uid="uid://c23gwg707lkdu" path="res://scenes/Level.tscn" id="2_7vj3s"]
+[ext_resource type="PackedScene" uid="uid://cnxiixbxevigx" path="res://scenes/Enemy.tscn" id="3_o4bve"]
 [ext_resource type="PackedScene" uid="uid://vx56msnqsma2" path="res://scenes/Player.tscn" id="3_rh74a"]
 [ext_resource type="AudioStream" uid="uid://b8qg22ou1n44m" path="res://assets/music/theme.ogg" id="4_ts1fq"]
 
@@ -10,7 +11,9 @@ script = ExtResource("1_75l85")
 
 [node name="Level" parent="." instance=ExtResource("2_7vj3s")]
 scale = Vector2(1.3, 1.3)
-_SHOW_AIRFLOWS = true
+
+[node name="Enemy" parent="." instance=ExtResource("3_o4bve")]
+position = Vector2(316, 211)
 
 [node name="Bubbles" type="Node2D" parent="."]
 

@@ -18,6 +18,7 @@ const _SPAWN_OFFSET = 20
 
 var _is_floating : bool = false
 var _current_airflow : Vector2 = Vector2.ZERO
+var _captured_enemy : Enemy = null
 
 
 func init(start_position : Vector2, move_direction : Vector2):
@@ -38,6 +39,9 @@ func _process(_delta):
 	if _animation_tree.get("parameters/conditions/is_floating"):
 		var time_scale = _POP_TIME / $PopTimer.time_left
 		_animation_tree.set("parameters/float/TimeScale/scale", time_scale)
+	
+	if _captured_enemy:
+		_captured_enemy.position = position
 
 
 func _integrate_forces(delta):
@@ -64,6 +68,10 @@ func start_floating():
 
 
 func pop():
+	if _captured_enemy:
+		_captured_enemy.escape_bubble()
+		_captured_enemy = null
+		
 	_animation_tree.set("parameters/conditions/is_popping", true)
 	set_collision_layer_value(Layers.BUBBLES, false)
 	linear_velocity = Vector2.ZERO
@@ -84,6 +92,17 @@ func set_airflow_direction(airflow : Vector2) -> void:
 	_current_airflow = airflow.normalized()
 
 
+func capture_enemy(enemy : Enemy) -> void:
+	if enemy.has_method("get_captured_by_bubble"):
+		enemy.get_captured_by_bubble()
+		_captured_enemy = enemy
+		scale_enemy_sprite_to_fit_in_bubble()
+
+
+func scale_enemy_sprite_to_fit_in_bubble():
+	pass
+
+
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	queue_free()
 
@@ -95,6 +114,8 @@ func _on_pop_timer_timeout():
 func _on_body_entered(body):
 	if not _is_floating:
 		start_floating()
+		if body is Enemy:
+			capture_enemy(body)
 
 
 func _on_pop_hitbox_area_entered(area):

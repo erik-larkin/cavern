@@ -10,6 +10,7 @@ enum Layers {Foreground, Airflow}
 @export var _SHOW_AIRFLOWS : bool = false
 @onready var _tile_map : TileMap = $TileMap
 
+
 func _ready():
 	var tile_map_colour = _INVISIBLE_COLOUR
 	
