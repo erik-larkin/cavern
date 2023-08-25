@@ -1,7 +1,8 @@
-[gd_scene load_steps=67 format=3 uid="uid://vx56msnqsma2"]
+[gd_scene load_steps=70 format=3 uid="uid://vx56msnqsma2"]
 
 [ext_resource type="Texture2D" uid="uid://dwfgu8421xm0c" path="res://assets/images/player-sheet.png" id="1_fnmax"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_hn182"]
+[ext_resource type="Shader" path="res://shaders/hit_flash.gdshader" id="2_f6v72"]
 [ext_resource type="AudioStream" uid="uid://chch4hgogh3v8" path="res://assets/sounds/land0.ogg" id="7_udoao"]
 [ext_resource type="AudioStream" uid="uid://5ewqb2v63mbn" path="res://assets/sounds/land1.ogg" id="8_abd5l"]
 [ext_resource type="AudioStream" uid="uid://brg6fl0ell7d4" path="res://assets/sounds/blow0.ogg" id="8_m2t8e"]
@@ -16,6 +17,11 @@
 [ext_resource type="AudioStream" uid="uid://cavvpmkhv3eee" path="res://assets/sounds/ouch2.ogg" id="14_cucid"]
 [ext_resource type="AudioStream" uid="uid://drpcwayiknpbs" path="res://assets/sounds/ouch3.ogg" id="15_k0kiq"]
 [ext_resource type="AudioStream" uid="uid://bcisry1ftlcdr" path="res://assets/sounds/die0.ogg" id="16_mwfjd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hlmpm"]
+shader = ExtResource("2_f6v72")
+shader_parameter/active = false
+shader_parameter/tint = Color(1, 1, 0, 1)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r8jkl"]
 radius = 22.0
@@ -120,9 +126,15 @@ tracks/1/keys = {
 }
 tracks/1/use_blend = true
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ry6bv"]
+shader = ExtResource("2_f6v72")
+shader_parameter/active = true
+shader_parameter/tint = Color(1, 1, 1, 1)
+
 [sub_resource type="Animation" id="Animation_ma61t"]
 resource_name = "hurt"
 length = 0.5
+step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -148,6 +160,18 @@ tracks/1/keys = {
 "args": [0.0],
 "method": &"play"
 }]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite:material")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [SubResource("ShaderMaterial_ry6bv"), SubResource("ShaderMaterial_hlmpm")]
 }
 
 [sub_resource type="Animation" id="Animation_0eafa"]
@@ -466,8 +490,10 @@ _hitstun_time = 0.5
 metadata/_edit_group_ = true
 
 [node name="Sprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_hlmpm")
 texture = ExtResource("1_fnmax")
 hframes = 9
+frame = 2
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)
