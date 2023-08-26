@@ -11,6 +11,7 @@ class_name Enemy
 var _gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var _direction_facing := Vector2.LEFT
 var _is_in_bubble := false
+var _is_dying := false
 
 const _ENEMIES_LAYER := 3
 
@@ -23,29 +24,36 @@ func _process(delta):
 
 
 func _physics_process(delta):
-	if not _is_in_bubble:
+	if _is_dying:
+		fall_and_explode(delta)
+	elif not _is_in_bubble:
 		process_ai(delta)
 
 
 func get_captured_by_bubble() -> void:
 	_is_in_bubble = true
 	velocity = Vector2.ZERO
-	$SFX/Trap.play()
-	$CollisionShape2D.set_disabled(true)
+	$SFX/Hit.play()
+	$NormalCollisionShape.set_disabled(true)
 	set_collision_layer_value(_ENEMIES_LAYER, false)
 
 
 func escape_bubble() -> void:
 	_is_in_bubble = false
 	velocity = Vector2.ZERO
-	$CollisionShape2D.set_disabled(false)
+	$NormalCollisionShape.set_disabled(false)
 	set_collision_layer_value(_ENEMIES_LAYER, true)
 
 
-func process_ai(delta) -> void:
-	if not is_on_floor():
-		velocity.y += _gravity * delta
+func fall_and_explode(delta) -> void:
+	apply_gravity(delta)
+	move_and_slide()
+	if is_on_floor():
+		queue_free()
 
+
+func process_ai(delta) -> void:
+	apply_gravity(delta)
 	velocity.x = _direction_facing.x * _SPEED
 
 	if move_and_slide():
@@ -55,6 +63,11 @@ func process_ai(delta) -> void:
 	
 	if randi_range(1, 100) == 1 and is_on_floor():
 		ready_jump()
+
+
+func apply_gravity(delta) -> void:
+	if not is_on_floor():
+		velocity.y += _gravity * delta
 
 
 func ready_jump() -> void:
@@ -80,4 +93,10 @@ func jump() -> void:
 
 
 func die() -> void:
-	queue_free()
+	_is_in_bubble = false
+	_is_dying = true
+	var death_launch_push = Vector2(0, -randf_range(680, 720))
+	velocity += death_launch_push.rotated(randf_range(-PI / 4, PI / 4))
+	$SFX/Hit.pitch_scale *= 0.25
+	$SFX/Hit.play()
+	remove_child($NormalCollisionShape)

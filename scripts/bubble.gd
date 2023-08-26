@@ -70,6 +70,7 @@ func start_floating():
 func pop_and_defeat_enemy() -> void:
 	if _captured_enemy:
 		_captured_enemy.die()
+		_captured_enemy = null
 	
 	pop()
 

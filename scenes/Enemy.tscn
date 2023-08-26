@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://cnxiixbxevigx"]
+[gd_scene load_steps=60 format=3 uid="uid://cnxiixbxevigx"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_mao2j"]
 [ext_resource type="Texture2D" uid="uid://0a6gof8wnov4" path="res://assets/images/robot-sheet.png" id="2_a5c4v"]
@@ -19,6 +19,9 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_osn7f"]
 radius = 20.0
 height = 60.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_42my0"]
+radius = 11.0454
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_3ucs3"]
 streams_count = 4
@@ -267,11 +270,41 @@ tracks/1/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_s4q7v"]
+resource_name = "dying"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_brqfy"]
 _data = {
 "RESET": SubResource("Animation_b1y53"),
 "air_hang": SubResource("Animation_nfali"),
 "captured": SubResource("Animation_4oxba"),
+"dying": SubResource("Animation_s4q7v"),
 "idle": SubResource("Animation_wldkq"),
 "in_air": SubResource("Animation_l0x50"),
 "jump": SubResource("Animation_182w4"),
@@ -298,6 +331,9 @@ blend_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_67neu"]
 animation = &"captured"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8ieby"]
+animation = &"dying"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0l3n3"]
 animation = &"idle"
@@ -374,6 +410,10 @@ advance_expression = "_is_in_bubble"
 advance_mode = 2
 advance_expression = "not _is_in_bubble"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vvmjo"]
+advance_mode = 2
+advance_expression = "_is_dying"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7lyi3"]
 states/End/position = Vector2(944, 282.949)
 "states/In Air/node" = SubResource("AnimationNodeBlendSpace1D_0elgn")
@@ -381,6 +421,8 @@ states/End/position = Vector2(944, 282.949)
 states/Start/position = Vector2(67, 287.949)
 states/captured/node = SubResource("AnimationNodeAnimation_67neu")
 states/captured/position = Vector2(181, -93.48)
+states/dying/node = SubResource("AnimationNodeAnimation_8ieby")
+states/dying/position = Vector2(486.836, -144.378)
 states/idle/node = SubResource("AnimationNodeAnimation_0l3n3")
 states/idle/position = Vector2(224, 287.949)
 states/jump/node = SubResource("AnimationNodeAnimation_irpck")
@@ -389,8 +431,8 @@ states/land/node = SubResource("AnimationNodeAnimation_2b8wx")
 states/land/position = Vector2(681, 179.949)
 states/move/node = SubResource("AnimationNodeAnimation_7v7x4")
 states/move/position = Vector2(431, 150.949)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_lrc0t"), "idle", "move", SubResource("AnimationNodeStateMachineTransition_ciwce"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_jyu5m"), "move", "idle", SubResource("AnimationNodeStateMachineTransition_7f83o"), "move", "jump", SubResource("AnimationNodeStateMachineTransition_wwnqu"), "jump", "In Air", SubResource("AnimationNodeStateMachineTransition_s8bly"), "land", "idle", SubResource("AnimationNodeStateMachineTransition_v7psu"), "In Air", "land", SubResource("AnimationNodeStateMachineTransition_3bskf"), "move", "In Air", SubResource("AnimationNodeStateMachineTransition_wgr1d"), "idle", "In Air", SubResource("AnimationNodeStateMachineTransition_pyg7j"), "idle", "captured", SubResource("AnimationNodeStateMachineTransition_2hfvr"), "jump", "captured", SubResource("AnimationNodeStateMachineTransition_winpr"), "move", "captured", SubResource("AnimationNodeStateMachineTransition_vy7ca"), "land", "captured", SubResource("AnimationNodeStateMachineTransition_g0bnn"), "In Air", "captured", SubResource("AnimationNodeStateMachineTransition_p8wc7"), "captured", "idle", SubResource("AnimationNodeStateMachineTransition_oyj2e")]
-graph_offset = Vector2(-252.164, -65.8121)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_lrc0t"), "idle", "move", SubResource("AnimationNodeStateMachineTransition_ciwce"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_jyu5m"), "move", "idle", SubResource("AnimationNodeStateMachineTransition_7f83o"), "move", "jump", SubResource("AnimationNodeStateMachineTransition_wwnqu"), "jump", "In Air", SubResource("AnimationNodeStateMachineTransition_s8bly"), "land", "idle", SubResource("AnimationNodeStateMachineTransition_v7psu"), "In Air", "land", SubResource("AnimationNodeStateMachineTransition_3bskf"), "move", "In Air", SubResource("AnimationNodeStateMachineTransition_wgr1d"), "idle", "In Air", SubResource("AnimationNodeStateMachineTransition_pyg7j"), "idle", "captured", SubResource("AnimationNodeStateMachineTransition_2hfvr"), "jump", "captured", SubResource("AnimationNodeStateMachineTransition_winpr"), "move", "captured", SubResource("AnimationNodeStateMachineTransition_vy7ca"), "land", "captured", SubResource("AnimationNodeStateMachineTransition_g0bnn"), "In Air", "captured", SubResource("AnimationNodeStateMachineTransition_p8wc7"), "captured", "idle", SubResource("AnimationNodeStateMachineTransition_oyj2e"), "captured", "dying", SubResource("AnimationNodeStateMachineTransition_vvmjo")]
+graph_offset = Vector2(-252.164, -257.378)
 
 [node name="Enemy" type="CharacterBody2D"]
 position = Vector2(0, -7)
@@ -407,9 +449,12 @@ texture = ExtResource("2_a5c4v")
 hframes = 4
 vframes = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="NormalCollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2(0, 7)
 shape = SubResource("CapsuleShape2D_osn7f")
+
+[node name="DeathFlyCollisionShape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_42my0")
 
 [node name="SFX" type="Node2D" parent="."]
 position = Vector2(0, 7)
@@ -423,7 +468,7 @@ stream = SubResource("AudioStreamRandomizer_fuvds")
 [node name="Land" type="AudioStreamPlayer2D" parent="SFX"]
 stream = SubResource("AudioStreamRandomizer_juu22")
 
-[node name="Trap" type="AudioStreamPlayer2D" parent="SFX"]
+[node name="Hit" type="AudioStreamPlayer2D" parent="SFX"]
 stream = SubResource("AudioStreamRandomizer_yw4u6")
 bus = &"SFX"
 
