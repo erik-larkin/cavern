@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://cnxiixbxevigx"]
+[gd_scene load_steps=56 format=3 uid="uid://cnxiixbxevigx"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_mao2j"]
 [ext_resource type="Texture2D" uid="uid://0a6gof8wnov4" path="res://assets/images/robot-sheet.png" id="2_a5c4v"]
@@ -11,6 +11,10 @@
 [ext_resource type="AudioStream" uid="uid://5ewqb2v63mbn" path="res://assets/sounds/land1.ogg" id="9_55ga8"]
 [ext_resource type="AudioStream" uid="uid://dxt8r2dg8f5p5" path="res://assets/sounds/land2.ogg" id="10_k8dmb"]
 [ext_resource type="AudioStream" uid="uid://c5qod34t12piu" path="res://assets/sounds/land3.ogg" id="11_rk3ct"]
+[ext_resource type="AudioStream" uid="uid://cslnpmotrx672" path="res://assets/sounds/trap0.ogg" id="12_hf8jk"]
+[ext_resource type="AudioStream" uid="uid://fbl502wty5n" path="res://assets/sounds/trap1.ogg" id="13_e6fee"]
+[ext_resource type="AudioStream" uid="uid://do7iueckjdscu" path="res://assets/sounds/trap2.ogg" id="14_lvb25"]
+[ext_resource type="AudioStream" uid="uid://b2ud1ysjib1xs" path="res://assets/sounds/trap3.ogg" id="15_r0fj1"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_osn7f"]
 radius = 20.0
@@ -43,6 +47,44 @@ stream_2/weight = 1.0
 stream_3/stream = ExtResource("11_rk3ct")
 stream_3/weight = 1.0
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_yw4u6"]
+streams_count = 4
+stream_0/stream = ExtResource("12_hf8jk")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("13_e6fee")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("14_lvb25")
+stream_2/weight = 1.0
+stream_3/stream = ExtResource("15_r0fj1")
+stream_3/weight = 1.0
+
+[sub_resource type="Animation" id="Animation_b1y53"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
 [sub_resource type="Animation" id="Animation_nfali"]
 resource_name = "air_hang"
 length = 0.1
@@ -57,6 +99,47 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [3]
+}
+
+[sub_resource type="Animation" id="Animation_4oxba"]
+resource_name = "captured"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 3, 0, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.7, 0.7)]
 }
 
 [sub_resource type="Animation" id="Animation_wldkq"]
@@ -182,74 +265,6 @@ tracks/1/keys = {
 "args": [0.0],
 "method": &"play"
 }]
-}
-
-[sub_resource type="Animation" id="Animation_4oxba"]
-resource_name = "captured"
-length = 2.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 1, 1.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 3, 0, 3]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 6.28319]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0.7, 0.7)]
-}
-
-[sub_resource type="Animation" id="Animation_b1y53"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_brqfy"]
@@ -408,6 +423,10 @@ stream = SubResource("AudioStreamRandomizer_fuvds")
 
 [node name="Land" type="AudioStreamPlayer2D" parent="SFX"]
 stream = SubResource("AudioStreamRandomizer_juu22")
+
+[node name="Trap" type="AudioStreamPlayer2D" parent="SFX"]
+stream = SubResource("AudioStreamRandomizer_yw4u6")
+bus = &"SFX"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"

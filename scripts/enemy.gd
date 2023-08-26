@@ -29,12 +29,15 @@ func _physics_process(delta):
 func get_captured_by_bubble() -> void:
 	_is_in_bubble = true
 	velocity = Vector2.ZERO
+	$SFX/Trap.play()
 	$CollisionShape2D.set_disabled(true)
 
 
 func escape_bubble() -> void:
 	_is_in_bubble = false
+	velocity = Vector2.ZERO
 	$CollisionShape2D.set_disabled(false)
+
 
 func process_ai(delta) -> void:
 	if not is_on_floor():
@@ -68,6 +71,6 @@ func change_direction() -> void:
 
 func jump() -> void:
 	_animation_tree.set("parameters/conditions/is_jumping", false)
-	if is_on_floor():
+	if is_on_floor() and not _is_in_bubble:
 		$SFX/Jump.play()
 		velocity.y = -_JUMP_VELOCITY
