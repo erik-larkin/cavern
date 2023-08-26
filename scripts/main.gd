@@ -49,7 +49,7 @@ func recursive_bubble_pop(bubble : RigidBody2D, popped : Array[RigidBody2D]):
 		return
 	
 	var bubbles_to_pop = bubble.get_adjacent_bubbles()
-	bubble.pop()
+	bubble.pop_and_defeat_enemy()
 	popped.append(bubble)
 	
 	get_tree().create_timer(CHAIN_REACTION_POP_TIME).timeout.connect(func():

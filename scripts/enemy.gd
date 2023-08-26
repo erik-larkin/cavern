@@ -12,6 +12,7 @@ var _gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var _direction_facing := Vector2.LEFT
 var _is_in_bubble := false
 
+const _ENEMIES_LAYER := 3
 
 func _ready():
 	_animation_tree.active = true
@@ -31,12 +32,14 @@ func get_captured_by_bubble() -> void:
 	velocity = Vector2.ZERO
 	$SFX/Trap.play()
 	$CollisionShape2D.set_disabled(true)
+	set_collision_layer_value(_ENEMIES_LAYER, false)
 
 
 func escape_bubble() -> void:
 	_is_in_bubble = false
 	velocity = Vector2.ZERO
 	$CollisionShape2D.set_disabled(false)
+	set_collision_layer_value(_ENEMIES_LAYER, true)
 
 
 func process_ai(delta) -> void:
@@ -74,3 +77,7 @@ func jump() -> void:
 	if is_on_floor() and not _is_in_bubble:
 		$SFX/Jump.play()
 		velocity.y = -_JUMP_VELOCITY
+
+
+func die() -> void:
+	queue_free()
