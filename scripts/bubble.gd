@@ -29,8 +29,11 @@ func init(start_position : Vector2, move_direction : Vector2):
 func _ready():
 	set_collision_layer_value(Layers.BUBBLES, false)
 	set_collision_mask_value(Layers.BUBBLES, false)
+	
 	_animation_tree.active = true
 	set_spawn_animation_length()
+	
+	scale = Vector2(0.3, 0.3)
 	$PopTimer.wait_time = _POP_TIME
 	get_tree().create_timer(_CAPTURE_TIME).timeout.connect(start_floating)
 

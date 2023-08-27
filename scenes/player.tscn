@@ -24,18 +24,18 @@ shader_parameter/active = false
 shader_parameter/tint = Color(1, 1, 0, 1)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r8jkl"]
-radius = 22.0
-height = 58.0
+radius = 16.0
+height = 38.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ahan7"]
-size = Vector2(34, 64.3175)
+size = Vector2(24, 41.0367)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_od5k3"]
-a = Vector2(-8, 0)
-b = Vector2(8, 0)
+a = Vector2(-6, 0)
+b = Vector2(6, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1lb2k"]
-size = Vector2(44, 58)
+size = Vector2(32, 38)
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ljxxv"]
 streams_count = 4
@@ -485,12 +485,18 @@ platform_on_leave = 2
 script = ExtResource("1_hn182")
 _animation_tree_path = NodePath("SpriteAnimationPlayer/AnimationTree")
 _maximum_health = 10
+_ground_top_speed = 250.0
+_ground_acceleration = 50.0
+_ground_deceleration = 20.0
+_air_top_speed = 300.0
+_jump_speed = 450.0
 _bubble_push_force = 1000.0
 _hitstun_time = 0.5
 metadata/_edit_group_ = true
 
 [node name="Sprite" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_hlmpm")
+scale = Vector2(0.7, 0.7)
 texture = ExtResource("1_fnmax")
 hframes = 9
 
@@ -508,7 +514,7 @@ collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape2D" parent="Hitboxes/BubblePopHitbox"]
-position = Vector2(5, -0.841248)
+position = Vector2(4, 4.76837e-07)
 shape = SubResource("RectangleShape2D_ahan7")
 debug_color = Color(0.94902, 0.12549, 0.47451, 0.419608)
 
@@ -518,7 +524,7 @@ collision_layer = 0
 collision_mask = 16
 
 [node name="CollisionShape" type="CollisionShape2D" parent="Hitboxes/BubbleBounceHitbox"]
-position = Vector2(0, 35)
+position = Vector2(0, 24)
 shape = SubResource("SegmentShape2D_od5k3")
 debug_color = Color(0.337255, 0.588235, 0, 0.419608)
 

@@ -24,8 +24,10 @@ Slowdown="*res://scripts/slowdown.gd"
 
 [display]
 
-window/size/viewport_width=1040
-window/size/viewport_height=624
+window/size/viewport_width=800
+window/size/viewport_height=480
+window/size/window_width_override=1040
+window/size/window_height_override=624
 window/stretch/mode="canvas_items"
 
 [editor_plugins]

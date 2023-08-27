@@ -2,6 +2,8 @@ extends CharacterBody2D
 
 class_name Enemy
 
+signal enemy_exploded(enemy : Enemy)
+
 @export var _SPEED : float
 @export var _JUMP_VELOCITY : float
 @export var _animation_tree_path : NodePath
@@ -13,6 +15,7 @@ var _direction_facing := Vector2.LEFT
 var _is_in_bubble := false
 var _is_dying := false
 
+const _EXPLOSION_SCENE := preload("res://scenes/explosion.tscn")
 const _ENEMIES_LAYER := 3
 
 func _ready():

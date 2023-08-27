@@ -64,12 +64,13 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xh1v5"]
-radius = 27.0
+radius = 21.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wpgq8"]
-radius = 19.0
+radius = 15.0333
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_m8g2f"]
+radius = 8.0
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_dxou2"]
 streams_count = 4
@@ -81,9 +82,6 @@ stream_2/stream = ExtResource("6_naoym")
 stream_2/weight = 1.0
 stream_3/stream = ExtResource("7_4xrt2")
 stream_3/weight = 1.0
-
-[sub_resource type="Animation" id="Animation_qfpan"]
-resource_name = "enemy_captured"
 
 [sub_resource type="Animation" id="Animation_k5pkn"]
 resource_name = "float"
@@ -122,7 +120,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0.5, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(0.9, 0.8), Vector2(0.8, 0.9)]
+"values": [Vector2(0.7, 0.6), Vector2(0.6, 0.7)]
 }
 
 [sub_resource type="Animation" id="Animation_nxkw1"]
@@ -152,25 +150,13 @@ tracks/1/keys = {
 "update": 1,
 "values": ["pop"]
 }
-tracks/2/type = "value"
+tracks/2/type = "method"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("AnimatedSprite:scale")
+tracks/2/path = NodePath("PopSound")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0.8, 0.8)]
-}
-tracks/3/type = "method"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("PopSound")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "values": [{
@@ -212,15 +198,31 @@ tracks/2/path = NodePath("AnimatedSprite:scale")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(3.86374, 3.86374),
+"times": PackedFloat32Array(0, 0.9, 1),
+"transitions": PackedFloat32Array(3.86374, 0.196146, 3.86374),
 "update": 0,
-"values": [Vector2(0.3, 0.3), Vector2(0.8, 0.8)]
+"values": [Vector2(0.3, 0.3), Vector2(0.7, 0.7), Vector2(0.6, 0.6)]
+}
+
+[sub_resource type="Animation" id="Animation_7nyut"]
+resource_name = "RESET"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.6, 0.6)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bdffr"]
 _data = {
-"enemy_captured": SubResource("Animation_qfpan"),
+"RESET": SubResource("Animation_7nyut"),
 "float": SubResource("Animation_k5pkn"),
 "pop": SubResource("Animation_nxkw1"),
 "spawn": SubResource("Animation_r31cw")
@@ -285,7 +287,6 @@ transitions = ["pop", "End", SubResource("AnimationNodeStateMachineTransition_m6
 graph_offset = Vector2(0, 101.076)
 
 [node name="Bubble" type="RigidBody2D"]
-position = Vector2(493, 311)
 collision_layer = 0
 collision_mask = 133
 gravity_scale = 0.0
@@ -297,13 +298,13 @@ linear_damp = 2.0
 script = ExtResource("1_prs2h")
 _SPAWN_SPEED = 800.0
 _CAPTURE_TIME = 0.3
-_POP_TIME = 5.0
+_POP_TIME = 30.0
 _FLOAT_SPEED = 120.0
 _animation_tree_path = NodePath("AnimationPlayer/AnimationTree")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.8, 0.9)
+scale = Vector2(0.6, 0.6)
 sprite_frames = SubResource("SpriteFrames_bsy8x")
 
 [node name="Hitboxes" type="Node2D" parent="."]
