@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 class_name Enemy
 
-signal enemy_exploded(enemy : Enemy)
+signal exploded(enemy_position : Vector2)
 
 @export var _SPEED : float
 @export var _JUMP_VELOCITY : float
@@ -15,7 +15,6 @@ var _direction_facing := Vector2.LEFT
 var _is_in_bubble := false
 var _is_dying := false
 
-const _EXPLOSION_SCENE := preload("res://scenes/explosion.tscn")
 const _ENEMIES_LAYER := 3
 
 func _ready():
@@ -52,6 +51,7 @@ func fall_and_explode(delta) -> void:
 	apply_gravity(delta)
 	move_and_slide()
 	if is_on_floor():
+		exploded.emit(position)
 		queue_free()
 
 

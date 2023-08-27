@@ -1,4 +1,31 @@
-[gd_resource type="AudioBusLayout" format=3 uid="uid://4fywpcl33sse"]
+[gd_resource type="AudioBusLayout" load_steps=5 format=3 uid="uid://4fywpcl33sse"]
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_6tlwy"]
+resource_name = "Reverb"
+room_size = 0.5
+damping = 0.05
+hipass = 0.5
+
+[sub_resource type="AudioEffectEQ10" id="AudioEffectEQ10_64ko7"]
+resource_name = "EQ10"
+band_db/31_hz = -5.6
+band_db/62_hz = 5.2
+band_db/125_hz = 8.4
+band_db/250_hz = -1.4
+band_db/500_hz = -17.6
+band_db/1000_hz = -26.9
+band_db/2000_hz = -42.0
+band_db/4000_hz = -56.4
+band_db/8000_hz = -60.0
+band_db/16000_hz = -60.0
+
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_mh23d"]
+resource_name = "LowPassFilter"
+
+[sub_resource type="AudioEffectDistortion" id="AudioEffectDistortion_4u8uo"]
+resource_name = "Distortion"
+pre_gain = 10.0
+drive = 0.5
 
 [resource]
 bus/0/volume_db = -0.130497
@@ -14,3 +41,17 @@ bus/2/mute = false
 bus/2/bypass_fx = false
 bus/2/volume_db = 0.0
 bus/2/send = &"Master"
+bus/3/name = &"Explosion"
+bus/3/solo = false
+bus/3/mute = false
+bus/3/bypass_fx = false
+bus/3/volume_db = -17.6573
+bus/3/send = &"SFX"
+bus/3/effect/0/effect = SubResource("AudioEffectReverb_6tlwy")
+bus/3/effect/0/enabled = true
+bus/3/effect/1/effect = SubResource("AudioEffectEQ10_64ko7")
+bus/3/effect/1/enabled = true
+bus/3/effect/2/effect = SubResource("AudioEffectLowPassFilter_mh23d")
+bus/3/effect/2/enabled = true
+bus/3/effect/3/effect = SubResource("AudioEffectDistortion_4u8uo")
+bus/3/effect/3/enabled = true
