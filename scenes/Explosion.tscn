@@ -71,6 +71,7 @@ volume_db = 24.0
 bus = &"Explosion"
 
 [node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("2_o10mv")
 region_enabled = true
 region_rect = Rect2(1, 3, 24, 24)

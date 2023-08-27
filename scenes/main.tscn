@@ -13,7 +13,7 @@ script = ExtResource("1_75l85")
 [node name="Bubbles" type="Node2D" parent="."]
 
 [node name="Player" parent="." instance=ExtResource("3_rh74a")]
-position = Vector2(296, 107)
+position = Vector2(726, 377)
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_ts1fq")

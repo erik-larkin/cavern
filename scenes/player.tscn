@@ -24,7 +24,7 @@ shader_parameter/active = false
 shader_parameter/tint = Color(1, 1, 0, 1)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r8jkl"]
-radius = 16.0
+radius = 13.0
 height = 38.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ahan7"]
@@ -501,7 +501,7 @@ texture = ExtResource("1_fnmax")
 hframes = 9
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
-position = Vector2(0, 5)
+position = Vector2(-1, 5)
 shape = SubResource("CapsuleShape2D_r8jkl")
 
 [node name="Hitboxes" type="Node2D" parent="."]

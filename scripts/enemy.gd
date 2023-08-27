@@ -49,7 +49,11 @@ func escape_bubble() -> void:
 
 func fall_and_explode(delta) -> void:
 	apply_gravity(delta)
-	move_and_slide()
+	
+	if move_and_slide() and collision_with_outer_walls():
+		print("hi")
+		velocity.x = -velocity.x
+	
 	if is_on_floor():
 		exploded.emit(position)
 		queue_free()
@@ -59,13 +63,15 @@ func process_ai(delta) -> void:
 	apply_gravity(delta)
 	velocity.x = _direction_facing.x * _SPEED
 
-	if move_and_slide():
-		var collider = get_last_slide_collision().get_collider()
-		if collider is StaticBody2D:
-			change_direction()
+	if move_and_slide() and collision_with_outer_walls():
+		change_direction()
 	
 	if randi_range(1, 100) == 1 and is_on_floor():
 		ready_jump()
+
+
+func collision_with_outer_walls() -> bool:
+	return get_last_slide_collision().get_collider() is StaticBody2D
 
 
 func apply_gravity(delta) -> void:
