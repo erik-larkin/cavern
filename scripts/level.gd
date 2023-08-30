@@ -19,7 +19,9 @@ func _ready():
 		tile_map_colour = _TRANSPARENT_COLOUR
 		
 	_tile_map.set_layer_modulate(Layers.Airflow, tile_map_colour)
-
+	
+	for enemy in $Enemies.get_children():
+		enemy.exploded.connect(_on_enemy_exploded);
 
 func get_airflow_at_coords(coordinates : Vector2) -> Vector2i:
 	var map_coordinates := _tile_map.local_to_map(_tile_map.to_local(coordinates))
