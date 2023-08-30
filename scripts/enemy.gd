@@ -21,7 +21,7 @@ func _ready():
 	_animation_tree.active = true
 
 
-func _process(delta):
+func _process(_delta):
 	_animation_tree.set("parameters/In Air/blend_position", abs(velocity.y))
 
 
@@ -36,14 +36,14 @@ func get_captured_by_bubble() -> void:
 	_is_in_bubble = true
 	velocity = Vector2.ZERO
 	$SFX/Hit.play()
-	$NormalCollisionShape.set_disabled(true)
+	$NormalCollisionShape.set_deferred("disabled", true)
 	set_collision_layer_value(_ENEMIES_LAYER, false)
 
 
 func escape_bubble() -> void:
 	_is_in_bubble = false
 	velocity = Vector2.ZERO
-	$NormalCollisionShape.set_disabled(false)
+	$NormalCollisionShape.set_deferred("disabled", false)
 	set_collision_layer_value(_ENEMIES_LAYER, true)
 
 

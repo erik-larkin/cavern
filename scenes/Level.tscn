@@ -139,4 +139,4 @@ position = Vector2(81, 199)
 [node name="Enemy4" parent="Enemies" instance=ExtResource("5_fa8wl")]
 position = Vector2(676, 94)
 
-[connection signal="exploded" from="Enemies/Enemy" to="." method="_on_enemy_exploded"]
+[node name="Items" type="Node2D" parent="."]

@@ -47,7 +47,7 @@ func _process(_delta):
 		_captured_enemy.position = position
 
 
-func _integrate_forces(delta):
+func _integrate_forces(_delta):
 	if _is_floating:
 		apply_central_force(_current_airflow * _FLOAT_SPEED)
 
@@ -129,6 +129,6 @@ func _on_body_entered(body):
 			capture_enemy(body)
 
 
-func _on_pop_hitbox_area_entered(area):
+func _on_pop_hitbox_area_entered(_area):
 	if _is_floating:
 		popped_by_player.emit(self)

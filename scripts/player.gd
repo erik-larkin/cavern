@@ -149,7 +149,7 @@ func _on_bubble_blow_cooldown_timer_timeout() -> void:
 	_can_blow_bubble = true
 
 
-func _on_bubble_bounce_hitbox_area_entered(area):
+func _on_bubble_bounce_hitbox_area_entered(_area):
 	if Input.is_action_pressed("jump") and velocity.y > 0:
 		jump()
 
@@ -165,5 +165,5 @@ func _on_animation_tree_animation_finished(anim_name) -> void:
 	_animation_tree.set("parameters/conditions/" + parameter_name, false)
 
 
-func _on_hurtbox_body_entered(body):
+func _on_hurtbox_body_entered(_body):
 	take_damage(1)

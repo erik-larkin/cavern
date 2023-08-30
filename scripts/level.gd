@@ -4,7 +4,8 @@ class_name Level
 
 const _INVISIBLE_COLOUR : Color = Color(1, 1, 1, 0)
 const _TRANSPARENT_COLOUR : Color = Color(1, 1, 1, 0.3)
-const _EXPLOSION_SCENE := preload("res://scenes/explosion.tscn")
+const _EXPLOSION_SCENE := preload("res://scenes/Explosion.tscn")
+const _ITEM_SCENE := preload("res://scenes/Item.tscn")
 
 enum Layers {Foreground, Airflow}
 
@@ -37,3 +38,7 @@ func _on_enemy_exploded(enemy_position : Vector2):
 	var explosion_instance = _EXPLOSION_SCENE.instantiate()
 	explosion_instance.position = enemy_position
 	add_child(explosion_instance)
+	
+	var item_instance = _ITEM_SCENE.instantiate()
+	item_instance.position = enemy_position
+	$Items.add_child(item_instance)

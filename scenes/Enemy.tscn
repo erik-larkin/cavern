@@ -497,5 +497,3 @@ anim_player = NodePath("..")
 advance_expression_base_node = NodePath("../..")
 parameters/conditions/is_jumping = false
 "parameters/In Air/blend_position" = -0.00192308
-
-[connection signal="animation_finished" from="AnimationPlayer/AnimationTree" to="." method="_on_animation_tree_animation_finished"]
