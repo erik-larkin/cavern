@@ -50,9 +50,7 @@ func escape_bubble() -> void:
 func fall_and_explode(delta) -> void:
 	apply_gravity(delta)
 	
-	if move_and_slide() and collision_with_outer_walls():
-		print("hi")
-		velocity.x = -velocity.x
+	move_and_slide()
 	
 	if is_on_floor():
 		exploded.emit(position)

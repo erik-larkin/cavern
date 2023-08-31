@@ -3,6 +3,33 @@
 [ext_resource type="Texture2D" uid="uid://bgk2r02v2nfsu" path="res://assets/images/fruit-sheet.png" id="1_stybn"]
 [ext_resource type="Script" path="res://scripts/item.gd" id="1_ybkut"]
 
+[sub_resource type="Animation" id="Animation_f86fh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0.7, 0.7)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0, -8)]
+}
+
 [sub_resource type="Animation" id="Animation_7mume"]
 resource_name = "apple"
 length = 0.001
@@ -17,65 +44,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [Rect2(2, 2, 47, 52)]
-}
-
-[sub_resource type="Animation" id="Animation_m04iy"]
-resource_name = "raspberry"
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:region_rect")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [Rect2(52, 4, 43, 49)]
-}
-
-[sub_resource type="Animation" id="Animation_f86fh"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [Vector2(1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite:offset")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [Vector2(0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_qgcqx"]
-resource_name = "lemon"
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:region_rect")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Rect2(102, 6, 45, 46)]
 }
 
 [sub_resource type="Animation" id="Animation_56qk1"]
@@ -104,7 +72,23 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0.1, 0.3, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(0.95, 0.95), Vector2(1.05, 1.05), Vector2(1, 1)]
+"values": [Vector2(0.65, 0.65), Vector2(0.75, 0.75), Vector2(0.7, 0.7)]
+}
+
+[sub_resource type="Animation" id="Animation_qgcqx"]
+resource_name = "lemon"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(102, 6, 45, 46)]
 }
 
 [sub_resource type="Animation" id="Animation_nf0q4"]
@@ -133,7 +117,35 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0.2, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(0, 2), Vector2(0, -2)]
+"values": [Vector2(0, -10), Vector2(0, -6)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.7, 0.7)]
+}
+
+[sub_resource type="Animation" id="Animation_m04iy"]
+resource_name = "raspberry"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Rect2(52, 4, 43, 49)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qtlae"]
@@ -147,7 +159,7 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntqu4"]
-radius = 25.02
+radius = 14.0357
 
 [node name="Item" type="Node2D"]
 script = ExtResource("1_ybkut")
@@ -158,11 +170,15 @@ libraries = {
 }
 
 [node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(0.7, 0.7)
 texture = ExtResource("1_stybn")
+offset = Vector2(0, -8)
 region_enabled = true
 region_rect = Rect2(2, 2, 47, 52)
 
 [node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource("CircleShape2D_ntqu4")
