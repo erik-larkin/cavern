@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://ctbqhgied536w"]
+[gd_scene load_steps=12 format=3 uid="uid://ctbqhgied536w"]
 
 [ext_resource type="Texture2D" uid="uid://bgk2r02v2nfsu" path="res://assets/images/fruit-sheet.png" id="1_stybn"]
 [ext_resource type="Script" path="res://scripts/item.gd" id="1_ybkut"]
+[ext_resource type="AudioStream" uid="uid://b78geoeuy1wx6" path="res://assets/sounds/score0.ogg" id="3_xsjw7"]
 
 [sub_resource type="Animation" id="Animation_f86fh"]
 length = 0.001
@@ -159,10 +160,11 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntqu4"]
-radius = 14.0357
+radius = 9.05539
 
 [node name="Item" type="Node2D"]
 script = ExtResource("1_ybkut")
+type = 4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -174,11 +176,17 @@ scale = Vector2(0.7, 0.7)
 texture = ExtResource("1_stybn")
 offset = Vector2(0, -8)
 region_enabled = true
-region_rect = Rect2(2, 2, 47, 52)
+region_rect = Rect2(52, 4, 43, 49)
 
 [node name="Hitbox" type="Area2D" parent="."]
-collision_layer = 8
-collision_mask = 0
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource("CircleShape2D_ntqu4")
+
+[node name="CollectSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_xsjw7")
+bus = &"SFX"
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

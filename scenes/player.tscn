@@ -480,7 +480,7 @@ _data = {
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
-collision_mask = 57
+collision_mask = 49
 platform_on_leave = 2
 script = ExtResource("1_hn182")
 _animation_tree_path = NodePath("SpriteAnimationPlayer/AnimationTree")
