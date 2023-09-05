@@ -32,7 +32,7 @@ func set_animation() -> void:
 			animation = "raspberry"
 		Types.APPLE:
 			animation = "apple"
-			
+	
 	$AnimationPlayer.play(animation)
 
 

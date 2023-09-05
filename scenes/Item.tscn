@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://ctbqhgied536w"]
+[gd_scene load_steps=18 format=3 uid="uid://ctbqhgied536w"]
 
 [ext_resource type="Texture2D" uid="uid://bgk2r02v2nfsu" path="res://assets/images/fruit-sheet.png" id="1_stybn"]
 [ext_resource type="Script" path="res://scripts/item.gd" id="1_ybkut"]
 [ext_resource type="AudioStream" uid="uid://b78geoeuy1wx6" path="res://assets/sounds/score0.ogg" id="3_xsjw7"]
+[ext_resource type="Texture2D" uid="uid://cfdjuq7dsag0j" path="res://assets/images/sparkle.png" id="4_7mhgg"]
 
 [sub_resource type="Animation" id="Animation_f86fh"]
 length = 0.001
@@ -162,6 +163,38 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntqu4"]
 radius = 9.05539
 
+[sub_resource type="Gradient" id="Gradient_enaho"]
+offsets = PackedFloat32Array(0, 0.262599, 0.750663, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.971731, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_8h0b0"]
+gradient = SubResource("Gradient_enaho")
+use_hdr = true
+
+[sub_resource type="Curve" id="Curve_11skl"]
+_data = [Vector2(0, 0.515789), 0.0, 0.0, 0, 0, Vector2(0.306373, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_3iat3"]
+curve = SubResource("Curve_11skl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y7ixb"]
+emission_shape = 1
+emission_sphere_radius = 20.0
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+gravity = Vector3(0, 0, 0)
+angular_velocity_min = -40.0
+angular_velocity_max = 40.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_min = 0.5
+scale_max = 0.5
+scale_curve = SubResource("CurveTexture_3iat3")
+color_ramp = SubResource("GradientTexture1D_8h0b0")
+hue_variation_min = -0.05
+hue_variation_max = 0.05
+
 [node name="Item" type="Node2D"]
 script = ExtResource("1_ybkut")
 type = 4
@@ -183,10 +216,16 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+visible = false
 shape = SubResource("CircleShape2D_ntqu4")
 
 [node name="CollectSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_xsjw7")
 bus = &"SFX"
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(0, -5)
+process_material = SubResource("ParticleProcessMaterial_y7ixb")
+texture = ExtResource("4_7mhgg")
 
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
