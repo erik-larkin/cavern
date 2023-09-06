@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://vx56msnqsma2"]
+[gd_scene load_steps=72 format=3 uid="uid://vx56msnqsma2"]
 
 [ext_resource type="Texture2D" uid="uid://dwfgu8421xm0c" path="res://assets/images/player-sheet.png" id="1_fnmax"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_hn182"]
@@ -259,7 +259,7 @@ tracks/1/path = NodePath("SFX/Footsteps")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2),
+"times": PackedFloat32Array(0.1, 0.3),
 "transitions": PackedFloat32Array(1, 1),
 "values": [{
 "args": [0.0],
@@ -304,31 +304,26 @@ blend_point_0/pos = 0.0
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1vbnk"]
 animation = &"jump"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mqv4g"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_18s36"]
 animation = &"run"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_lg4oo"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_m2vuf"]
+graph_offset = Vector2(-237.717, -103.063)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_18s36")
+nodes/Animation/position = Vector2(0, 100)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_lg4oo")
+nodes/TimeScale/position = Vector2(180, 100)
+nodes/output/position = Vector2(360, 120)
+node_connections = [&"output", 0, &"TimeScale", &"TimeScale", 0, &"Animation"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6558j"]
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8b5ii"]
-advance_mode = 2
-advance_expression = "get_real_velocity().x != 0 and _input_direction"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s0bmh"]
-advance_mode = 2
-advance_expression = "get_real_velocity().x == 0 or not _input_direction"
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fdglj"]
 advance_mode = 2
 advance_expression = "velocity.y < 0"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_loquj"]
-advance_mode = 2
-advance_expression = "velocity.y < 0"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_goysa"]
-advance_mode = 2
-advance_condition = &"blowing_bubble"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tyq2t"]
 switch_mode = 2
@@ -351,10 +346,6 @@ advance_expression = "is_on_floor()"
 advance_mode = 2
 advance_condition = &"blowing_bubble"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fe087"]
-advance_mode = 2
-advance_expression = "velocity.y > 0"
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_idywq"]
 advance_mode = 2
 advance_expression = "velocity.y > 0"
@@ -372,10 +363,6 @@ advance_expression = "not is_on_floor()"
 advance_mode = 2
 advance_condition = &"is_hurt"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s02ra"]
-advance_mode = 2
-advance_condition = &"is_hurt"
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u4s5h"]
 advance_mode = 2
 advance_condition = &"is_hurt"
@@ -388,6 +375,30 @@ advance_condition = &"is_hurt"
 switch_mode = 2
 advance_mode = 2
 advance_expression = "_current_health > 0"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vek1s"]
+advance_mode = 2
+advance_expression = "velocity.y > 0"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kftwn"]
+advance_mode = 2
+advance_condition = &"is_hurt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xrypg"]
+advance_mode = 2
+advance_condition = &"blowing_bubble"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qybi8"]
+advance_mode = 2
+advance_expression = "velocity.y < 0"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7nvdr"]
+advance_mode = 2
+advance_expression = "get_real_velocity().x != 0 and _input_direction"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kda07"]
+advance_mode = 2
+advance_expression = "get_real_velocity().x == 0 or not _input_direction"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7hu2f"]
 states/End/position = Vector2(1162, 29)
@@ -404,10 +415,10 @@ states/idle/position = Vector2(213, 163)
 "states/in air/position" = Vector2(707, 422)
 states/jump/node = SubResource("AnimationNodeAnimation_1vbnk")
 states/jump/position = Vector2(213, 422)
-states/run/node = SubResource("AnimationNodeAnimation_mqv4g")
-states/run/position = Vector2(459, 163)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_6558j"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_8b5ii"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_s0bmh"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_fdglj"), "run", "jump", SubResource("AnimationNodeStateMachineTransition_loquj"), "run", "blow", SubResource("AnimationNodeStateMachineTransition_goysa"), "blow", "idle", SubResource("AnimationNodeStateMachineTransition_tyq2t"), "idle", "blow", SubResource("AnimationNodeStateMachineTransition_siue1"), "jump", "in air", SubResource("AnimationNodeStateMachineTransition_hf7u8"), "in air", "idle", SubResource("AnimationNodeStateMachineTransition_7a1f0"), "in air", "blow", SubResource("AnimationNodeStateMachineTransition_y73ne"), "run", "in air", SubResource("AnimationNodeStateMachineTransition_fe087"), "idle", "in air", SubResource("AnimationNodeStateMachineTransition_idywq"), "hurt", "die", SubResource("AnimationNodeStateMachineTransition_mirp8"), "blow", "in air", SubResource("AnimationNodeStateMachineTransition_m0j20"), "blow", "hurt", SubResource("AnimationNodeStateMachineTransition_e47pa"), "run", "hurt", SubResource("AnimationNodeStateMachineTransition_s02ra"), "idle", "hurt", SubResource("AnimationNodeStateMachineTransition_u4s5h"), "in air", "hurt", SubResource("AnimationNodeStateMachineTransition_qsbyd"), "hurt", "idle", SubResource("AnimationNodeStateMachineTransition_aimkv")]
-graph_offset = Vector2(-133.037, -78.3351)
+states/run/node = SubResource("AnimationNodeBlendTree_m2vuf")
+states/run/position = Vector2(469.349, 184.373)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_6558j"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_fdglj"), "blow", "idle", SubResource("AnimationNodeStateMachineTransition_tyq2t"), "idle", "blow", SubResource("AnimationNodeStateMachineTransition_siue1"), "jump", "in air", SubResource("AnimationNodeStateMachineTransition_hf7u8"), "in air", "idle", SubResource("AnimationNodeStateMachineTransition_7a1f0"), "in air", "blow", SubResource("AnimationNodeStateMachineTransition_y73ne"), "idle", "in air", SubResource("AnimationNodeStateMachineTransition_idywq"), "hurt", "die", SubResource("AnimationNodeStateMachineTransition_mirp8"), "blow", "in air", SubResource("AnimationNodeStateMachineTransition_m0j20"), "blow", "hurt", SubResource("AnimationNodeStateMachineTransition_e47pa"), "idle", "hurt", SubResource("AnimationNodeStateMachineTransition_u4s5h"), "in air", "hurt", SubResource("AnimationNodeStateMachineTransition_qsbyd"), "hurt", "idle", SubResource("AnimationNodeStateMachineTransition_aimkv"), "run", "in air", SubResource("AnimationNodeStateMachineTransition_vek1s"), "run", "hurt", SubResource("AnimationNodeStateMachineTransition_kftwn"), "run", "blow", SubResource("AnimationNodeStateMachineTransition_xrypg"), "run", "jump", SubResource("AnimationNodeStateMachineTransition_qybi8"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_7nvdr"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_kda07")]
+graph_offset = Vector2(133.349, -161.627)
 
 [sub_resource type="Animation" id="Animation_u1xau"]
 resource_name = "RESET"
@@ -499,6 +510,7 @@ material = SubResource("ShaderMaterial_hlmpm")
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("1_fnmax")
 hframes = 9
+frame = 5
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 5)
@@ -572,7 +584,8 @@ advance_expression_base_node = NodePath("../..")
 active = true
 parameters/conditions/blowing_bubble = false
 parameters/conditions/is_hurt = false
-"parameters/in air/blend_position" = -0.00316793
+"parameters/in air/blend_position" = 0.0539166
+parameters/run/TimeScale/scale = 1.0
 
 [node name="SFX" type="AudioStreamPlayer2D" parent="SpriteAnimationPlayer/AnimationTree"]
 

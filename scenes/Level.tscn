@@ -131,7 +131,6 @@ layer_1/tile_data = PackedInt32Array(851976, 1, 0, 851975, 1, 0, 851977, 1, 0, 8
 
 [node name="Item" parent="Items" instance=ExtResource("5_yrn0c")]
 position = Vector2(332, 411)
-type = 4
 
 [node name="Item2" parent="Items" instance=ExtResource("5_yrn0c")]
 position = Vector2(450, 412)

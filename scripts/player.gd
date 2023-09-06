@@ -58,6 +58,7 @@ func _physics_process(delta):
 		jump()
 	
 	_input_direction = Input.get_axis("move_left", "move_right")
+	_animation_tree.set("parameters/run/TimeScale/scale", abs(_input_direction))
 
 	if _input_direction and not _in_hitstun:
 		var acceleration = _ground_acceleration if is_on_floor() else _air_acceleration
@@ -115,8 +116,8 @@ func apply_invincibility_time(seconds : float):
 	)
 
 
-func set_direction(input_direction : int) -> void:
-	_direction_facing = Vector2(input_direction, 0)
+func set_direction(input_direction : float) -> void:
+	_direction_facing = Vector2(input_direction, 0).normalized()
 	$Sprite.flip_h = _direction_facing == Vector2.RIGHT
 	$Hitboxes.scale.x = input_direction * -1
 	
