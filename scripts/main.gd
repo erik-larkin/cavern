@@ -2,6 +2,9 @@ extends Node2D
 
 var BUBBLE_SCENE = preload("res://scenes/Bubble.tscn")
 const CHAIN_REACTION_POP_TIME : float = 0.03
+var score = 0;
+
+enum ItemTypes {APPLE, HEART, LEMON, LIFE, RASPBERRY}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -57,3 +60,18 @@ func recursive_bubble_pop(bubble : RigidBody2D, popped : Array[RigidBody2D]):
 			if adjacent_bubble != null and adjacent_bubble.has_method("pop"):
 				recursive_bubble_pop(adjacent_bubble, popped)
 	)
+
+
+func _on_level_item_collected(type):
+	match (type):
+		ItemTypes.HEART:
+			$Player._current_health += 1
+		ItemTypes.LEMON:
+			score += 10
+		ItemTypes.LIFE:
+			$Player._lives += 1
+		ItemTypes.RASPBERRY:
+			score += 50
+		ItemTypes.APPLE, _:
+			score += 100
+	print(score)

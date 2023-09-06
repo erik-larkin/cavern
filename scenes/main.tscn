@@ -20,5 +20,6 @@ stream = ExtResource("4_ts1fq")
 autoplay = true
 bus = &"Music"
 
+[connection signal="item_collected" from="Level" to="." method="_on_level_item_collected"]
 [connection signal="bubble_blown" from="Player" to="." method="_on_player_bubble_blown"]
 [connection signal="bubble_popped" from="Player" to="." method="_on_player_bubble_popped"]

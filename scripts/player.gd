@@ -35,6 +35,7 @@ var _can_blow_bubble = true
 var _in_hitstun = false
 var _invincible = false
 var _input_direction = 0
+var _lives = 3
 
 const _HITSTOP_DURATION : float = 0.4
 const _HITSTOP_TIMESCALE : float = 0.05

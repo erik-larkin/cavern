@@ -1,12 +1,14 @@
 @tool
 
+class_name Item
+
 extends Node2D
+
+signal collected(type : Types)
 
 enum Types {APPLE, HEART, LEMON, LIFE, RASPBERRY}
 
-@export var type : Types
-
-var collected : bool = false
+@export var _type : Types
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,7 +23,7 @@ func _process(_delta):
 func set_animation() -> void:
 	var animation : String = ""
 	
-	match (type): 
+	match (_type): 
 		Types.HEART:
 			animation = "heart"
 		Types.LEMON:
@@ -37,9 +39,9 @@ func set_animation() -> void:
 
 
 func _on_hitbox_body_entered(body):
-	if not collected:
-		collected = true
+	if visible:
 		visible = false
+		collected.emit(_type)
 		$CollectSound.play()
 		$CollectSound.finished.connect(queue_free)
 
