@@ -17,7 +17,7 @@ func _ready():
 
 func _process(_delta):
 	if Engine.is_editor_hint():
-		set_animation()
+		pass
 
 
 func set_animation() -> void:
@@ -35,10 +35,11 @@ func set_animation() -> void:
 		Types.APPLE:
 			animation = "apple"
 	
-	$AnimationPlayer.play(animation)
+	if (animation != $AnimationPlayer.current_animation):
+		$AnimationPlayer.play(animation)
 
 
-func _on_hitbox_body_entered(body):
+func _on_hitbox_body_entered(_body):
 	if visible:
 		visible = false
 		collected.emit(_type)

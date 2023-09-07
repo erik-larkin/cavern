@@ -8,7 +8,7 @@ enum ItemTypes {APPLE, HEART, LEMON, LIFE, RASPBERRY}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	$UI.set_health($Player._maximum_health)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -65,7 +65,7 @@ func recursive_bubble_pop(bubble : RigidBody2D, popped : Array[RigidBody2D]):
 func _on_level_item_collected(type):
 	match (type):
 		ItemTypes.HEART:
-			$Player._current_health += 1
+			$Player.gain_health(1)
 		ItemTypes.LEMON:
 			score += 10
 		ItemTypes.LIFE:

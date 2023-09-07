@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://ccdyuei7e5m14"]
+
+[ext_resource type="Script" path="res://scripts/UI.gd" id="1_5xjcq"]
+[ext_resource type="Texture2D" uid="uid://brcqss02t78d1" path="res://assets/images/health.png" id="2_re6s6"]
+
+[sub_resource type="SystemFont" id="SystemFont_08t1b"]
+
+[sub_resource type="Theme" id="Theme_6r3yr"]
+default_font = SubResource("SystemFont_08t1b")
+
+[node name="UI" type="Control" node_paths=PackedStringArray("_PLAYER_HEALTH")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_6r3yr")
+script = ExtResource("1_5xjcq")
+_PLAYER_HEALTH = NodePath("Health")
+
+[node name="Health" type="TextureRect" parent="."]
+layout_mode = 0
+offset_top = 450.0
+offset_right = 44.0
+offset_bottom = 480.0
+texture = ExtResource("2_re6s6")
+expand_mode = 1
+stretch_mode = 1

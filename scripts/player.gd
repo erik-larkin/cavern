@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 signal bubble_blown(spawn_position, direction)
 signal bubble_popped(bubble)
+signal health_updated(new_health : int)
 
 @export var _animation_tree_path : NodePath
 @export var _maximum_health : int = 3
@@ -27,7 +28,7 @@ signal bubble_popped(bubble)
 
 
 @onready var _animation_tree = get_node(_animation_tree_path)
-@onready var _current_health = _maximum_health
+var _current_health = _maximum_health
 
 var _gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var _direction_facing = Vector2.LEFT
@@ -42,6 +43,7 @@ const _HITSTOP_TIMESCALE : float = 0.05
 const _HIT_SHAKE_INTENSITY : float = 100
 
 func _ready():
+	update_health(_maximum_health)
 	_animation_tree.active = true
 	$SpriteAnimationPlayer.get_animation("hurt").length = _hitstun_time
 
@@ -79,12 +81,25 @@ func _physics_process(delta):
 func take_damage(amount : int) -> void:
 	if not _invincible:
 		_animation_tree.set("parameters/conditions/is_hurt", true)
-		_current_health -= amount
+		lose_health(amount)
 		
 		if _current_health <= 0:
 			die()
 		else:
 			apply_hitstun()
+
+
+func gain_health(amount : int) -> void:
+	update_health(_current_health + amount)
+
+
+func lose_health(amount : int) -> void:
+	update_health(_current_health - amount)
+
+
+func update_health(new_health : int) -> void:
+	_current_health = clamp(new_health, 0, _maximum_health)
+	health_updated.emit(_current_health)
 
 
 func die() -> void:

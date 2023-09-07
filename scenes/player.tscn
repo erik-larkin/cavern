@@ -495,7 +495,6 @@ collision_mask = 49
 platform_on_leave = 2
 script = ExtResource("1_hn182")
 _animation_tree_path = NodePath("SpriteAnimationPlayer/AnimationTree")
-_maximum_health = 10
 _ground_top_speed = 250.0
 _ground_acceleration = 50.0
 _ground_deceleration = 20.0
