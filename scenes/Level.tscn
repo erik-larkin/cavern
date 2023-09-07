@@ -1,11 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://c23gwg707lkdu"]
+[gd_scene load_steps=11 format=3 uid="uid://c23gwg707lkdu"]
 
 [ext_resource type="Texture2D" uid="uid://e0eueovjwdd0" path="res://assets/images/bg0.png" id="1_0wpql"]
 [ext_resource type="Script" path="res://scripts/level.gd" id="1_l48yf"]
 [ext_resource type="Texture2D" uid="uid://b7ry713ph5hhw" path="res://assets/images/block-sheet.png" id="2_j76gw"]
 [ext_resource type="Texture2D" uid="uid://b80gcdcfskrk0" path="res://assets/images/direction-sheet.png" id="4_dqhru"]
 [ext_resource type="PackedScene" uid="uid://cnxiixbxevigx" path="res://scenes/Enemy.tscn" id="5_wae2g"]
-[ext_resource type="PackedScene" uid="uid://ctbqhgied536w" path="res://scenes/Item.tscn" id="5_yrn0c"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_scy82"]
 normal = Vector2(1, 0)
@@ -138,21 +137,3 @@ position = Vector2(404, 183)
 position = Vector2(90, 195)
 
 [node name="Items" type="Node2D" parent="."]
-
-[node name="Item" parent="Items" instance=ExtResource("5_yrn0c")]
-position = Vector2(332, 411)
-
-[node name="Item2" parent="Items" instance=ExtResource("5_yrn0c")]
-position = Vector2(450, 412)
-_type = 1
-
-[node name="Item3" parent="Items" instance=ExtResource("5_yrn0c")]
-position = Vector2(509, 413)
-_type = 2
-
-[node name="Item4" parent="Items" instance=ExtResource("5_yrn0c")]
-position = Vector2(398, 412)
-_type = 3
-
-[node name="Item6" parent="Items" instance=ExtResource("5_yrn0c")]
-position = Vector2(262, 410)
