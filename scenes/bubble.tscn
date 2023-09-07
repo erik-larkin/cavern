@@ -330,11 +330,6 @@ debug_color = Color(0.803922, 0.419608, 0, 0.419608)
 position = Vector2(0, -1)
 shape = SubResource("CircleShape2D_m8g2f")
 
-[node name="VisibleOnScreenNotifier" type="VisibleOnScreenNotifier2D" parent="."]
-visible = false
-position = Vector2(-9.53674e-06, -1)
-scale = Vector2(2.7, 2.7)
-
 [node name="PopTimer" type="Timer" parent="."]
 one_shot = true
 
@@ -360,5 +355,4 @@ parameters/spawn/TimeScale/scale = 1.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="area_entered" from="Hitboxes/PlayerPopHitbox" to="." method="_on_pop_hitbox_area_entered"]
-[connection signal="screen_exited" from="VisibleOnScreenNotifier" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
 [connection signal="timeout" from="PopTimer" to="." method="_on_pop_timer_timeout"]

@@ -7,6 +7,7 @@ signal started_floating (bubble : RigidBody2D)
 enum Layers { OUTER_WALLS = 1, ENEMIES = 3, BUBBLES = 5 }
 
 const _SPAWN_OFFSET = 20
+const _TEXTURE_HEIGHT = 41
 
 @export var _SPAWN_SPEED : float
 @export var _CAPTURE_TIME : float
@@ -43,6 +44,7 @@ func _process(_delta):
 		var time_scale = _POP_TIME / $PopTimer.time_left
 		_animation_tree.set("parameters/float/TimeScale/scale", time_scale)
 	
+	
 	if _captured_enemy:
 		_captured_enemy.position = position
 
@@ -50,6 +52,9 @@ func _process(_delta):
 func _integrate_forces(_delta):
 	if _is_floating:
 		apply_central_force(_current_airflow * _FLOAT_SPEED)
+
+	position.y = wrapf(position.y, -(_TEXTURE_HEIGHT / 2), 
+		get_viewport_rect().size.y + (_TEXTURE_HEIGHT / 2))
 
 
 func set_spawn_animation_length() -> void:
@@ -112,10 +117,6 @@ func capture_enemy(enemy : Enemy) -> void:
 
 func scale_enemy_sprite_to_fit_in_bubble():
 	pass
-
-
-func _on_visible_on_screen_notifier_2d_screen_exited():
-	queue_free()
 
 
 func _on_pop_timer_timeout():

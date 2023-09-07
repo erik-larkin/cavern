@@ -6,9 +6,11 @@ signal exploded(enemy_position : Vector2)
 
 @export var _SPEED : float
 @export var _JUMP_VELOCITY : float
+@export var _terminal_velocity : float = 700
 @export var _animation_tree_path : NodePath
 
 @onready var _animation_tree : AnimationTree = get_node(_animation_tree_path)
+@onready var _TEXTURE_HEIGHT = $Sprite.texture.get_height() * 0.7
 
 var _gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var _direction_facing := Vector2.LEFT
@@ -64,6 +66,9 @@ func process_ai(delta) -> void:
 	if move_and_slide() and collision_with_outer_walls():
 		change_direction()
 	
+	position.y = wrapf(position.y, -(_TEXTURE_HEIGHT / 2), 
+		get_viewport_rect().size.y + (_TEXTURE_HEIGHT / 2))
+	
 	if randi_range(1, 100) == 1 and is_on_floor():
 		ready_jump()
 
@@ -74,7 +79,8 @@ func collision_with_outer_walls() -> bool:
 
 func apply_gravity(delta) -> void:
 	if not is_on_floor():
-		velocity.y += _gravity * delta
+		velocity.y = clamp(velocity.y + (_gravity * delta), 
+			-_terminal_velocity, _terminal_velocity)
 
 
 func ready_jump() -> void:

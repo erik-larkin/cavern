@@ -14,6 +14,7 @@ signal health_updated(new_health : int)
 
 @export_group("Air Properties")
 @export var _air_top_speed : float = 350
+@export var _terminal_velocity : float = 700
 @export_exp_easing var _air_acceleration : float = 30
 @export_exp_easing("attenuation") var _air_deceleration : float = 10
 @export var _jump_speed : float = 500
@@ -26,10 +27,10 @@ signal health_updated(new_health : int)
 @export var _hitstun_time : float = 0.3
 @export var _hit_invincibility_time : float = 1
 
-
+@onready var _TEXTURE_HEIGHT = $Sprite.texture.get_height() * 0.7
 @onready var _animation_tree = get_node(_animation_tree_path)
-var _current_health = _maximum_health
 
+var _current_health = _maximum_health
 var _gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var _direction_facing = Vector2.LEFT
 var _can_blow_bubble = true
@@ -37,6 +38,7 @@ var _in_hitstun = false
 var _invincible = false
 var _input_direction = 0
 var _lives = 3
+
 
 const _HITSTOP_DURATION : float = 0.4
 const _HITSTOP_TIMESCALE : float = 0.05
@@ -55,7 +57,8 @@ func _process(_delta):
 
 func _physics_process(delta):
 	if not is_on_floor():
-		velocity.y += _gravity * delta
+		velocity.y = clamp(velocity.y + (_gravity * delta), 
+			-_terminal_velocity, _terminal_velocity)
 
 	if Input.is_action_just_pressed("jump") and can_jump():
 		jump()
@@ -76,6 +79,9 @@ func _physics_process(delta):
 	
 	if move_and_slide() and _input_direction:
 		push_bubbles()
+	
+	position.y = wrapf(position.y, -(_TEXTURE_HEIGHT / 2), 
+		get_viewport_rect().size.y + (_TEXTURE_HEIGHT / 2))
 
 
 func take_damage(amount : int) -> void:

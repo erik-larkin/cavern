@@ -14,5 +14,4 @@ func set_health(health : int) -> void:
 	_PLAYER_HEALTH.size.x = _HEART_TEXTURE_WIDTH * health
 
 func _on_player_health_updated(new_health):
-	print(new_health)
 	set_health(new_health)
