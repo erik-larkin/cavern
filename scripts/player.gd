@@ -125,6 +125,7 @@ func update_health(new_health : int) -> void:
 
 
 func die() -> void:
+	await Slowdown.apply_hitstop(_HITSTOP_DURATION * 1.5, _HITSTOP_TIMESCALE)
 	_in_hitstun = true
 	# turn off collision with tilemap and bubbles on death
 	set_collision_mask_value(6, false)
