@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+class_name Player
+
 signal bubble_blown(spawn_position, direction)
 signal bubble_popped(bubble)
 signal health_updated(new_health : int)
@@ -37,7 +39,7 @@ var _can_blow_bubble = true
 var _in_hitstun = false
 var _invincible = false
 var _input_direction = 0
-var _lives = 3
+var _lives_remaining = 3
 
 
 const _HITSTOP_DURATION : float = 0.4
@@ -53,6 +55,12 @@ func _ready():
 func _process(_delta):
 	if Input.is_action_just_pressed("blow") and _can_blow_bubble and not _in_hitstun:
 		blow_bubble()
+
+
+func spawn(position : Vector2, direction : float) -> void:
+	update_health(_maximum_health)
+	self.position = position
+	set_direction(direction)
 
 
 func _physics_process(delta):

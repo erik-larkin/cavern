@@ -1,14 +1,17 @@
 extends Node2D
 
-var BUBBLE_SCENE = preload("res://scenes/Bubble.tscn")
 const CHAIN_REACTION_POP_TIME : float = 0.03
+
+var BUBBLE_SCENE = preload("res://scenes/Bubble.tscn")
+@onready var player = $Player
+@onready var level = $Level 
 var score = 0;
 
 enum ItemTypes {APPLE, HEART, LEMON, LIFE, RASPBERRY}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$UI.set_health($Player._maximum_health)
+	player.spawn(level.get_player_spawn_point(), level.get_player_spawn_direction().x)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

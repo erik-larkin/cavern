@@ -15,7 +15,7 @@ enum Layers {Foreground, Airflow}
 @onready var _tile_map : TileMap = $TileMap
 
 
-func _ready():
+func _ready() -> void:
 	var tile_map_colour = _INVISIBLE_COLOUR
 	
 	if _SHOW_AIRFLOWS:
@@ -40,7 +40,7 @@ func get_airflow_at_coords(coordinates : Vector2) -> Vector2i:
 	return Vector2.ZERO
 
 
-func _on_enemy_exploded(enemy_position : Vector2):
+func _on_enemy_exploded(enemy_position : Vector2) -> void:
 	var explosion_instance = _EXPLOSION_SCENE.instantiate()
 	explosion_instance.position = enemy_position
 	add_child(explosion_instance)
@@ -51,6 +51,14 @@ func _on_enemy_exploded(enemy_position : Vector2):
 	$Items.add_child(item_instance)
 
 
-func _on_item_collected(type : int):
+func _on_item_collected(type : int) -> void:
 	item_collected.emit(type)
+
+
+func get_player_spawn_point() -> Vector2:
+	return $PlayerSpawnPoint.position
+
+
+func get_player_spawn_direction() -> Vector2:
+	return $PlayerSpawnPoint.get("metadata/Direction")
 
