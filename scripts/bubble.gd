@@ -112,11 +112,6 @@ func capture_enemy(enemy : Enemy) -> void:
 	if enemy.has_method("get_captured_by_bubble"):
 		enemy.get_captured_by_bubble()
 		_captured_enemy = enemy
-		scale_enemy_sprite_to_fit_in_bubble()
-
-
-func scale_enemy_sprite_to_fit_in_bubble():
-	pass
 
 
 func _on_pop_timer_timeout():

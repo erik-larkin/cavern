@@ -55,6 +55,9 @@ func _ready():
 func _process(_delta):
 	if Input.is_action_just_pressed("blow") and _can_blow_bubble and not _in_hitstun:
 		blow_bubble()
+	
+	if Input.is_action_just_pressed("kill_player"):
+		take_damage(_current_health)
 
 
 func spawn(position : Vector2, direction : float) -> void:
@@ -88,8 +91,9 @@ func _physics_process(delta):
 	if move_and_slide() and _input_direction:
 		push_bubbles()
 	
-	position.y = wrapf(position.y, -(_TEXTURE_HEIGHT / 2), 
-		get_viewport_rect().size.y + (_TEXTURE_HEIGHT / 2))
+	if not dead():
+		position.y = wrapf(position.y, -(_TEXTURE_HEIGHT / 2), 
+			get_viewport_rect().size.y + (_TEXTURE_HEIGHT / 2))
 
 
 func take_damage(amount : int) -> void:
@@ -101,6 +105,10 @@ func take_damage(amount : int) -> void:
 			die()
 		else:
 			apply_hitstun()
+
+
+func dead() -> bool:
+	return _current_health <= 0
 
 
 func gain_health(amount : int) -> void:
@@ -117,9 +125,10 @@ func update_health(new_health : int) -> void:
 
 
 func die() -> void:
-	_invincible = true
 	_in_hitstun = true
+	# turn off collision with tilemap and bubbles on death
 	set_collision_mask_value(6, false)
+	set_collision_mask_value(5, false)
 	velocity = Vector2.ZERO
 	jump()
 
@@ -197,4 +206,5 @@ func _on_animation_tree_animation_finished(anim_name) -> void:
 
 
 func _on_hurtbox_body_entered(_body):
-	take_damage(1)
+	if not dead():
+		take_damage(1)

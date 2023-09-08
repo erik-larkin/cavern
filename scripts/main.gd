@@ -45,8 +45,9 @@ func set_bubble_airflow_direction(bubble : RigidBody2D):
 
 
 func _on_bubble_popped_by_player(bubble):
-	var popped : Array[RigidBody2D] = []
-	recursive_bubble_pop(bubble, popped)
+	if not player.dead():
+		var popped : Array[RigidBody2D] = []
+		recursive_bubble_pop(bubble, popped)
 
 
 # DFS algorithm to pop all adjacent bubbles
