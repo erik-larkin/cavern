@@ -5,9 +5,11 @@ class_name Player
 signal bubble_blown(spawn_position, direction)
 signal bubble_popped(bubble)
 signal health_updated(new_health : int)
+signal died(lives_remaining : int)
 
 @export var _animation_tree_path : NodePath
 @export var _maximum_health : int = 3
+@export var _starting_lives : int = 3
 
 @export_group("Ground Properties")
 @export var _ground_top_speed : float = 300
@@ -27,7 +29,7 @@ signal health_updated(new_health : int)
 
 @export_group("Hitstun Properties")
 @export var _hitstun_time : float = 0.3
-@export var _hit_invincibility_time : float = 1
+@export var _invincibility_time : float = 1
 
 @onready var _TEXTURE_HEIGHT = $Sprite.texture.get_height() * 0.7
 @onready var _animation_tree = get_node(_animation_tree_path)
@@ -39,7 +41,7 @@ var _can_blow_bubble = true
 var _in_hitstun = false
 var _invincible = false
 var _input_direction = 0
-var _lives_remaining = 3
+var _lives_remaining = _starting_lives
 
 
 const _HITSTOP_DURATION : float = 0.4
@@ -62,8 +64,23 @@ func _process(_delta):
 
 func spawn(position : Vector2, direction : float) -> void:
 	update_health(_maximum_health)
-	self.position = position
+	
+	set_collision_mask_value(6, true)
+	set_collision_mask_value(5, true)
+	
 	set_direction(direction)
+	self.position = position
+	
+	_in_hitstun = false
+	_invincible = false
+	
+	_animation_tree.set("parameters/conditions/is_off_screen", false)
+
+
+
+func respawn(position : Vector2, direction : float) -> void:
+	spawn(position, direction)
+	apply_invincibility_time(_invincibility_time)
 
 
 func _physics_process(delta):
@@ -131,6 +148,7 @@ func die() -> void:
 	set_collision_mask_value(6, false)
 	set_collision_mask_value(5, false)
 	velocity = Vector2.ZERO
+	_lives_remaining -= 1
 	jump()
 
 
@@ -139,7 +157,7 @@ func apply_hitstun() -> void:
 	await Slowdown.apply_hitstop(_HITSTOP_DURATION, _HITSTOP_TIMESCALE)
 	
 	velocity.x = (_direction_facing * -1 * 500).x
-	apply_invincibility_time(_hit_invincibility_time)
+	apply_invincibility_time(_invincibility_time)
 
 	get_tree().create_timer(_hitstun_time).timeout.connect(
 		func(): _in_hitstun = false
@@ -209,3 +227,10 @@ func _on_animation_tree_animation_finished(anim_name) -> void:
 func _on_hurtbox_body_entered(_body):
 	if not dead():
 		take_damage(1)
+
+
+func _on_visible_on_screen_notifier_screen_exited():
+	if (dead()):
+		_animation_tree.set("parameters/conditions/is_hurt", false)
+		_animation_tree.set("parameters/conditions/is_off_screen", true)
+		died.emit(_lives_remaining)

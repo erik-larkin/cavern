@@ -79,3 +79,10 @@ func _on_level_item_collected(type):
 		ItemTypes.APPLE, _:
 			score += 100
 	print(score)
+
+
+func _on_player_died(lives_remaining):
+	if (lives_remaining > 0):
+		get_tree().create_timer(1).timeout.connect(func():
+			player.respawn(level.get_player_spawn_point(), level.get_player_spawn_direction().x)
+		)
