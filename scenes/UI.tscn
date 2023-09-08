@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://brcqss02t78d1" path="res://assets/images/health.png" id="2_re6s6"]
 
 [sub_resource type="SystemFont" id="SystemFont_08t1b"]
+subpixel_positioning = 0
 
 [sub_resource type="Theme" id="Theme_6r3yr"]
 default_font = SubResource("SystemFont_08t1b")
