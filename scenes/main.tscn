@@ -28,6 +28,7 @@ script = ExtResource("5_kgiw3")
 
 [node name="UI" parent="." instance=ExtResource("5_t15fe")]
 
+[connection signal="explosion" from="Level" to="." method="_on_level_explosion"]
 [connection signal="item_collected" from="Level" to="." method="_on_level_item_collected"]
 [connection signal="bubble_blown" from="Player" to="." method="_on_player_bubble_blown"]
 [connection signal="bubble_popped" from="Player" to="." method="_on_player_bubble_popped"]

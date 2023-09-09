@@ -95,3 +95,7 @@ func _on_player_died(lives_remaining):
 
 func _on_player_hurt(damage_ratio : float):
 	shake_camera(3.0 * damage_ratio)
+
+
+func _on_level_explosion():
+	shake_camera(3.0)

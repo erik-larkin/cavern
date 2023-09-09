@@ -8,6 +8,7 @@ const _EXPLOSION_SCENE := preload("res://scenes/Explosion.tscn")
 const _ITEM_SCENE := preload("res://scenes/Item.tscn")
 
 signal item_collected(type : int)
+signal explosion
 
 enum Layers {Foreground, Airflow}
 
@@ -44,6 +45,7 @@ func _on_enemy_exploded(enemy_position : Vector2) -> void:
 	var explosion_instance = _EXPLOSION_SCENE.instantiate()
 	explosion_instance.position = enemy_position
 	add_child(explosion_instance)
+	explosion.emit()
 	
 	var item_instance : Item = _ITEM_SCENE.instantiate()
 	item_instance.position = enemy_position
