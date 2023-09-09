@@ -531,13 +531,6 @@ collision_mask = 49
 platform_on_leave = 2
 script = ExtResource("1_hn182")
 _animation_tree_path = NodePath("SpriteAnimationPlayer/AnimationTree")
-_ground_top_speed = 250.0
-_ground_acceleration = 50.0
-_ground_deceleration = 20.0
-_air_top_speed = 300.0
-_jump_speed = 450.0
-_bubble_push_force = 1000.0
-_hitstun_time = 0.5
 metadata/_edit_group_ = true
 
 [node name="Sprite" type="Sprite2D" parent="."]

@@ -14,23 +14,23 @@ signal hurt(damage_ratio : float)
 @export var SHAKE_DECAY_RATE : float = 5.0
 
 @export_group("Ground Properties")
-@export var _ground_top_speed : float = 300
-@export_exp_easing var _ground_acceleration : float = 100
-@export_exp_easing("attenuation") var _ground_deceleration : float = 50
+@export var _ground_top_speed : float = 250
+@export_exp_easing var _ground_acceleration : float = 900
+@export_exp_easing("attenuation") var _ground_deceleration : float = 900
 
 @export_group("Air Properties")
-@export var _air_top_speed : float = 350
+@export var _air_top_speed : float = 300
 @export var _terminal_velocity : float = 700
-@export_exp_easing var _air_acceleration : float = 30
-@export_exp_easing("attenuation") var _air_deceleration : float = 10
-@export var _jump_speed : float = 500
+@export_exp_easing var _air_acceleration : float = 1000
+@export_exp_easing("attenuation") var _air_deceleration : float = 800
+@export var _jump_speed : float = 450
 
 @export_group("Bubble Properties")
-@export var _bubble_push_force : float = 300
+@export var _bubble_push_force : float = 1000
 @export var _bubble_blow_cooldown : float =  0.5
 
 @export_group("Hitstun Properties")
-@export var _hitstun_time : float = 0.3
+@export var _hitstun_time : float = 0.5
 @export var _invincibility_time : float = 1
 
 @onready var _TEXTURE_HEIGHT = $Sprite.texture.get_height() * 0.7
@@ -84,7 +84,6 @@ func spawn(position : Vector2, direction : float) -> void:
 	_animation_tree.set("parameters/conditions/is_off_screen", false)
 
 
-
 func respawn(position : Vector2, direction : float) -> void:
 	spawn(position, direction)
 	apply_invincibility_time(_invincibility_time * 3)
@@ -104,13 +103,13 @@ func _physics_process(delta):
 	if _input_direction and not _in_hitstun:
 		var acceleration = _ground_acceleration if is_on_floor() else _air_acceleration
 		var top_speed = _input_direction * (_ground_top_speed if is_on_floor() else _air_top_speed)
-		velocity.x = move_toward(velocity.x, top_speed, acceleration)
+		velocity.x = move_toward(velocity.x, top_speed, acceleration * delta)
 		
 		if is_on_floor():
 			set_direction(_input_direction)
 	else:
 		var deceleration = _ground_deceleration if is_on_floor() else _air_deceleration
-		velocity.x = move_toward(velocity.x, 0, deceleration)
+		velocity.x = move_toward(velocity.x, 0, deceleration * delta)
 	
 	if move_and_slide() and _input_direction:
 		push_bubbles()
