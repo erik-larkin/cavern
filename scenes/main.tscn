@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cy0rgyrch0rlc"]
+[gd_scene load_steps=7 format=3 uid="uid://cy0rgyrch0rlc"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_75l85"]
 [ext_resource type="PackedScene" uid="uid://c23gwg707lkdu" path="res://scenes/Level.tscn" id="2_7vj3s"]
 [ext_resource type="PackedScene" uid="uid://vx56msnqsma2" path="res://scenes/Player.tscn" id="3_rh74a"]
 [ext_resource type="AudioStream" uid="uid://b8qg22ou1n44m" path="res://assets/music/theme.ogg" id="4_ts1fq"]
+[ext_resource type="Script" path="res://scripts/Camera.gd" id="5_kgiw3"]
 [ext_resource type="PackedScene" uid="uid://ccdyuei7e5m14" path="res://scenes/UI.tscn" id="5_t15fe"]
 
 [node name="Main" type="Node2D"]
@@ -21,6 +22,10 @@ stream = ExtResource("4_ts1fq")
 autoplay = true
 bus = &"Music"
 
+[node name="Camera" type="Camera2D" parent="."]
+position = Vector2(400, 240)
+script = ExtResource("5_kgiw3")
+
 [node name="UI" parent="." instance=ExtResource("5_t15fe")]
 
 [connection signal="item_collected" from="Level" to="." method="_on_level_item_collected"]
@@ -28,3 +33,4 @@ bus = &"Music"
 [connection signal="bubble_popped" from="Player" to="." method="_on_player_bubble_popped"]
 [connection signal="died" from="Player" to="." method="_on_player_died"]
 [connection signal="health_updated" from="Player" to="UI" method="_on_player_health_updated"]
+[connection signal="hurt" from="Player" to="." method="_on_player_hurt"]

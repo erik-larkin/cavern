@@ -5,6 +5,7 @@ const CHAIN_REACTION_POP_TIME : float = 0.03
 var BUBBLE_SCENE = preload("res://scenes/Bubble.tscn")
 @onready var player = $Player
 @onready var level = $Level 
+@onready var camera = $Camera
 var score = 0;
 
 enum ItemTypes {APPLE, HEART, LEMON, LIFE, RASPBERRY}
@@ -66,6 +67,10 @@ func recursive_bubble_pop(bubble : RigidBody2D, popped : Array[RigidBody2D]):
 	)
 
 
+func shake_camera(strength : float) -> void:
+	camera.apply_shake(strength)
+
+
 func _on_level_item_collected(type):
 	match (type):
 		ItemTypes.HEART:
@@ -86,3 +91,7 @@ func _on_player_died(lives_remaining):
 		get_tree().create_timer(1).timeout.connect(func():
 			player.respawn(level.get_player_spawn_point(), level.get_player_spawn_direction().x)
 		)
+
+
+func _on_player_hurt(damage_ratio : float):
+	shake_camera(3.0 * damage_ratio)

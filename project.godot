@@ -86,3 +86,4 @@ kill_player={
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.152344, 0.175781, 0.1875, 1)

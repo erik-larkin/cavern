@@ -6,10 +6,12 @@ signal bubble_blown(spawn_position, direction)
 signal bubble_popped(bubble)
 signal health_updated(new_health : int)
 signal died(lives_remaining : int)
+signal hurt(damage_ratio : float)
 
 @export var _animation_tree_path : NodePath
 @export var _maximum_health : int = 3
 @export var _starting_lives : int = 3
+@export var SHAKE_DECAY_RATE : float = 5.0
 
 @export_group("Ground Properties")
 @export var _ground_top_speed : float = 300
@@ -42,6 +44,7 @@ var _in_hitstun = false
 var _invincible = false
 var _input_direction = 0
 var _lives_remaining = _starting_lives
+var _shake_strength : float = 0.0
 
 
 const _HITSTOP_DURATION : float = 0.4
@@ -54,12 +57,16 @@ func _ready():
 	$SpriteAnimationPlayer.get_animation("hurt").length = _hitstun_time
 
 
-func _process(_delta):
+func _process(delta):
 	if Input.is_action_just_pressed("blow") and _can_blow_bubble and not _in_hitstun:
 		blow_bubble()
 	
 	if Input.is_action_just_pressed("kill_player"):
 		take_damage(_current_health)
+		
+	_shake_strength = lerp(_shake_strength, 0.0, SHAKE_DECAY_RATE * delta)
+	$Sprite.offset = Vector2(randf_range(-_shake_strength, _shake_strength),
+		randf_range(-_shake_strength, _shake_strength))
 
 
 func spawn(position : Vector2, direction : float) -> void:
@@ -80,7 +87,7 @@ func spawn(position : Vector2, direction : float) -> void:
 
 func respawn(position : Vector2, direction : float) -> void:
 	spawn(position, direction)
-	apply_invincibility_time(_invincibility_time)
+	apply_invincibility_time(_invincibility_time * 3)
 
 
 func _physics_process(delta):
@@ -116,6 +123,8 @@ func _physics_process(delta):
 func take_damage(amount : int) -> void:
 	if not _invincible:
 		_animation_tree.set("parameters/conditions/is_hurt", true)
+		hurt.emit(float(amount) / _current_health)
+		apply_shake(5.0 * float(amount) / _current_health)
 		lose_health(amount)
 		
 		if _current_health <= 0:
@@ -174,6 +183,10 @@ func apply_invincibility_time(seconds : float):
 	)
 
 
+func apply_shake(strength : float) -> void:
+	_shake_strength = strength
+
+
 func set_direction(input_direction : float) -> void:
 	_direction_facing = Vector2(input_direction, 0).normalized()
 	$Sprite.flip_h = _direction_facing == Vector2.RIGHT
@@ -230,7 +243,7 @@ func _on_hurtbox_body_entered(_body):
 
 
 func _on_visible_on_screen_notifier_screen_exited():
-	if (dead()):
+	if (dead() and position.y > 0):
 		_animation_tree.set("parameters/conditions/is_hurt", false)
 		_animation_tree.set("parameters/conditions/is_off_screen", true)
 		died.emit(_lives_remaining)
