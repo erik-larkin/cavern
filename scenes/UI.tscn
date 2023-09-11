@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://ccdyuei7e5m14"]
+[gd_scene load_steps=7 format=3 uid="uid://ccdyuei7e5m14"]
 
 [ext_resource type="Script" path="res://scripts/UI.gd" id="1_5xjcq"]
+[ext_resource type="Texture2D" uid="uid://bb20agnppx2uh" path="res://assets/images/life.png" id="2_4kh0o"]
 [ext_resource type="Texture2D" uid="uid://brcqss02t78d1" path="res://assets/images/health.png" id="2_re6s6"]
 
 [sub_resource type="SystemFont" id="SystemFont_08t1b"]
@@ -9,7 +10,10 @@ subpixel_positioning = 0
 [sub_resource type="Theme" id="Theme_6r3yr"]
 default_font = SubResource("SystemFont_08t1b")
 
-[node name="UI" type="Control" node_paths=PackedStringArray("_PLAYER_HEALTH")]
+[sub_resource type="SystemFont" id="SystemFont_6mep3"]
+font_names = PackedStringArray("Gill Sans")
+
+[node name="UI" type="Control" node_paths=PackedStringArray("_PLAYER_HEALTH", "_PLAYER_LIVES")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,11 +23,32 @@ grow_vertical = 2
 theme = SubResource("Theme_6r3yr")
 script = ExtResource("1_5xjcq")
 _PLAYER_HEALTH = NodePath("Health")
+_PLAYER_LIVES = NodePath("Lives/Label")
 
-[node name="Health" type="TextureRect" parent="."]
+[node name="Lives" type="TextureRect" parent="."]
 layout_mode = 0
 offset_top = 450.0
 offset_right = 44.0
+offset_bottom = 480.0
+texture = ExtResource("2_4kh0o")
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="Lives"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 3.0
+offset_right = 79.0
+offset_bottom = 33.0
+theme_override_fonts/font = SubResource("SystemFont_6mep3")
+theme_override_font_sizes/font_size = 20
+text = "333"
+text_overrun_behavior = 1
+
+[node name="Health" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 450.0
+offset_right = 122.0
 offset_bottom = 480.0
 texture = ExtResource("2_re6s6")
 expand_mode = 1

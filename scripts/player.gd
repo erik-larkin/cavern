@@ -6,6 +6,7 @@ signal bubble_blown(spawn_position, direction)
 signal bubble_popped(bubble)
 signal health_updated(new_health : int)
 signal died(lives_remaining : int)
+signal lives_updated(lives_remaining : int)
 signal hurt(damage_ratio : float)
 
 @export var _animation_tree_path : NodePath
@@ -52,8 +53,8 @@ const _HITSTOP_TIMESCALE : float = 0.05
 const _HIT_SHAKE_INTENSITY : float = 100
 
 func _ready():
-	update_health(_maximum_health)
 	_animation_tree.active = true
+	update_lives(_starting_lives)
 	$SpriteAnimationPlayer.get_animation("hurt").length = _hitstun_time
 
 
@@ -85,6 +86,7 @@ func spawn(position : Vector2, direction : float) -> void:
 
 
 func respawn(position : Vector2, direction : float) -> void:
+	lose_lives(1)
 	spawn(position, direction)
 	apply_invincibility_time(_invincibility_time * 3)
 
@@ -120,7 +122,7 @@ func _physics_process(delta):
 
 
 func take_damage(amount : int) -> void:
-	if not _invincible:
+	if not _invincible and _current_health > 0:
 		_animation_tree.set("parameters/conditions/is_hurt", true)
 		hurt.emit(float(amount) / _current_health)
 		apply_shake(5.0 * float(amount) / _current_health)
@@ -149,6 +151,19 @@ func update_health(new_health : int) -> void:
 	health_updated.emit(_current_health)
 
 
+func gain_lives(amount : int) -> void:
+	update_lives(_lives_remaining + amount)
+
+
+func lose_lives(amount : int) -> void:
+	update_lives(_lives_remaining - amount)
+
+
+func update_lives(new_lives : int) -> void:
+	_lives_remaining = new_lives if new_lives >= 0 else 0
+	lives_updated.emit(_lives_remaining)
+
+
 func die() -> void:
 	await Slowdown.apply_hitstop(_HITSTOP_DURATION * 1.5, _HITSTOP_TIMESCALE)
 	_in_hitstun = true
@@ -156,7 +171,6 @@ func die() -> void:
 	set_collision_mask_value(6, false)
 	set_collision_mask_value(5, false)
 	velocity = Vector2.ZERO
-	_lives_remaining -= 1
 	jump()
 
 

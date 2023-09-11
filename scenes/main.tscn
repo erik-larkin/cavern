@@ -33,5 +33,7 @@ script = ExtResource("5_kgiw3")
 [connection signal="bubble_blown" from="Player" to="." method="_on_player_bubble_blown"]
 [connection signal="bubble_popped" from="Player" to="." method="_on_player_bubble_popped"]
 [connection signal="died" from="Player" to="." method="_on_player_died"]
+[connection signal="died" from="Player" to="UI" method="_on_player_died"]
 [connection signal="health_updated" from="Player" to="UI" method="_on_player_health_updated"]
 [connection signal="hurt" from="Player" to="." method="_on_player_hurt"]
+[connection signal="lives_updated" from="Player" to="UI" method="_on_player_lives_updated"]

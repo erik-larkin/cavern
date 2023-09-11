@@ -78,7 +78,7 @@ func _on_level_item_collected(type):
 		ItemTypes.LEMON:
 			score += 10
 		ItemTypes.LIFE:
-			$Player._lives += 1
+			$Player.gain_lives(1)
 		ItemTypes.RASPBERRY:
 			score += 50
 		ItemTypes.APPLE, _:
