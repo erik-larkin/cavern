@@ -6,7 +6,7 @@ signal collected(type : Types)
 
 enum Types {APPLE, HEART, LEMON, LIFE, RASPBERRY}
 
-var _type_weights = [0, 0, 0, 5, 0]
+var _type_weights = [5, 5, 10, 1, 15]
 var _type : Types
 
 # Called when the node enters the scene tree for the first time.

@@ -2,6 +2,8 @@ extends Node2D
 
 const CHAIN_REACTION_POP_TIME : float = 0.03
 
+signal score_updated(new_score : int)
+
 var BUBBLE_SCENE = preload("res://scenes/Bubble.tscn")
 @onready var player = $Player
 @onready var level = $Level 
@@ -76,13 +78,13 @@ func _on_level_item_collected(type):
 		ItemTypes.HEART:
 			$Player.gain_health(1)
 		ItemTypes.LEMON:
-			score += 10
+			add_to_score(100)
 		ItemTypes.LIFE:
 			$Player.gain_lives(1)
 		ItemTypes.RASPBERRY:
-			score += 50
+			add_to_score(500)
 		ItemTypes.APPLE, _:
-			score += 100
+			add_to_score(2000)
 	print(score)
 
 
@@ -99,3 +101,12 @@ func _on_player_hurt(damage_ratio : float):
 
 func _on_level_explosion():
 	shake_camera(3.0)
+
+
+func add_to_score(score_to_add : int) -> void:
+	update_score(score + score_to_add)
+
+
+func update_score(new_score : int) -> void:
+	score = new_score
+	score_updated.emit(score)

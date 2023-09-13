@@ -80,7 +80,7 @@ kill_player={
 2d_physics/layer_4="items"
 2d_physics/layer_5="bubbles"
 2d_physics/layer_6="tiles"
-2d_physics/layer_7="airflow"
+2d_physics/layer_7="solid tiles"
 
 [rendering]
 
