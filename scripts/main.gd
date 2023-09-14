@@ -15,7 +15,7 @@ enum ItemTypes {APPLE, HEART, LEMON, LIFE, RASPBERRY}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	player.spawn(level.get_player_spawn_point(), level.get_player_spawn_direction().x)
-
+	$UI.set_health(player._maximum_health)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -61,6 +61,7 @@ func recursive_bubble_pop(bubble : RigidBody2D, popped : Array[RigidBody2D]):
 	var bubbles_to_pop = bubble.get_adjacent_bubbles()
 	bubble.pop_and_defeat_enemy()
 	popped.append(bubble)
+	add_to_score(10 * popped.size())
 	
 	get_tree().create_timer(CHAIN_REACTION_POP_TIME).timeout.connect(func():
 		for adjacent_bubble in bubbles_to_pop:
@@ -76,7 +77,8 @@ func shake_camera(strength : float) -> void:
 func _on_level_item_collected(type):
 	match (type):
 		ItemTypes.HEART:
-			$Player.gain_health(1)
+			if not $Player.gain_health(1):
+				add_to_score(2000)
 		ItemTypes.LEMON:
 			add_to_score(100)
 		ItemTypes.LIFE:
@@ -85,7 +87,6 @@ func _on_level_item_collected(type):
 			add_to_score(500)
 		ItemTypes.APPLE, _:
 			add_to_score(2000)
-	print(score)
 
 
 func _on_player_died(lives_remaining):

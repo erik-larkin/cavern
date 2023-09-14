@@ -75,7 +75,7 @@ func start_floating():
 	set_collision_mask_value(Layers.ENEMIES, false)
 
 
-func pop_and_defeat_enemy() -> void:
+func pop_and_defeat_enemy():
 	if _captured_enemy:
 		_captured_enemy.die()
 		_captured_enemy = null

@@ -138,17 +138,22 @@ func dead() -> bool:
 	return _current_health <= 0
 
 
-func gain_health(amount : int) -> void:
-	update_health(_current_health + amount)
+func gain_health(amount : int) -> bool:
+	return update_health(_current_health + amount)
 
 
-func lose_health(amount : int) -> void:
-	update_health(_current_health - amount)
+func lose_health(amount : int) -> bool:
+	return update_health(_current_health - amount)
 
 
-func update_health(new_health : int) -> void:
-	_current_health = clamp(new_health, 0, _maximum_health)
-	health_updated.emit(_current_health)
+func update_health(new_health : int) -> bool:
+	var clamped_health = clamp(new_health, 0, _maximum_health)
+	if _current_health != clamped_health:
+		_current_health = clamped_health
+		health_updated.emit(_current_health)
+		return true
+	
+	return false
 
 
 func gain_lives(amount : int) -> void:

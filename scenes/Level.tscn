@@ -158,6 +158,18 @@ layer_1/tile_data = PackedInt32Array(1114120, 1, 0, 1114121, 1, 0, 1114122, 1, 0
 [node name="Enemy" parent="Enemies" instance=ExtResource("5_wae2g")]
 position = Vector2(634, 151)
 
+[node name="Enemy2" parent="Enemies" instance=ExtResource("5_wae2g")]
+position = Vector2(461, 387)
+
+[node name="Enemy3" parent="Enemies" instance=ExtResource("5_wae2g")]
+position = Vector2(92, 289)
+
+[node name="Enemy4" parent="Enemies" instance=ExtResource("5_wae2g")]
+position = Vector2(549, 74)
+
+[node name="Enemy5" parent="Enemies" instance=ExtResource("5_wae2g")]
+position = Vector2(176, 70)
+
 [node name="Items" type="Node2D" parent="."]
 
 [node name="PlayerSpawnPoint" type="Marker2D" parent="."]
