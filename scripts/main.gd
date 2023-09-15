@@ -5,6 +5,7 @@ const CHAIN_REACTION_POP_TIME : float = 0.03
 signal score_updated(new_score : int)
 
 var BUBBLE_SCENE = preload("res://scenes/Bubble.tscn")
+var SCORE_POPUP_SCENE = preload("res://scenes/ScorePopup.tscn")
 @onready var player = $Player
 @onready var level = $Level 
 @onready var camera = $Camera
@@ -106,8 +107,15 @@ func _on_level_explosion():
 
 func add_to_score(score_to_add : int) -> void:
 	update_score(score + score_to_add)
+	spawn_score_text(score_to_add)
 
 
 func update_score(new_score : int) -> void:
 	score = new_score
 	score_updated.emit(score)
+
+
+func spawn_score_text(score : int) -> void:
+	var score_popup := SCORE_POPUP_SCENE.instantiate()
+	score_popup.init(score, player.position)
+	$UI.add_child(score_popup)

@@ -1,0 +1,9 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cowuffgxw54af"]
+
+[sub_resource type="SystemFont" id="SystemFont_08t1b"]
+font_names = PackedStringArray("Gill Sans")
+subpixel_positioning = 0
+
+[resource]
+default_font = SubResource("SystemFont_08t1b")
+default_font_size = 20

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://be0anvxui8vjg"]
+
+[ext_resource type="Theme" uid="uid://cowuffgxw54af" path="res://resources/theme.tres" id="1_tbwop"]
+[ext_resource type="Script" path="res://scripts/ScorePopup.gd" id="2_joywy"]
+
+[node name="ScorePopup" type="Label"]
+offset_right = 9.0
+offset_bottom = 16.0
+size_flags_horizontal = 4
+theme = ExtResource("1_tbwop")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 12
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("2_joywy")
