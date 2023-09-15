@@ -51,7 +51,21 @@ func _on_hitbox_body_entered(_body):
 	if visible:
 		visible = false
 		collected.emit(_type)
+		select_sound_stream()
 		$CollectSound.play()
 		$CollectSound.finished.connect(queue_free)
 
+
+func select_sound_stream() -> void:
+	var sound_filename : String
+	
+	match(_type):
+		Types.HEART:
+			sound_filename = "life0.ogg"
+		Types.LIFE:
+			sound_filename = "bonus0.ogg"
+		_:
+			sound_filename = "score0.ogg"
+	
+	$CollectSound.stream = load("res://assets/sounds/" + sound_filename)
 
