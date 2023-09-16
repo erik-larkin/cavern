@@ -62,7 +62,7 @@ func recursive_bubble_pop(bubble : RigidBody2D, popped : Array[RigidBody2D]):
 	var bubbles_to_pop = bubble.get_adjacent_bubbles()
 	bubble.pop_and_defeat_enemy()
 	popped.append(bubble)
-	add_to_score(10 * popped.size())
+	add_to_score(10 * popped.size(), bubble.position)
 	
 	get_tree().create_timer(CHAIN_REACTION_POP_TIME).timeout.connect(func():
 		for adjacent_bubble in bubbles_to_pop:
@@ -79,15 +79,15 @@ func _on_level_item_collected(type):
 	match (type):
 		ItemTypes.HEART:
 			if not $Player.gain_health(1):
-				add_to_score(2000)
+				add_to_score(2000, player.position)
 		ItemTypes.LEMON:
-			add_to_score(100)
+			add_to_score(100, player.position)
 		ItemTypes.LIFE:
 			$Player.gain_lives(1)
 		ItemTypes.RASPBERRY:
-			add_to_score(500)
+			add_to_score(500, player.position)
 		ItemTypes.APPLE, _:
-			add_to_score(2000)
+			add_to_score(2000, player.position)
 
 
 func _on_player_died(lives_remaining):
@@ -105,9 +105,9 @@ func _on_level_explosion():
 	shake_camera(3.0)
 
 
-func add_to_score(score_to_add : int) -> void:
+func add_to_score(score_to_add : int, text_spawn_position : Vector2) -> void:
 	update_score(score + score_to_add)
-	spawn_score_text(score_to_add)
+	spawn_score_text(score_to_add, text_spawn_position)
 
 
 func update_score(new_score : int) -> void:
@@ -115,7 +115,7 @@ func update_score(new_score : int) -> void:
 	score_updated.emit(score)
 
 
-func spawn_score_text(score : int) -> void:
+func spawn_score_text(score : int, spawn_position : Vector2) -> void:
 	var score_popup := SCORE_POPUP_SCENE.instantiate()
-	score_popup.init(score, player.position)
+	score_popup.init(score, spawn_position)
 	$UI.add_child(score_popup)

@@ -29,10 +29,12 @@ stretch_mode = 2
 
 [node name="LivesLabel" type="Label" parent="Lives"]
 layout_mode = 0
-offset_left = 44.0
+offset_left = 47.0
 offset_top = 3.0
-offset_right = 79.0
+offset_right = 82.0
 offset_bottom = 32.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
 text = "0"
 text_overrun_behavior = 1
 
@@ -50,6 +52,9 @@ stretch_mode = 1
 layout_mode = 1
 offset_left = 625.0
 offset_top = 453.0
-offset_right = 799.0
+offset_right = 795.0
 offset_bottom = 482.0
-text = "0000000000"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+text = "0"
+horizontal_alignment = 2

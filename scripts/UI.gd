@@ -19,7 +19,7 @@ func set_lives(lives : int) -> void:
 	_PLAYER_LIVES.text = str(lives)
 
 func set_score(score : int) -> void:
-	_SCORE.text = "%010d" % score
+	_SCORE.text = "%d" % score
 
 func _on_player_health_updated(new_health):
 	set_health(new_health)
