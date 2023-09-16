@@ -16,7 +16,9 @@ var _gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var _direction_facing := Vector2.LEFT
 var _is_in_bubble := false
 var _is_dying := false
+var _is_angry := false
 
+const _ANGRY_TEXTURE_SHEET = preload("res://assets/images/angry-robot-sheet.png")
 const _ENEMIES_LAYER := 3
 
 func _ready():
@@ -47,6 +49,7 @@ func escape_bubble() -> void:
 	velocity = Vector2.ZERO
 	$NormalCollisionShape.set_deferred("disabled", false)
 	set_collision_layer_value(_ENEMIES_LAYER, true)
+	become_angry()
 
 
 func fall_and_explode(delta) -> void:
@@ -103,6 +106,13 @@ func jump() -> void:
 	if is_on_floor() and not _is_in_bubble:
 		$SFX/Jump.play()
 		velocity.y = -_JUMP_VELOCITY
+
+
+func become_angry() -> void:
+	if not _is_angry:
+		_SPEED *= 1.5
+		$Sprite.texture = _ANGRY_TEXTURE_SHEET
+		_is_angry = true
 
 
 func die() -> void:

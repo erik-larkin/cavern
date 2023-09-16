@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxuqfy4s8fbhd"
-path="res://.godot/imported/robot102.png-62ec5b80329b0871629814d9ec8ac2ed.ctex"
+uid="uid://c77jmxam748fm"
+path="res://.godot/imported/angry-robot-sheet.png-259e1d8a3d766932c2cd397440603f01.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/robot102.png"
-dest_files=["res://.godot/imported/robot102.png-62ec5b80329b0871629814d9ec8ac2ed.ctex"]
+source_file="res://assets/images/angry-robot-sheet.png"
+dest_files=["res://.godot/imported/angry-robot-sheet.png-259e1d8a3d766932c2cd397440603f01.ctex"]
 
 [params]
 
