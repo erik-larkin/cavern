@@ -260,8 +260,15 @@ func _on_hurtbox_body_entered(_body):
 		take_damage(1)
 
 
+func _on_hurtbox_area_entered(area):
+	if not dead():
+		take_damage(1)
+
+
 func _on_visible_on_screen_notifier_screen_exited():
 	if (dead() and position.y > 0):
 		_animation_tree.set("parameters/conditions/is_hurt", false)
 		_animation_tree.set("parameters/conditions/is_off_screen", true)
 		died.emit(_lives_remaining)
+
+

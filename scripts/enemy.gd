@@ -3,6 +3,7 @@ extends CharacterBody2D
 class_name Enemy
 
 signal exploded(enemy_position : Vector2)
+signal bolt_fired(bolt_instance : Bolt)
 
 @export var _SPEED : float
 @export var _JUMP_VELOCITY : float
@@ -20,6 +21,7 @@ var _is_angry := false
 
 const _ANGRY_TEXTURE_SHEET = preload("res://assets/images/angry-robot-sheet.png")
 const _ENEMIES_LAYER := 3
+
 
 func _ready():
 	_animation_tree.active = true
@@ -52,6 +54,10 @@ func escape_bubble() -> void:
 	become_angry()
 
 
+func shoot_bolt() -> void:
+	bolt_fired.emit(position, _direction_facing)
+
+
 func fall_and_explode(delta) -> void:
 	apply_gravity(delta)
 	
@@ -74,6 +80,8 @@ func process_ai(delta) -> void:
 	
 	if randi_range(1, 100) == 1 and is_on_floor():
 		ready_jump()
+	if randi_range(1, 100) == 1:
+		shoot_bolt()
 
 
 func collision_with_outer_walls() -> bool:
@@ -110,7 +118,7 @@ func jump() -> void:
 
 func become_angry() -> void:
 	if not _is_angry:
-		_SPEED *= 1.5
+		_SPEED *= 2
 		$Sprite.texture = _ANGRY_TEXTURE_SHEET
 		_is_angry = true
 

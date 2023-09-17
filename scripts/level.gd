@@ -6,6 +6,7 @@ const _INVISIBLE_COLOUR : Color = Color(1, 1, 1, 0)
 const _TRANSPARENT_COLOUR : Color = Color(1, 1, 1, 0.3)
 const _EXPLOSION_SCENE := preload("res://scenes/Explosion.tscn")
 const _ITEM_SCENE := preload("res://scenes/Item.tscn")
+const _BOLT_SCENE = preload("res://scenes/Bolt.tscn")
 
 signal item_collected(type : int)
 signal explosion
@@ -26,6 +27,7 @@ func _ready() -> void:
 	
 	for enemy in $Enemies.get_children():
 		enemy.exploded.connect(_on_enemy_exploded)
+		enemy.bolt_fired.connect(_on_enemy_bolt_fired)
 	
 	for item in $Items.get_children():
 		item.collected.connect(_on_item_collected)
@@ -39,6 +41,12 @@ func get_airflow_at_coords(coordinates : Vector2) -> Vector2i:
 		return tile_data.get_custom_data("Direction")
 	
 	return Vector2.ZERO
+
+
+func _on_enemy_bolt_fired(enemy_position : Vector2, direction : Vector2) -> void:
+	var bolt_instance = _BOLT_SCENE.instantiate()
+	bolt_instance.init(enemy_position, direction)
+	$Bolts.add_child(bolt_instance)
 
 
 func _on_enemy_exploded(enemy_position : Vector2) -> void:

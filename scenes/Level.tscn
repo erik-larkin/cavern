@@ -172,6 +172,8 @@ position = Vector2(176, 70)
 
 [node name="Items" type="Node2D" parent="."]
 
+[node name="Bolts" type="Node2D" parent="."]
+
 [node name="PlayerSpawnPoint" type="Marker2D" parent="."]
 position = Vector2(87, 381)
 metadata/Direction = Vector2(1, 0)
