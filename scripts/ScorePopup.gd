@@ -6,6 +6,7 @@ const DISAPPEAR_TIME := 1
 const RISE_SPEED := 20
 
 func init(score : int, spawn_position : Vector2):
+	scale *= log(score) / log(100) 
 	text = str(score)
 	pivot_offset = size / 2
 	position = spawn_position
