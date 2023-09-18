@@ -15,3 +15,8 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("2_joywy")
+
+[node name="DisappearTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="DisappearTimer" to="." method="_on_disappear_timer_timeout"]
